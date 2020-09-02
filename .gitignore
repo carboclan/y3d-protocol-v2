@@ -1,0 +1,12 @@
+node_modules
+.env
+wrangler.toml
+.secret
+.secret1
+.secret2
+.secret3
+/build
+/clean_build
+**/package-lock.json
+package-lock.json
+.DS_Store
