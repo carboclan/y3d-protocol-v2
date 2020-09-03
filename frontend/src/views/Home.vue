@@ -39,6 +39,7 @@ export default {
   data: () => ({
     y3dContract: '',
     pairList: [
+      { name: 'FUSDT/yFUSDT3d', address: '0x944f0639a04bd5204569ff28c8b385f73375e526' },
       { name: 'fy3d/yfy3d3d', address: '0x2e34f61ffa1605da4ee88a6d10e5d75ba8ce246b' },
       { name: 'SHUIHU/ySHUIHU3d', address: '0x1d8c0ef5639445faca65951423dec250bd0e68fc' },
     ],
