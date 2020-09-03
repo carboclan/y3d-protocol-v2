@@ -6,7 +6,10 @@ wrangler.toml
 .secret2
 .secret3
 /build
+/flatten
 /clean_build
 **/package-lock.json
 package-lock.json
 .DS_Store
+/Frontend
+/No-Front-end-for-now-by-frank
