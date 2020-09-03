@@ -30,6 +30,7 @@ const provider = ethers.getDefaultProvider(network, {
 const wallet = new ethers.Wallet(String(process.env.privateKey), provider);
 
 async function main() {
+    console.info("=== Start to deploy y3dFactory ===")
     const result = await deployContract(y_3dFactory)(wallet);
     console.log(result);
     const factory = new ethers.Contract(result.contractAddress, y_3dFactory.abi, wallet);
