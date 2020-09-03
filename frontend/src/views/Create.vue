@@ -12,6 +12,7 @@
         <i class="close icon"></i>
         <div class="header">Your y3dToken is ready.</div>
         <p> Contract Address: {{deployedY3dToken}} </p>
+        <button class="ui primary button" @click="goToY3dContract">Go Y3D Token page</button>
     </div>
     <form class="ui form">
       <div class="field">
@@ -61,6 +62,12 @@ export default {
         alert(error.message);
         this.deploying = false;
       }
+    },
+    goToY3dContract() {
+      this.$router.push({
+        name: 'Y3DToken',
+        params: { contractAddress: this.deployedY3dToken },
+      });
     },
   },
 };

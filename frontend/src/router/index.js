@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import Create from '../views/Create.vue';
+import Y3DToken from '../views/Y3DToken.vue';
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,12 @@ const routes = [
     path: '/create',
     name: 'Create',
     component: Create,
+  },
+  {
+    path: '/y3d/:contractAddress',
+    name: 'Y3DToken',
+    component: Y3DToken,
+    props: true,
   },
   {
     path: '/about',
