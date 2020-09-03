@@ -14,17 +14,16 @@
       <div class="ui horizontal divider">Or just choose one of them:</div>
       <div class="list-of">
         <ul>
-          <li>
-            <router-link to="/y3d/0x2e34f61ffa1605da4ee88a6d10e5d75ba8ce246b">fy3d/yfy3d3d</router-link>
-          </li>
-          <li>
-            <router-link to="/y3d/0x1d8c0ef5639445faca65951423dec250bd0e68fc">SHUIHU/ySHUIHU3d</router-link>
+          <li v-for="pair in pairList" :key="pair.address">
+            <router-link :to="`/y3d/${pair.address}`">
+              {{pair.name}}
+            </router-link>
           </li>
         </ul>
       </div>
     </div>
     <!-- <h1 class="title">Please select one of them: </h1> -->
-    
+
   </div>
 </template>
 
@@ -39,6 +38,10 @@ export default {
   },
   data: () => ({
     y3dContract: '',
+    pairList: [
+      { name: 'fy3d/yfy3d3d', address: '0x2e34f61ffa1605da4ee88a6d10e5d75ba8ce246b' },
+      { name: 'SHUIHU/ySHUIHU3d', address: '0x1d8c0ef5639445faca65951423dec250bd0e68fc' },
+    ],
   }),
   methods: {
     goToY3dContract() {
