@@ -14,7 +14,7 @@ import "./y_3dtoken.sol";
 
 contract y_3dFactory {
 
-    event y_3dTokenCreated(address indexed from, address underlying_token, address yToken);
+    event y_3dTokenCreated(address indexed from, address indexed underlying_token, address yToken);
 
     function y_3d(string memory _) internal pure returns (string memory) {
         return string(abi.encodePacked('y', bytes(_), '3d'));
