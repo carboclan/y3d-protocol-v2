@@ -1,6 +1,18 @@
 <template>
   <div class="create">
     <h1 class="title">Create A y3d Token</h1>
+    <div class="ui icon message" v-if="deploying">
+        <i class="notched circle loading icon"></i>
+        <div class="content">
+            <div class="header">Please wait in patience</div>
+            <p>Deploying your Y3D Token to the blockchain now.</p>
+        </div>
+    </div>
+    <div class="ui positive message" v-if="deployedY3dToken">
+        <i class="close icon"></i>
+        <div class="header">Your y3dToken is ready.</div>
+        <p> Contract Address: {{deployedY3dToken}} </p>
+    </div>
     <form class="ui form">
       <div class="field">
         <label>Underlying Token</label>
@@ -19,6 +31,8 @@ export default {
   name: 'CreateToken',
   data: () => ({
     tokenContract: '',
+    deploying: false,
+    deployedY3dToken: '',
   }),
   computed: {},
   methods: {
@@ -27,13 +41,26 @@ export default {
         alert('This is not a ethereum address, please double check your input.');
         return;
       }
+      this.deploying = true;
       const contract = y3dFactory.connect(getProvider().getSigner());
-      const response = await contract.create(this.tokenContract);
-      console.log('tx response', response);
+      try {
+        const response = await contract.create(this.tokenContract);
+        console.log('tx response', response);
 
-      // Wait for 1 confirmation
-      const receipt = await response.wait(1);
-      console.log('tx receipt', receipt);
+        // Wait for 1 confirmation
+        const receipt = await response.wait(1);
+        console.log('tx receipt', receipt);
+        const CreateY3dTokenEvent = receipt.events[1];
+        console.log('CreateY3dTokenEvent', CreateY3dTokenEvent);
+        const hex64ToAddress = (hex) => `0x${hex.slice(26)}`;
+        const y3dToken = hex64ToAddress(CreateY3dTokenEvent.data);
+        this.deploying = false;
+        this.deployedY3dToken = y3dToken;
+        console.log('y3dToken address: ', y3dToken);
+      } catch (error) {
+        alert(error.message);
+        this.deploying = false;
+      }
     },
   },
 };
