@@ -11,11 +11,15 @@ contract y_3dToken is ERC20, Iy_3dToken {
     address public _u; // underlying token address
     address public _y; // yToken address
     uint public pool;
+    address public owner;
 
-    constructor (address underlying_token, string memory name, string memory symbol) ERC20(name, symbol) public {
+    constructor (address underlying_token, string memory name, string memory symbol, address to) ERC20(name, symbol) public {
         _u = underlying_token;
-        pool = 1; _mint(msg.sender, 1); // trick: avoid div by 0
+        pool = 1;
+        _mint(to, 1); // trick: avoid div by 0
+        owner = to;
     }
+
     function stake(uint256 _amount) external {
         require(_amount > 0, "stake amount must be greater than 0");
         ERC20 u = ERC20(_u);        

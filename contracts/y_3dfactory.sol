@@ -13,15 +13,20 @@ pragma solidity ^0.6.0;
 import "./y_3dtoken.sol";
 
 contract y_3dFactory {
-    
-    event y_3dTokenCreated(address indexed y);
+
+    event y_3dTokenCreated(address indexed from, address underlying_token, address yToken);
 
     function y_3d(string memory _) internal pure returns (string memory) {
         return string(abi.encodePacked('y', bytes(_), '3d'));
     }
 
     function create(address u) external {
-        address y = address(new y_3dToken(u, y_3d(IERC20(u).name()), y_3d(IERC20(u).symbol())));
-        emit y_3dTokenCreated(y);
+        address y = address(
+            new y_3dToken(
+                u, y_3d(IERC20(u).name()), y_3d(IERC20(u).symbol()),
+                msg.sender
+            )
+        );
+        emit y_3dTokenCreated(msg.sender, u, y);
     }
 }
