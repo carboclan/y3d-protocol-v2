@@ -11,5 +11,3 @@ wrangler.toml
 **/package-lock.json
 package-lock.json
 .DS_Store
-/Frontend
-/No-Front-end-for-now-by-frank
