@@ -35,8 +35,8 @@ async function main() {
     const factory = new ethers.Contract(result.contractAddress, y_3dFactory.abi, wallet);
     // Create a YToken based on FUSDT for testing
     const createYToken = await factory.create("0xCB9543F6A3A1De19B4A2aFE7C30C54290E5e61F4");
-    await createYToken.wait(1);
-    console.log(createYToken)
+    const receipt = await createYToken.wait(1);
+    console.log(receipt)
 }
 
 main();
