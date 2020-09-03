@@ -225,6 +225,8 @@ export async function stopWatchProvider() {
   providerInterval = null
 }
 
+export const getChainId = () => chainId
+
 // start ethereum provider checker
 startProviderWatcher()
 
