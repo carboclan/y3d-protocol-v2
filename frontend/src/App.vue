@@ -4,7 +4,9 @@
       <router-link to="/">Home <del>Find</del></router-link> |
       <router-link to="/create">Create</router-link>
     </div>
-    <router-view/>
+    <div class="ui container segment">
+      <router-view />
+    </div>
   </div>
 </template>
 
