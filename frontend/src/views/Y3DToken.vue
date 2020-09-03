@@ -24,11 +24,10 @@
                         <p>
                             Address: <code>{{y3dTD.underlying}}</code>
                             <br/>
-                            <CheckoutAtEtherscan :contract="y3dTD.underlying" />
                         </p>
                     </div>
                     </div>
-                    <div class="ui bottom attached button"><i class="add icon"></i> 添加好友 </div>
+                    <CheckoutAtEtherscan :contract="y3dTD.underlying" />
                 </div>
                 <div class="card">
                     <div class="content">
@@ -43,11 +42,10 @@
                         <p>
                         Address: <code>{{contractAddress}}</code>
                         <br/>
-                        <CheckoutAtEtherscan :contract="contractAddress" />
                         </p>
                     </div>
                     </div>
-                    <div class="ui bottom attached button"><i class="add icon"></i> 添加好友 </div>
+                    <CheckoutAtEtherscan :contract="contractAddress" />
                 </div>
                 </div>
                 <div class="actions">

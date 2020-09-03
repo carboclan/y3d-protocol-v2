@@ -1,5 +1,9 @@
 <template>
-    <a :href="link" rel="noopener">Etherscan ↗️</a>
+    <a :href="link" rel="noopener"
+      target="_blank" class="ui bottom attached button">
+        <i class="external alternate icon"></i>
+        Etherscan
+    </a>
 </template>
 
 <script>
