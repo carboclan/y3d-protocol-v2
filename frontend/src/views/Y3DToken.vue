@@ -59,7 +59,7 @@
                         :disabled="isSendingTx"
                         :class="isSendingTx && 'loading'"
                         @click="unstake"> Unstake </button>
-                    <a v-if="lastTxHash" class="ui button" 
+                    <a v-if="lastTxHash" class="ui button"
                         :href="lastTxLink" target="_blank"
                         rel="noopener noreferrer">
                         Check Last tx on Etherscan ↗️
