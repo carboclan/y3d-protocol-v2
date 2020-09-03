@@ -11,3 +11,6 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount('#app');
+
+// Initialize ethers store
+store.dispatch('ethers/init');
