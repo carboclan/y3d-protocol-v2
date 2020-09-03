@@ -28,6 +28,7 @@
     "ethereumjs-abi": "^0.6.8",
     "ethereumjs-util": "^7.0.4",
     "http-server": "^0.12.3",
+    "solc": "0.6.6",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.2"
   }
