@@ -1,15 +1,13 @@
 {
-  "name": "yam",
-  "version": "1.0.0",
-  "description": "YAM protocol repo",
+  "name": "y3d-v2",
+  "version": "2.0.0",
+  "description": "y3d protocol repo, ver.2",
   "main": "index.js",
   "scripts": {
     "build": "waffle",
     "flatten": "npx waffle flatten",
     "deploy": "yarn build && ts-node ./deployment/y3dFactory.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "www-py3": "cd www && python3 -m http.server",
-    "www": "http-server ./www"
   },
   "author": "",
   "license": "ISC",
