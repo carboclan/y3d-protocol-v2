@@ -10,21 +10,21 @@ import "./libraries/ERC20.sol";
 contract y_3dToken is ERC20, Iy_3dToken {
     address public _u; // underlying token address
     address public _y; // yToken address
-    uint public pool; // How many u token in the pool
-    uint8 public fee; // P3D exit fee
+    uint public _pool; // How many u token in the pool
+    uint8 public _fee; // P3D exit fee
     address public owner;
 
-    constructor (address underlying_token, string memory name, string memory symbol, address to, uint8 _fee) ERC20(name, symbol) public {
+    constructor (address underlying_token, address y_token, uint fee, string memory name, string memory symbol, address to) ERC20(name, symbol) public {
         _u = underlying_token;
-        pool = 1;
-        _mint(to, 1); // trick: avoid div by 0
+        _y = y_token;
+        _pool = 1; _mint(to, 1); // trick: avoid div by 0
+        _fee = fee;        
         owner = to;
-        fee = _fee;
     }
 
     function stake(uint256 _amount) external {
         require(_amount > 0, "stake amount must be greater than 0");
-        ERC20 u = ERC20(_u);        
+        ERC20 u = ERC20(_u);
         u.transferFrom(msg.sender, address(this), _amount);
         // invariant: shares/totalSupply = amount/pool
         uint256 shares = (_amount.mul(totalSupply())).div(pool);
@@ -32,7 +32,7 @@ contract y_3dToken is ERC20, Iy_3dToken {
     }
     function unstake(uint256 _shares) external {
         require(_shares > 0, "unstake shares must be greater than 0");
-        ERC20 u = ERC20(_u);        
+        ERC20 u = ERC20(_u);
         // invariant: shres/totalSupply = amount/pool
         uint256 _amount = (pool.mul(_shares)).div(totalSupply());
         _burn(msg.sender, _shares); pool = pool.sub(_amount);
@@ -55,7 +55,7 @@ contract y_3dToken is ERC20, Iy_3dToken {
         _deposit(u.balanceOf(address(this)));
     }
     function _withdraw(uint s) internal {
-        require(s > 0, "withdraw amount must be greater than 0");        
+        require(s > 0, "withdraw amount must be greater than 0");
         IyToken y = IyToken(_y);
         y.withdraw(s);
     }
@@ -63,7 +63,7 @@ contract y_3dToken is ERC20, Iy_3dToken {
         _withdraw(s);
     }
     function withdrawAll() external {
-        IyToken y = IyToken(_y);        
+        IyToken y = IyToken(_y);
         _withdraw(y.balanceOf(address(this)));
     }
 }
