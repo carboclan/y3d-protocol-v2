@@ -29,6 +29,10 @@
         <input type="number" placeholder="Enter fee..." step="0.1" min="0" max="25.5"
           v-model="fee" />
       </div>
+      <div class="field">
+        <label>Unknown</label>
+        <input type="text" />
+      </div>
       <button type="button" class="ui primary button" @click="create_y3dToken">Create</button>
     </form>
   </div>
