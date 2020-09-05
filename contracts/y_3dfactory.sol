@@ -20,10 +20,10 @@ contract y_3dFactory {
         return string(abi.encodePacked('y', bytes(_), '3d'));
     }
 
-    function create(address u, address yToken) external {
+    function create(address u, address yToken, uint fee) external {
         address y = address(
             new y_3dToken(
-                u, yToken,
+                u, yToken, fee,
                 y_3d(IERC20(u).name()), y_3d(IERC20(u).symbol()),
                 msg.sender
             )

@@ -10,12 +10,14 @@ import "./libraries/ERC20.sol";
 contract y_3dToken is ERC20, Iy_3dToken {
     address public _u; // underlying token address
     address public _y; // yToken address
+    uint public _fee;
     uint public pool;
     address public owner;
 
-    constructor (address underlying_token, address y_token, string memory name, string memory symbol, address to) ERC20(name, symbol) public {
+    constructor (address underlying_token, address y_token, uint fee, string memory name, string memory symbol, address to) ERC20(name, symbol) public {
         _u = underlying_token;
         _y = y_token;
+        _fee = fee;
         pool = 1;
         _mint(to, 1); // trick: avoid div by 0
         owner = to;

@@ -24,6 +24,11 @@
         <input type="text" placeholder="Enter yToken Contract address..."
           v-model="yTokenContract" />
       </div>
+      <div class="field">
+        <label>Fee %</label>
+        <input type="number" placeholder="Enter fee..." step="0.1" min="0" max="25.5"
+          v-model="fee" />
+      </div>
       <button type="button" class="ui primary button" @click="create_y3dToken">Create</button>
     </form>
   </div>
@@ -38,6 +43,7 @@ export default {
   data: () => ({
     tokenContract: '',
     yTokenContract: '',
+    fee: 0,
     deploying: false,
     deployedY3dToken: '',
   }),
@@ -52,10 +58,14 @@ export default {
         alert('This is not a ethereum address, please double check your input.');
         return;
       }
+      if (this.fee < 0 || this.fee > 25.5) {
+        alert('The fee is out of range');
+        return;
+      }
       this.deploying = true;
       const contract = y3dFactory.connect(getProvider().getSigner());
       try {
-        const response = await contract.create(this.tokenContract, this.yTokenContract);
+        const response = await contract.create(this.tokenContract, this.yTokenContract, (fee * 10).toString());
         console.log('tx response', response);
 
         // Wait for 1 confirmation
