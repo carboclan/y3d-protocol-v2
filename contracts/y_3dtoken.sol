@@ -10,14 +10,16 @@ import "./libraries/ERC20.sol";
 contract y_3dToken is ERC20, Iy_3dToken {
     address public _u; // underlying token address
     address public _y; // yToken address
-    uint public pool;
+    uint public pool; // How many u token in the pool
+    uint8 public fee; // P3D exit fee
     address public owner;
 
-    constructor (address underlying_token, string memory name, string memory symbol, address to) ERC20(name, symbol) public {
+    constructor (address underlying_token, string memory name, string memory symbol, address to, uint8 _fee) ERC20(name, symbol) public {
         _u = underlying_token;
         pool = 1;
         _mint(to, 1); // trick: avoid div by 0
         owner = to;
+        fee = _fee;
     }
 
     function stake(uint256 _amount) external {
@@ -34,7 +36,7 @@ contract y_3dToken is ERC20, Iy_3dToken {
         // invariant: shres/totalSupply = amount/pool
         uint256 _amount = (pool.mul(_shares)).div(totalSupply());
         _burn(msg.sender, _shares); pool = pool.sub(_amount);
-//        _amount = _amount.sub(_amount.mul(fee(msg.sender)).div(1000));
+/       _amount = _amount.sub(_amount.mul(fee).div(1000));
         uint256 b = u.balanceOf(address(this));
         if (b < _amount) _withdraw(_amount - b); //!!
         u.transfer(msg.sender, _amount);
