@@ -19,6 +19,11 @@
         <label>Underlying Token</label>
         <input type="text" placeholder="Enter Token Contract address..." v-model="tokenContract" />
       </div>
+      <div class="field">
+        <label>yToken</label>
+        <input type="text" placeholder="Enter yToken Contract address..."
+          v-model="yTokenContract" />
+      </div>
       <button type="button" class="ui primary button" @click="create_y3dToken">Create</button>
     </form>
   </div>
@@ -32,6 +37,7 @@ export default {
   name: 'CreateToken',
   data: () => ({
     tokenContract: '',
+    yTokenContract: '',
     deploying: false,
     deployedY3dToken: '',
   }),
@@ -42,10 +48,14 @@ export default {
         alert('This is not a ethereum address, please double check your input.');
         return;
       }
+      if (!utils.isAddress(this.yTokenContract)) {
+        alert('This is not a ethereum address, please double check your input.');
+        return;
+      }
       this.deploying = true;
       const contract = y3dFactory.connect(getProvider().getSigner());
       try {
-        const response = await contract.create(this.tokenContract);
+        const response = await contract.create(this.tokenContract, this.yTokenContract);
         console.log('tx response', response);
 
         // Wait for 1 confirmation
