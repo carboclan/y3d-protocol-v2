@@ -3,7 +3,7 @@ import Vue from 'vue'
 import {
   providers,
   Contract as ContractModule,
-  utils as utilsModule
+  utils as utilsModule,
 } from 'ethers'
 
 export const PROVIDER_CHECK_MS = 500
@@ -36,16 +36,16 @@ export const LOG_TRANSACTIONS = [
 ]
 
 // for ethers
-let ethereum
-let provider
-let chainId
-let userWallet
-let currentAccount
-let providerInterval
-let initialized
+let ethereum: any;
+let provider: any;
+let chainId: any;
+let userWallet: any;
+let currentAccount: any;
+let providerInterval: any;
+let initialized: any;
 
 function getEthereum() {
-  return window.ethereum
+  return (window as any).ethereum
 }
 
 function ethereumOk() {
@@ -177,7 +177,7 @@ function handleChainChanged(_chainId) {
 }
 
 // For now, 'eth_accounts' will continue to always return an array
-function handleAccountsChanged(accounts) {
+function handleAccountsChanged(accounts: any[]) {
   if (accounts.length === 0) {
     // MetaMask is locked or the user has not connected any accounts
     console.log('No ethereum accounts available')
