@@ -1,17 +1,19 @@
 <template>
   <div class="cwb-wrapper">
     <div class="cwb-container">
-      <div v-if="isConnectButtonClicked" class="cwb-wallet-info-wrapper">
-        <div class="cwb-wallet-info-balance">99.99 ETH</div>
+      <div v-if="connected" class="cwb-wallet-info-wrapper">
+        <div class="cwb-wallet-info-balance">... ETH</div>
         <button id="web3-status-connected" class="cwb-wallet-info-button">
-          <p class="cwb-wallet-info-address">0xFFFF...FFFF</p>
+          <p class="cwb-wallet-info-address">{{address}}</p>
           <div class="cwb-wallet-info-icon">
             <div style="border-radius: 50px; overflow: hidden; padding: 0px; margin: 0px; width: 16px; height: 16px; display: inline-block;"><svg height="100" version="1.1" width="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative;"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.3.0</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><rect x="0" y="0" width="16" height="16" rx="0" ry="0" fill="#fb1873" stroke="none" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect><rect x="0" y="0" width="16" height="16" rx="0" ry="0" fill="#c8145c" stroke="none" transform="matrix(-0.0951,-0.9955,0.9955,-0.0951,0.5498,16.7168)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect><rect x="0" y="0" width="16" height="16" rx="0" ry="0" fill="#fa6000" stroke="none" transform="matrix(0.9992,0.0404,-0.0404,0.9992,-0.5367,-8.6324)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect><rect x="0" y="0" width="16" height="16" rx="0" ry="0" fill="#f5af00" stroke="none" transform="matrix(0.9299,0.3678,-0.3678,0.9299,-6.4604,-10.2558)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect></svg></div>
           </div>
         </button>
       </div>
       <button v-else class="cwb-connect-button"
-        @click="onConnectButtonClick">Connect to a wallet</button>
+        @click="onConnectButtonClick" :disabled="!isGoodToConnect">
+        Connect to a wallet
+      </button>
     </div>
   </div>
 </template>
@@ -105,6 +107,7 @@
 }
 </style>
 <script lang="ts">
+import { mapActions, mapState } from 'vuex';
 import Vue from 'vue';
 
 export default Vue.extend({
@@ -114,11 +117,19 @@ export default Vue.extend({
       isConnectButtonClicked: false,
     };
   },
+  computed: {
+    ...mapState('ethers', ['connected', 'address', 'initialized']),
+    isGoodToConnect() {
+      return this.initialized;
+    },
+  },
   methods: {
+    ...mapActions('ethers', ['connect']),
     onConnectButtonClick() {
-      if (this.isConnectButtonClicked === false) {
-        this.isConnectButtonClicked = true;
-      }
+      // if (this.isConnectButtonClicked === false) {
+      //   this.isConnectButtonClicked = true;
+      // }
+      this.connect();
     },
   },
 });
