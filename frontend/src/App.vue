@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <div class="container">
-
+    <div class="app-container">
+      <Header />
+      <div id="nav">
+        <router-link to="/">Home <del>Find</del></router-link> |
+        <router-link to="/create">Create</router-link>
+      </div>
+      <div class="ui container segment">
+        <router-view />
+      </div>
     </div>
-    <!-- <div id="nav">
-      <router-link to="/">Home <del>Find</del></router-link> |
-      <router-link to="/create">Create</router-link>
-    </div>
-    <div class="ui container segment">
-      <router-view />
-    </div> -->
     <div class="grid-wrapper">
       <div class="m-grid is-animating"></div>
     </div>
@@ -18,7 +18,6 @@
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -41,7 +40,7 @@
     bottom center /* Bottom background color */;
 }
 
-.container {
+.app-container {
   display: block;
   width: 100%;
   height: 100%;
@@ -109,3 +108,14 @@
   }
 }
 </style>
+
+<script lang="ts">
+import Vue from 'vue';
+import Header from './components/Header.vue';
+
+export default Vue.extend({
+  components: {
+    Header,
+  },
+});
+</script>
