@@ -28,6 +28,8 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
     "lint-staged": "^9.5.0",
+    "sass": "^1.26.10",
+    "sass-loader": "^10.0.2",
     "vue-cli-plugin-ethers": "~0.2.3",
     "vue-template-compiler": "^2.6.11"
   },
