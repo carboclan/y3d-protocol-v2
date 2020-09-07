@@ -4,7 +4,7 @@
 module.exports = {
   pages: {
     index: {
-      entry: 'src/main.js',
+      entry: 'src/main.ts',
       template: 'public/index.html',
       title: 'Y3D V2',
     },
