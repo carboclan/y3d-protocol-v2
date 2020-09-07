@@ -10,4 +10,4 @@ interface UserBalances {
     yyCrv?: BigNumber;
 }
 
-export { ContractStat, UserBalances }
+export { ContractStat, UserBalances };

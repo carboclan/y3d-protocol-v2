@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import y3dFactoryABI from './abi/y3dFactory.json';
 import y3dTokenABI from './abi/y3dToken.json';
 import IERC20_ABI from './abi/IERC20.json';
-import UnitedMint_ABI from "./abi/UnitedMint.json";
+import UnitedMint_ABI from './abi/UnitedMint.json';
 
 export const y3dFactory = new ethers.Contract(
   process.env.VUE_APP_Y3DFACTORY,
@@ -29,5 +29,5 @@ export const y3DToken = new ethers.Contract(
 
 export const UnitedMint = new ethers.Contract(
   '0x65a58b7725580fD83F92B0B22fc074BE7c610e78',
-  UnitedMint_ABI
-)
+  UnitedMint_ABI,
+);
