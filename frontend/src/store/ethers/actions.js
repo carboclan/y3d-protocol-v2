@@ -35,15 +35,15 @@ export default {
         ctx.commit('user', address)
         ctx.commit('network', network)
 
-        const msg = oldAddress && oldAddress !== address
-          ? `Your Ethereum address/user has changed.
-          Address: ${address}
-          Network: ${network} ${network === 'Rinkeby Test Network' ? '☑️' : '✖️'}`
-          : `You are connected to the Ethereum Network.
-          Address: ${address}
-          Network: ${network} ${network === 'Rinkeby Test Network' ? '☑️' : '✖️'}
-          If you change your address or network, this app will update automatically.`
-        alert(msg)
+        // const msg = oldAddress && oldAddress !== address
+        //   ? `Your Ethereum address/user has changed.
+        //   Address: ${address}
+        //   Network: ${network} ${network === 'Rinkeby Test Network' ? '☑️' : '✖️'}`
+        //   : `You are connected to the Ethereum Network.
+        //   Address: ${address}
+        //   Network: ${network} ${network === 'Rinkeby Test Network' ? '☑️' : '✖️'}
+        //   If you change your address or network, this app will update automatically.`
+        // alert(msg)
 
         // Other vuex stores can wait for this
         event.$emit(EVENT_CHANNEL, MSGS.ETHERS_VUEX_READY)

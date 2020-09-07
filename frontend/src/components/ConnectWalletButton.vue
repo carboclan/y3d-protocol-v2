@@ -114,7 +114,6 @@ export default Vue.extend({
   name: 'ConnectWalletButton',
   data: function data() {
     return {
-      isConnectButtonClicked: false,
     };
   },
   computed: {
@@ -126,9 +125,6 @@ export default Vue.extend({
   methods: {
     ...mapActions('ethers', ['connect']),
     onConnectButtonClick() {
-      // if (this.isConnectButtonClicked === false) {
-      //   this.isConnectButtonClicked = true;
-      // }
       this.connect();
     },
   },
