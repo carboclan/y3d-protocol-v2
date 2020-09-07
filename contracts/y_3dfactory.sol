@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.0;
 
 /*
@@ -20,7 +22,7 @@ contract y_3dFactory {
         return string(abi.encodePacked('y', bytes(_), '3d'));
     }
 
-    function create(address u, address yToken, uint fee) external {
+    function create(address u, address yToken, uint8 fee) external {
         address y = address(
             new y_3dToken(
                 u, yToken, fee,
