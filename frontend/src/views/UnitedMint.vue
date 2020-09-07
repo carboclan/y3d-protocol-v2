@@ -8,8 +8,9 @@
         <p> TL;DR: Pooling USDT to print yyCrv. Everyone can reduce their gas consumption.</p>
       </div>
       </div>
-      <div class="stats">
-        <table class="ui celled striped table">
+      <div class="ui grid stackable two column container">
+        <div class="eight wide column">
+          <table class="ui celled striped table">
             <thead>
                 <tr><th colspan="3"> Contract Overview </th>
             </tr></thead>
@@ -28,7 +29,9 @@
                 </tr>
             </tbody>
         </table>
-        <table class="ui celled striped table">
+        </div>
+        <div class="eight wide column">
+          <table class="ui celled striped table">
             <thead>
                 <tr><th colspan="3"> My Wallet Stats </th>
             </tr></thead>
@@ -47,6 +50,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
       </div>
     </div>
 </template>
