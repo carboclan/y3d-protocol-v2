@@ -2,11 +2,8 @@
   <div id="app">
     <div class="app-container">
       <Header />
-      <div id="nav">
-        <router-link to="/">Home <del>Find</del></router-link> |
-        <router-link to="/create">Create</router-link>
-      </div>
       <div class="ui container segment">
+        <Navigation />
         <router-view />
       </div>
     </div>
@@ -111,11 +108,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import Navigation from './components/Navigation.vue';
 import Header from './components/Header.vue';
 
 export default Vue.extend({
   components: {
     Header,
+    Navigation,
   },
 });
 </script>
