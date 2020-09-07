@@ -1,8 +1,17 @@
 <template>
     <div class="united-mint">
+      <div class="ui info icon message">
+        <i class="question circle outline icon"></i>
+        <!-- <div class="header">  </div> -->
+        <div class="content">
+        <div class="header"> What is United Mint? </div>
+        <p> TL;DR: Pooling USDT to print yyCrv. Everyone can reduce their gas consumption.</p>
+      </div>
+      </div>
+      <div class="stats">
         <table class="ui celled striped table">
             <thead>
-                <tr><th colspan="3"> Contract Statistics </th>
+                <tr><th colspan="3"> Contract Overview </th>
             </tr></thead>
             <tbody>
                 <tr>
@@ -19,67 +28,107 @@
                 </tr>
             </tbody>
         </table>
+        <table class="ui celled striped table">
+            <thead>
+                <tr><th colspan="3"> My Wallet Stats </th>
+            </tr></thead>
+            <tbody>
+                <tr>
+                <td class="collapsing"><i class="money icon"></i> USDT Balance </td>
+                <td> {{ userUsdtBalance }} USDT </td>
+                </tr>
+                <tr>
+                <td><i class="money icon"></i> yyCrv Balance </td>
+                <td> {{ userYycrv }} yyCrv </td>
+                </tr>
+                <tr>
+                <td><i class="file icon"></i> Your Deposit in contract </td>
+                <td>{{ userUsdtDeposit }} USDT</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
     </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
+import { BigNumber, BigNumberish } from 'ethers';
 import { getProvider, utils } from '../store/ethers/ethersConnect';
-import { UnitedMint } from '../contract';
-import { BigNumber } from 'ethers';
-// import { ContractStat, UserBalances } from "../interface";
-
-// interface ContractStat {
-//     usdtBalance: BigNumber;
-//     yyCrvBalance: BigNumber;
-// }
-
-// interface UserBalances {
-//     usdt: BigNumber;
-//     yyCrv: BigNumber;
-// }
+import { CommonERC20, UnitedMint, USDT, yyCrv } from '../contract';
+import { ContractStat, UserBalances } from "../interface";
+import { mapState } from 'vuex';
 
 export default Vue.extend({
-    name: 'UnitedMintView',
-    data: () => ({
-        contractStat: {
-            usdtBalance: '',
-            yyCrvBalance: '',
-            minted_USDT: ''
-        },
-    }),
-    computed: {
-        usdtWaitingToMint() {
-            if (!this.contractStat.usdtBalance) return "...";
-            return utils.formatUnits(this.contractStat.usdtBalance, 6);
-        },
-        yyCrvWaitingToClaim() {
-            if (!this.contractStat.yyCrvBalance) return "...";
-            return utils.formatUnits(this.contractStat.yyCrvBalance, 18);
-        },
-        usdtThatCanJustClaim() {
-            return this.formatPrice(this.contractStat.minted_USDT, 6);
-        }
+  name: 'UnitedMintView',
+  data: () => ({
+      contractStat: {} as ContractStat,
+      userBalances: {} as UserBalances
+  }),
+  computed: {
+    ...mapState('ethers', ['address']),
+    usdtWaitingToMint() :string {
+      return this.formatPrice(this.contractStat.usdtBalance, 6);
     },
-    methods: {
-        formatPrice(price, decimals) {
-            if (!price) return "...";
-            return utils.formatUnits(price, decimals);
-        },
-        async fetchStat() {
-            const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider());
-            const [ usdtBalance, yyCrvBalance, minted_USDT] = await Promise.all([
-                UNI_DEPOSIT_CONTRACT.unminted_USDT(),
-                UNI_DEPOSIT_CONTRACT.minted_yyCRV(),
-                UNI_DEPOSIT_CONTRACT.mintedUSDT()
-            ]);
-            this.contractStat = { usdtBalance, yyCrvBalance, minted_USDT }
-        }
+    yyCrvWaitingToClaim() :string {
+      return this.formatPrice(this.contractStat.yyCrvBalance, 18);
     },
-    mounted() {
-        this.fetchStat()
+    usdtThatCanJustClaim() :string {
+      return this.formatPrice(this.contractStat.mintedUsdt, 6);
     },
-})
+    userUsdtBalance() :string {
+      return this.formatPrice(this.userBalances.usdt, 6);
+    },
+    userUsdtDeposit() :string {
+      return this.formatPrice(this.userBalances.usdtInUnitedMint, 6);
+    },
+    userYycrv() :string {
+      return this.formatPrice(this.userBalances.yyCrv, 18);
+    },
+  },
+  methods: {
+    formatPrice(price: BigNumberish | undefined, decimals: BigNumberish): string {
+      if (!price) return '...';
+      return utils.formatUnits(price, decimals);
+    },
+    async fetchStat(): Promise<void> {
+      const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider());
+      const [usdtBalance, yyCrvBalance, mintedUsdt] = await Promise.all([
+        UNI_DEPOSIT_CONTRACT.unminted_USDT(),
+        UNI_DEPOSIT_CONTRACT.minted_yyCRV(),
+        UNI_DEPOSIT_CONTRACT.mintedUSDT(),
+      ]);
+      this.contractStat = { usdtBalance, yyCrvBalance, mintedUsdt: mintedUsdt };
+    },
+    async fetchUserData() {
+      const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider());
+      const [USDT_TOKEN, yyCrv_TOKEN] = [
+        USDT,
+        yyCrv
+      ].map(tokenC => tokenC.connect(getProvider()));
+      const [ usdtBalance, yyCrvBalance, depositUsdtBalance ] = await Promise.all([
+        USDT_TOKEN.balanceOf(this.address),
+        yyCrv_TOKEN.balanceOf(this.address),
+        UNI_DEPOSIT_CONTRACT.balanceOf(this.address)
+      ]);
+      this.userBalances = {
+        yyCrv: yyCrvBalance,
+        usdt: usdtBalance,
+        usdtInUnitedMint: depositUsdtBalance,
+      }
+    },
+  },
+  watch: {
+    address(val) {
+      console.log('address changed', val)
+      if (val) this.fetchUserData();
+    }
+  },
+  mounted() {
+    this.fetchStat();
+    if (this.address) this.fetchUserData();
+  },
+});
 </script>
 
 <style lang="scss" scoped>

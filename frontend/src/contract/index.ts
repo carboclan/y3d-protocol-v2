@@ -18,6 +18,9 @@ export const CommonERC20 = new ethers.Contract(
   IERC20_ABI,
 );
 
+export const USDT = CommonERC20.attach('0xdac17f958d2ee523a2206206994597c13d831ec7');
+export const yyCrv = CommonERC20.attach('0x199ddb4bdf09f699d2cf9ca10212bd5e3b570ac2');
+
 /**
  * CommonERC20 Contract
  * ALERT: you would need to .attach(address) this before using it, for real!
