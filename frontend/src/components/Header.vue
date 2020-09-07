@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="header-left">
-      <a class="header-logo" href="/">Y3D Protocol V2</a>
+      <a class="header-logo" href="/">Y3D v2</a>
     </div>
     <div class="header-right">
       <ConnectWalletButton />
