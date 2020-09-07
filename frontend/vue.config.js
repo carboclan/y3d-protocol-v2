@@ -6,7 +6,7 @@ module.exports = {
     index: {
       entry: 'src/main.js',
       template: 'public/index.html',
-      title: 'Y3D V2'
-    }
-  }
-}
+      title: 'Y3D V2',
+    },
+  },
+};

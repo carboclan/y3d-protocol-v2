@@ -1,8 +1,5 @@
 <template>
   <div class="home">
-    <pre>
-      y3d v2
-    </pre>
     <div class="ui center aligned basic segment">
       <form class="ui form">
         <div class="field">
