@@ -1,12 +1,11 @@
 <template>
     <div class="united-mint">
-      <div class="ui info icon message">
+      <div class="ui info icon message" style=" text-align: left; ">
         <i class="question circle outline icon"></i>
-        <!-- <div class="header">  </div> -->
         <div class="content">
-        <div class="header"> What is United Mint? </div>
-        <p> TL;DR: Pooling USDT to print yyCrv. Everyone can reduce their gas consumption.</p>
-      </div>
+          <div class="header"> What is United Mint? </div>
+          <p> TL;DR: Pooling USDT to print yyCrv. Everyone can reduce their gas consumption.</p>
+        </div>
       </div>
       <div class="ui grid stackable two column container">
         <div class="eight wide column">
