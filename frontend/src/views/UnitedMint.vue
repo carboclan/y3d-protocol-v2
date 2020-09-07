@@ -51,6 +51,30 @@
         </table>
         </div>
       </div>
+      <div class="container actions">
+        <button type="button" class="ui primary button" 
+          :disabled="isSendingTx" :class="isSendingTx && 'loading'">
+          Mint
+        </button>
+        <button type="button"  class="ui button"
+          :disabled="isSendingTx" :class="isSendingTx && 'loading'">
+          Deposit
+        </button>
+        <button type="button" class="ui button" 
+          :disabled="isSendingTx" :class="isSendingTx && 'loading'">
+          Claim
+        </button>
+      </div>
+      <div class="container actions">
+        <button type="button" class="ui button" 
+          :disabled="isSendingTx" :class="isSendingTx && 'loading'">
+          Deposit, Mint & Claim At Once
+        </button>
+        <button type="button" class="ui button" 
+          :disabled="isSendingTx" :class="isSendingTx && 'loading'">
+          Restore yyCrv to USDT
+        </button>
+      </div>
     </div>
 </template>
 
@@ -65,6 +89,7 @@ import { mapState } from 'vuex';
 export default Vue.extend({
   name: 'UnitedMintView',
   data: () => ({
+      isSendingTx: false,
       contractStat: {} as ContractStat,
       userBalances: {} as UserBalances
   }),
