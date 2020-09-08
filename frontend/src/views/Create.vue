@@ -42,6 +42,7 @@
 import { getProvider, utils } from '../store/ethers/ethersConnect';
 import { y3dFactory } from '../contract';
 
+/* eslint-disable no-alert */
 export default {
   name: 'CreateToken',
   data: () => ({

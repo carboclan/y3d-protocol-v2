@@ -28,7 +28,7 @@
 import { utils } from '../store/ethers/ethersConnect';
 
 // @ is an alias to /src
-
+/* eslint-disable no-alert */
 export default {
   name: 'Home',
   components: {
