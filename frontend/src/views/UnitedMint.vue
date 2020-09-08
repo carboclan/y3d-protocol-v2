@@ -23,7 +23,10 @@
                 <td> {{ yyCrvWaitingToClaim }} yyCrv </td>
                 </tr>
                 <tr>
-                <td><i class="folder icon"></i> Max. USDT to claim for yyCrv (without minting new yyCrv) </td>
+                <td>
+                  <i class="folder icon"></i>
+                  Max. USDT to claim for yyCrv (without minting new yyCrv)
+                </td>
                 <td>{{ usdtThatCanJustClaim }} USDT</td>
                 </tr>
             </tbody>
@@ -52,7 +55,7 @@
         </div>
       </div>
       <div class="container actions">
-        <button type="button" class="ui primary button" 
+        <button type="button" class="ui primary button"
           :disabled="isSendingTx" :class="isSendingTx && 'loading'">
           Mint
         </button>
@@ -60,17 +63,17 @@
           :disabled="isSendingTx" :class="isSendingTx && 'loading'">
           Deposit
         </button>
-        <button type="button" class="ui button" 
+        <button type="button" class="ui button"
           :disabled="isSendingTx" :class="isSendingTx && 'loading'">
           Claim
         </button>
       </div>
       <div class="container actions">
-        <button type="button" class="ui button" 
+        <button type="button" class="ui button"
           :disabled="isSendingTx" :class="isSendingTx && 'loading'">
           Deposit, Mint & Claim At Once
         </button>
-        <button type="button" class="ui button" 
+        <button type="button" class="ui button"
           :disabled="isSendingTx" :class="isSendingTx && 'loading'">
           Restore yyCrv to USDT
         </button>
@@ -80,18 +83,30 @@
 
 <script lang="ts">
 import Vue from 'vue';
+// eslint-disable-next-line no-unused-vars
 import { BigNumber, BigNumberish } from 'ethers';
-import { getProvider, utils } from '../store/ethers/ethersConnect';
-import { CommonERC20, UnitedMint, USDT, yyCrv } from '../contract';
-import { ContractStat, UserBalances } from "../interface";
 import { mapState } from 'vuex';
+import { getProvider, utils } from '../store/ethers/ethersConnect';
+import {
+  /* CommonERC20, */UnitedMint, USDT, yyCrv,
+} from '../contract';
+// eslint-disable-next-line no-unused-vars
+import { ContractStat, UserBalances } from '../interface';
+
+interface UnitedMintViewData {
+  isSendingTx: boolean
+  contractStat: ContractStat
+  userBalances: UserBalances
+}
 
 export default Vue.extend({
   name: 'UnitedMintView',
-  data: () => ({
-      isSendingTx: false,
-      contractStat: {} as ContractStat,
-      userBalances: {} as UserBalances
+  data: (): UnitedMintViewData => ({
+    isSendingTx: false,
+    contractStat: {
+      mintedUsdt: BigNumber.from(0),
+    },
+    userBalances: {},
   }),
   computed: {
     ...mapState('ethers', ['address']),
@@ -120,37 +135,37 @@ export default Vue.extend({
       return utils.formatUnits(price, decimals);
     },
     async fetchStat(): Promise<void> {
-      const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider());
+      const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider()!);
       const [usdtBalance, yyCrvBalance, mintedUsdt] = await Promise.all([
         UNI_DEPOSIT_CONTRACT.unminted_USDT(),
         UNI_DEPOSIT_CONTRACT.minted_yyCRV(),
         UNI_DEPOSIT_CONTRACT.mintedUSDT(),
       ]);
-      this.contractStat = { usdtBalance, yyCrvBalance, mintedUsdt: mintedUsdt };
+      this.contractStat = { usdtBalance, yyCrvBalance, mintedUsdt };
     },
     async fetchUserData() {
-      const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider());
-      const [USDT_TOKEN, yyCrv_TOKEN] = [
+      const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider()!);
+      const [USDT_TOKEN, YYCRV_TOKEN] = [
         USDT,
-        yyCrv
-      ].map(tokenC => tokenC.connect(getProvider()));
-      const [ usdtBalance, yyCrvBalance, depositUsdtBalance ] = await Promise.all([
+        yyCrv,
+      ].map((tokenC) => tokenC.connect(getProvider()!));
+      const [usdtBalance, yyCrvBalance, depositUsdtBalance] = await Promise.all([
         USDT_TOKEN.balanceOf(this.address),
-        yyCrv_TOKEN.balanceOf(this.address),
-        UNI_DEPOSIT_CONTRACT.balanceOf(this.address)
+        YYCRV_TOKEN.balanceOf(this.address),
+        UNI_DEPOSIT_CONTRACT.balanceOf(this.address),
       ]);
       this.userBalances = {
         yyCrv: yyCrvBalance,
         usdt: usdtBalance,
         usdtInUnitedMint: depositUsdtBalance,
-      }
+      };
     },
   },
   watch: {
     address(val) {
-      console.log('address changed', val)
+      console.log('address changed', val);
       if (val) this.fetchUserData();
-    }
+    },
   },
   mounted() {
     this.fetchStat();

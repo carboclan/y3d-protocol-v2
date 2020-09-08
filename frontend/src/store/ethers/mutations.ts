@@ -1,24 +1,24 @@
 /* eslint-disable */
 export default {
-  initialized: function (state, value) {
+  initialized: function (state: any, value: any) {
     state.initialized = value
   },
-  connected: function (state, value) {
+  connected: function (state: any, value: boolean) {
     state.connected = value
   },
-  error: function (state, value) {
+  error: function (state: any, value: any) {
     state.error = value
   },
-  user: function (state, value) {
+  user: function (state: any, value: any) {
     state.user = value
   },
-  address: function (state, value) {
+  address: function (state: any, value: any) {
     state.address = value
   },
-  network: function (state, value) {
+  network: function (state: any, value: any) {
     state.network = value
   },
-  ens: function (state, value) {
+  ens: function (state: any, value: any) {
     state.ens = value
   }
 }
