@@ -2,7 +2,7 @@
   <div class="cwb-wrapper">
     <div class="cwb-container">
       <div v-if="connected" class="cwb-wallet-info-wrapper">
-        <div class="cwb-wallet-info-balance">... ETH</div>
+        <div class="cwb-wallet-info-balance">{{blance}} {{coinName}}</div>
         <button id="web3-status-connected" class="cwb-wallet-info-button">
           <p class="cwb-wallet-info-address">{{formatedAddress}}</p>
           <div class="cwb-wallet-info-icon">
@@ -117,7 +117,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('ethers', ['connected', 'address', 'initialized']),
+    ...mapState('ethers', ['connected', 'address', 'blance', 'coinName', 'initialized']),
     isGoodToConnect() {
       return this.initialized;
     },
