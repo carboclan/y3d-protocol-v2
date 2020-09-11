@@ -1,24 +1,36 @@
-/* eslint-disable */
+import { BigNumber } from 'ethers';
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+import { Y3DEthersState } from './types';
+/* eslint-enable import/extensions */
+/* eslint-enable import/no-unresolved */
+
 export default {
-  initialized: function (state: any, value: any) {
-    state.initialized = value
+  initialized(state: Y3DEthersState, value: boolean) {
+    state.initialized = value;
   },
-  connected: function (state: any, value: boolean) {
-    state.connected = value
+  connected(state: Y3DEthersState, value: boolean) {
+    state.connected = value;
   },
-  error: function (state: any, value: any) {
-    state.error = value
+  error(state: Y3DEthersState, value: any) {
+    state.error = value;
   },
-  user: function (state: any, value: any) {
-    state.user = value
+  user(state: Y3DEthersState, value: string) {
+    state.user = value;
   },
-  address: function (state: any, value: any) {
-    state.address = value
+  address(state: Y3DEthersState, value: string) {
+    state.address = value;
   },
-  network: function (state: any, value: any) {
-    state.network = value
+  blance(state: Y3DEthersState, value: number) {
+    state.blance = value;
   },
-  ens: function (state: any, value: any) {
-    state.ens = value
-  }
-}
+  coinName(state: Y3DEthersState, value: string) {
+    state.coinName = value;
+  },
+  network(state: Y3DEthersState, value: string) {
+    state.network = value;
+  },
+  ens(state: Y3DEthersState, value: string) {
+    state.ens = value;
+  },
+};

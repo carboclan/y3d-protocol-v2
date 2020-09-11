@@ -1,5 +1,7 @@
 /* eslint-disable no-alert */
 import { ActionContext } from 'vuex';
+import { formatUnits } from 'ethers/lib/utils';
+import { FixedNumber } from 'ethers';
 import {
   MSGS,
   EVENT_CHANNEL,
@@ -11,10 +13,16 @@ import {
   getWalletAddress,
   getNetName,
   hasEns,
+  getBlance,
 } from './ethersConnect';
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+import { Y3DEthersState } from './types';
+/* eslint-enable import/extensions */
+/* eslint-enable import/no-unresolved */
 
 export default {
-  async connect(ctx: ActionContext<any, any>) {
+  async connect(ctx: ActionContext<Y3DEthersState, any>) {
     try {
       const oldAddress = ctx.state.address;
       const oldNetwork = ctx.state.network;
@@ -25,12 +33,16 @@ export default {
       const wallet = getWallet();
       if (!wallet) throw new Error(MSGS.NO_WALLET);
       const address = await getWalletAddress();
+      const blance = await getBlance(address!);
       const network = await getNetName();
+      const formatedBlance = Number.parseFloat(formatUnits(blance, 18)).toFixed(4);
 
       if (network !== oldNetwork || address !== oldAddress) {
         ctx.commit('connected', true);
         ctx.commit('error', null);
         ctx.commit('address', address);
+        ctx.commit('blance', formatedBlance);
+        ctx.commit('coinName', 'ETH');
         ctx.commit('user', address);
         ctx.commit('network', network);
 
@@ -64,11 +76,13 @@ export default {
       ctx.dispatch('disconnect', err);
     }
   },
-  async disconnect(ctx: ActionContext<any, any>, err: Error) {
+  async disconnect(ctx: ActionContext<Y3DEthersState, any>, err: Error) {
     const oldAddress = ctx.state.address;
     ctx.commit('connected', false);
     ctx.commit('error', err);
     ctx.commit('address', '');
+    ctx.commit('blance', 0);
+    ctx.commit('coinName', '');
     ctx.commit('user', '');
     ctx.commit('network', '');
     ctx.commit('ens', null);
@@ -79,17 +93,21 @@ export default {
       : 'You are not connected to an Ethereum node and wallet. Please check MetaMask, etc.');
     alert(msg);
   },
-  async logout(ctx: ActionContext<any, any>) {
+  async logout(ctx: ActionContext<Y3DEthersState, any>) {
     ctx.commit('address', '');
     ctx.commit('user', '');
+    ctx.commit('blance', 0);
+    ctx.commit('coinName', '');
     alert('You have been logged out from your Ethereum connection');
   },
-  async notConnected(ctx: ActionContext<any, any>) {
+  async notConnected(ctx: ActionContext<Y3DEthersState, any>) {
     ctx.commit('address', '');
     ctx.commit('user', '');
+    ctx.commit('blance', 0);
+    ctx.commit('coinName', '');
     alert('You are not connected to the Ethereum network. Please check MetaMask,etc.');
   },
-  async init(ctx: ActionContext<any, any>) {
+  async init(ctx: ActionContext<Y3DEthersState, any>) {
     event.$on(EVENT_CHANNEL, async (msg: string) => {
       console.log('Ethers event received', msg);
       switch (msg) {
