@@ -34,3 +34,6 @@ export const UnitedMint = new ethers.Contract(
   '0x65a58b7725580fD83F92B0B22fc074BE7c610e78',
   UnitedMintABI,
 );
+
+export const usdtAddr = '0xdac17f958d2ee523a2206206994597c13d831ec7';
+export const yyCrvAddr = '0x65a58b7725580fD83F92B0B22fc074BE7c610e78';

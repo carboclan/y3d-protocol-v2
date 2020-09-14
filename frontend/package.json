@@ -10,8 +10,10 @@
   "dependencies": {
     "@ethersproject/providers": "^5.0.7",
     "@metamask/jazzicon": "^2.0.0",
+    "clipboard": "^2.0.6",
     "core-js": "^3.6.5",
     "ethers": "^5.0.8",
+    "postcss-pxtorem": "^5.1.1",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
