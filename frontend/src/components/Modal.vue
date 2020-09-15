@@ -68,7 +68,8 @@ export default Vue.extend({
   background-color: rgb(33, 36, 41);
   box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 8px 0px;
   padding: 0px;
-  max-width: 420px;
+  // width: 420px;
+  max-width: 90vw;
   max-height: 90vh;
   overflow: hidden;
   .el-dialog__header {

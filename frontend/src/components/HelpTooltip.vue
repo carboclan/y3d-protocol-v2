@@ -35,8 +35,8 @@ export default {
   cursor: default;
   border-radius: 36px;
   color: rgb(195, 197, 203);
-  width: 16px;
-  height: 16px;
+  width: 28px;
+  height: 28px;
   margin: 0 0 0 4px;
 
   &:hover,
@@ -45,8 +45,8 @@ export default {
   }
 }
 .help-icon {
-  width: 16px;
-  height: 16px;
+  width: 28px;
+  height: 28px;
   font-size: 16px;
 }
 </style>

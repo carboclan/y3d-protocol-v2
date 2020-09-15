@@ -42,14 +42,17 @@
         <label>Unknown</label>
         <input type="text" />
       </div>
-      <button type="button" class="ui primary button y3d-button" @click="create_y3dToken">
-        Create
-      </button>
+      <div class="swap-button-content">
+        <MainButton :btnLoading="false" @click="create_y3dToken">
+          Create
+        </MainButton>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
+import MainButton from '@/components/MainButton.vue';
 import { getProvider, utils } from '../store/ethers/ethersConnect';
 import { y3dFactory } from '../contract';
 
@@ -63,6 +66,9 @@ export default {
     deploying: false,
     deployedY3dToken: '',
   }),
+  components: {
+    MainButton,
+  },
   computed: {},
   methods: {
     async create_y3dToken() {
@@ -83,8 +89,6 @@ export default {
       try {
         const response = await contract.create(
           this.tokenContract,
-          this.yTokenContract,
-          (this.fee * 10).toString(),
         );
         console.log('tx response', response);
 

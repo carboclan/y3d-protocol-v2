@@ -48,7 +48,7 @@
 
 .app-container-wrap {
   margin-top: 10vh;
-  max-width: 420px;
+  max-width: 480px;
   margin-left: auto;
   margin-right: auto;
   .ui.segment {

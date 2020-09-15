@@ -7,8 +7,8 @@
         <div style="display: inline-block">
           <HelpTooltip
             placement="bottom"
-            content=
-              "Find a token by searching for its name or symbol or by pasting its address below."
+            content
+              ="Find a token by searching for its name or symbol or by pasting its address below."
           ></HelpTooltip>
         </div>
       </span>
@@ -23,31 +23,6 @@
           v-model="tokenNameOrAddress"
         />
       </div>
-      <div class="common-bases" v-if="commonBasesShow">
-        <div class="cb-header">
-          <div class="cbh-title">Common bases</div>
-          <span style="margin-left: 4px">
-            <div style="display: inline-block">
-              <HelpTooltip
-                placement="bottom"
-                content="These tokens are commonly paired with other tokens."
-              ></HelpTooltip>
-            </div>
-          </span>
-        </div>
-        <div class="cb-item">
-          <div
-            class="cbi-token"
-            v-for="(item, idx) in commonBases"
-            :key="idx"
-            @click="selectToken(item)"
-          >
-            <img :src="item.logo" class="cbit-logo" v-if="item.logo" />
-            <HelpCircleIcon v-else class="cbit-symbol-help"></HelpCircleIcon>
-            <div class="cbit-symbol">{{ item.symbol }}</div>
-          </div>
-        </div>
-      </div>
       <div class="select-token-model-filter">
         <div class="select-token-model-filter-text">Token Name</div>
         <div class="select-token-model-filter-button">
@@ -55,14 +30,14 @@
         </div>
       </div>
       <div class="select-token-model-list">
-        <!-- <template v-if="searchTokenList.length <= 0">
+        <template v-if="searchTokenList.length <= 0">
           <SelectTokenListItem
             v-for="(item, idx) in originalList"
             :key="idx"
             :symbol="item.symbol"
             :name="item.symbol"
             :logo="item.logo"
-            :balance="0"
+            :balance="item.dBalance"
             @on-click="selectToken(item)"
           />
         </template>
@@ -73,29 +48,29 @@
             :symbol="item.symbol"
             :name="item.name"
             :logo="item.logo"
-            :balance="0"
+            :balance="item.dBalance"
             @on-click="selectToken(item)"
           />
-        </template> -->
+        </template>
       </div>
     </div>
   </Modal>
 </template>
 
 <script>
-import { debounce } from 'lodash';
+import { debounce, sortBy, find } from 'lodash';
+import { mapState } from 'vuex';
 import Modal from './Modal.vue';
 import HelpTooltip from './HelpTooltip.vue';
-// import { formatUnits } from 'ethers/utils';
-// import { contractAddress } from '@/constant';
-// import TronLink from '../assets/media/TronLink.svg';
-
-// import { getTrc20Detail } from '../tron/index';
+import SelectTokenListItem from './SelectTokenListItem.vue';
+import { CommonERC20 } from '../contract';
+import { getProvider, utils } from '../store/ethers/ethersConnect';
 
 export default {
   components: {
     Modal,
     HelpTooltip,
+    SelectTokenListItem,
   },
   props: {
     value: {
@@ -108,7 +83,7 @@ export default {
     },
     width: {
       type: String,
-      default: '420px',
+      default: '480px',
     },
     // 根据symbol知道是那个地方触发的modal
     symbol: {
@@ -120,62 +95,52 @@ export default {
       default: false,
     },
   },
+  computed: {
+    ...mapState('ethers', ['address']),
+  },
   data() {
     return {
       // TronLink,
       dialogVisibleSelectToken: this.value,
       tokenNameOrAddress: '',
       searchTokenList: [],
-      commonBases: [
-        {
-          address: 'TRX',
-          name: 'TRX',
-          symbol: 'TRX',
-          decimals: 6,
-          balance: '0',
-          logo: '', // TronLink,
-        },
-        {
-          address: '', // contractAddress.WTRX,
-          name: 'WTRX',
-          symbol: 'WTRX',
-          decimals: 6,
-          balance: '0',
-          logo: '',
-        },
-      ],
+      commonBases: [],
       originalList: [
         {
-          address: 'TRX',
-          name: 'TRX',
-          symbol: 'TRX',
-          decimals: 6,
-          balance: '0',
-          logo: '', // TronLink,
+          symbol: 'FUSDT',
+          address: '0x7f76315337E63482043F92A1bD4784290159AD6f',
+          tag: 'uToken',
+          yToken: 'yFUSDT3d',
         },
         {
-          address: '', // contractAddress.WTRX,
-          name: 'WTRX',
-          symbol: 'WTRX',
-          decimals: 6,
-          balance: '0',
-          logo: '', // TronLink,
+          symbol: 'fy3d',
+          address: '0x7a672B200f906D56E8B528413d02D12abABcc231',
+          tag: 'uToken',
+          yToken: 'yfy3d3d',
         },
         {
-          address: 'TXs6kgLRrRNqPc2CCqbQ9rNKchkXzkcUvg',
-          name: 'Frank A 0912',
-          symbol: 'FA2',
-          decimals: 18,
-          balance: '0',
-          logo: '',
+          symbol: 'SHUIHU',
+          address: '0xA56d8FD390D6dAc025070100b49010720Db5A685',
+          tag: 'uToken',
+          yToken: 'ySHUIHU3d',
         },
         {
-          address: 'TJK63HSGzoNHtFiHakx2xJzwnLHjPBgpep',
-          name: 'Frank B 0912',
-          symbol: 'FB2',
-          decimals: 18,
-          balance: '0',
-          logo: '',
+          symbol: 'yFUSDT3d',
+          address: '0x14Ac98d0B38ACce572c76c76501ABD648Eefea6f',
+          tag: 'y_3dToken',
+          uToken: 'FUSDT',
+        },
+        {
+          symbol: 'yfy3d3d',
+          address: '0x2e34f61ffa1605da4ee88a6d10e5d75ba8ce246b',
+          tag: 'y_3dToken',
+          uToken: 'fy3d',
+        },
+        {
+          symbol: 'ySHUIHU3d',
+          address: '0x1d8c0ef5639445faca65951423dec250bd0e68fc',
+          tag: 'y_3dToken',
+          uToken: 'SHUIHU',
         },
       ],
     };
@@ -201,15 +166,13 @@ export default {
     },
   },
   methods: {
-    displayableBalance() {
-      return 0; // formatUnits(this.tronweb.balance, 6);
-    },
     // eslint-disable-next-line func-names
     searchToken: debounce(async function (val) {
-      console.log(val);
-      // const res = await getTrc20Detail(val, this.tronweb.account);
-      // console.log('res', res);
-      this.searchTokenList.push([]);
+      const res = await this.fetchERC20Detail({
+        address: val,
+      });
+      const fined = find(this.originalList, (o) => o.address === res.address);
+      this.searchTokenList.push(fined || res);
     }, 300),
     selectToken(item) {
       this.$emit('select-token', {
@@ -219,17 +182,39 @@ export default {
       this.dialogVisibleSelectToken = false;
     },
     async fetchBalanceOfDefaultList() {
-      // const user = this.tronweb.account || window.tronWeb.defaultAddress.base58;
-      // if (!user) return;
-      // const [trx, ...rest] = this.originalList;
-      // const trxBalance = await window.tronWeb.trx.getBalance(user);
-      // console.log('trxBalance', trxBalance);
-      // const result = (
-      //   await Promise.all(rest.map((item) => getTrc20Detail(item.address, user)))
-      // ).map(({ balance, ...res }) => ({ ...res, balance: balance.toString() }));
-      // console.log('result', result);
-      // trx.balance = trxBalance;
-      // this.originalList = [trx, ...result];
+      const [...rest] = this.originalList;
+      const result = (
+        await Promise.all(rest.map((item) => this.fetchERC20Detail(item)))
+      ).map(({ balance, ...res }) => ({ ...res, balance: balance.toString() }));
+      console.log('fetchBalanceOfDefaultList result', result);
+      this.originalList = [...result];
+      this.originalList = sortBy(this.originalList, 'balance').reverse();
+    },
+    getERC20(_address) {
+      return CommonERC20.attach(_address).connect(getProvider().getSigner());
+    },
+    async fetchERC20Detail(item) {
+      // eslint-disable-next-line no-underscore-dangle
+      const _address = item.address;
+      const contract = this.getERC20(_address);
+      const [name, symbol, totalSupply, decimals, balance] = await Promise.all([
+        contract.name(),
+        contract.symbol(),
+        contract.totalSupply(),
+        contract.decimals(),
+        contract.balanceOf(this.address),
+      ]);
+      // balance that for display
+      const dBalance = utils.formatUnits(balance, decimals);
+      return {
+        ...item,
+        name,
+        symbol,
+        totalSupply,
+        decimals,
+        balance,
+        dBalance,
+      };
     },
   },
 };

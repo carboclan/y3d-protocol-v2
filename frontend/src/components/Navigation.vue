@@ -47,7 +47,7 @@ export default Vue.extend({
     routes: [
       {
         name: '兑换',
-        path: '/swap',
+        path: '/',
       },
       {
         name: '治理',

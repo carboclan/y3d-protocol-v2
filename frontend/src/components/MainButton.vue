@@ -1,8 +1,11 @@
 <template>
   <button
     :id="id"
+    type='button'
     class="c-main-button"
     :disabled="disabled"
+    v-loading="btnLoading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
     @click="$emit('click')"
   >
     <div class="c-main-button-text">

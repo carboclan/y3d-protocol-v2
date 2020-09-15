@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tai-container">
-      <div class="tai-inner-container" :class="{ 'tai-bad-input': isBadInput }">
+      <div class="tai-inner-container" :class="{ 'tai-bad-input': !isToToken && isBadInput }">
         <div class="tai-info">
           <div class="tai-content">
             <div class="tai-title"><slot name="title"></slot></div>
@@ -71,6 +71,14 @@ export default Vue.extend({
       type: String,
       default: '',
     },
+    isBadInputChange: {
+      type: Function,
+      default: () => {},
+    },
+    isToToken: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
     amount: '',
@@ -88,6 +96,9 @@ export default Vue.extend({
       const parsedAmount = utils.parseUnits(val, this.tokenInfo.decimals);
       const balance = BigNumber.from(this.tokenInfo.balance);
       this.isBadInput = parsedAmount.gt(balance);
+    },
+    isBadInput() {
+      this.$emit('isBadInputChange', this.isBadInput);
     },
   },
   methods: {
@@ -110,11 +121,7 @@ export default Vue.extend({
       this.isModalShowing = true;
     },
     fillMax() {
-      this.setAmount(
-        BigNumber.from(this.tokenInfo.balance)
-          .div(BigNumber.from(10).pow(this.tokenInfo.decimals))
-          .toString(),
-      );
+      this.setAmount(utils.formatUnits(this.tokenInfo.balance, this.tokenInfo.decimals).toString());
     },
     selectToken(payload: any) {
       console.log('payload', payload);
