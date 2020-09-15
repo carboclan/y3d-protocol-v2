@@ -1,60 +1,67 @@
 <template>
-  <div class="create">
-    <p class="title">Create A y3d Token</p>
-    <div class="ui icon message" v-if="deploying">
-      <i class="notched circle loading icon"></i>
-      <div class="content">
-        <div class="header">Please wait in patience</div>
-        <p>Deploying your Y3D Token to the blockchain now.</p>
+  <LayoutUniscam>
+    <div class="create">
+      <p class="title">Create A y3d Token</p>
+      <div class="ui icon message" v-if="deploying">
+        <i class="notched circle loading icon"></i>
+        <div class="content">
+          <div class="header">Please wait in patience</div>
+          <p>Deploying your Y3D Token to the blockchain now.</p>
+        </div>
       </div>
+      <div class="ui positive message" v-if="deployedY3dToken">
+        <i class="close icon"></i>
+        <div class="header">Your y3dToken is ready.</div>
+        <p>Contract Address: {{ deployedY3dToken }}</p>
+        <button class="ui primary button" @click="goToY3dContract">Go Y3D Token page</button>
+      </div>
+      <form class="ui form">
+        <div class="field create-field">
+          <label>Underlying Token</label>
+          <input
+            type="text"
+            placeholder="Enter Token Contract address..."
+            v-model="tokenContract"
+          />
+        </div>
+        <div class="field create-field">
+          <label>yToken</label>
+          <input
+            type="text"
+            placeholder="Enter yToken Contract address..."
+            v-model="yTokenContract"
+          />
+        </div>
+        <div class="field create-field">
+          <label>Fee %</label>
+          <input
+            type="number"
+            placeholder="Enter fee..."
+            step="0.1"
+            min="0"
+            max="25.5"
+            v-model="fee"
+          />
+        </div>
+        <div class="field create-field">
+          <label>Unknown</label>
+          <input type="text" />
+        </div>
+        <div class="swap-button-content">
+          <MainButton :btnLoading="false" @click="create_y3dToken">
+            Create
+          </MainButton>
+        </div>
+      </form>
     </div>
-    <div class="ui positive message" v-if="deployedY3dToken">
-      <i class="close icon"></i>
-      <div class="header">Your y3dToken is ready.</div>
-      <p>Contract Address: {{ deployedY3dToken }}</p>
-      <button class="ui primary button" @click="goToY3dContract">Go Y3D Token page</button>
-    </div>
-    <form class="ui form">
-      <div class="field create-field">
-        <label>Underlying Token</label>
-        <input type="text" placeholder="Enter Token Contract address..." v-model="tokenContract" />
-      </div>
-      <div class="field create-field">
-        <label>yToken</label>
-        <input
-          type="text"
-          placeholder="Enter yToken Contract address..."
-          v-model="yTokenContract"
-        />
-      </div>
-      <div class="field create-field">
-        <label>Fee %</label>
-        <input
-          type="number"
-          placeholder="Enter fee..."
-          step="0.1"
-          min="0"
-          max="25.5"
-          v-model="fee"
-        />
-      </div>
-      <div class="field create-field">
-        <label>Unknown</label>
-        <input type="text" />
-      </div>
-      <div class="swap-button-content">
-        <MainButton :btnLoading="false" @click="create_y3dToken">
-          Create
-        </MainButton>
-      </div>
-    </form>
-  </div>
+  </LayoutUniscam>
 </template>
 
 <script>
+import LayoutUniscam from '@/layouts/LayoutUniscam.vue';
 import MainButton from '@/components/MainButton.vue';
-import { getProvider, utils } from '../store/ethers/ethersConnect';
-import { y3dFactory } from '../contract';
+import { getProvider, utils } from '@/store/ethers/ethersConnect';
+import { y3dFactory } from '@/contract';
 
 /* eslint-disable no-alert */
 export default {
@@ -67,6 +74,7 @@ export default {
     deployedY3dToken: '',
   }),
   components: {
+    LayoutUniscam,
     MainButton,
   },
   computed: {},
@@ -87,9 +95,7 @@ export default {
       this.deploying = true;
       const contract = y3dFactory.connect(getProvider().getSigner());
       try {
-        const response = await contract.create(
-          this.tokenContract,
-        );
+        const response = await contract.create(this.tokenContract);
         console.log('tx response', response);
 
         // Wait for 1 confirmation
@@ -118,7 +124,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/color";
+@import '@/assets/styles/color';
 .create {
   margin-top: 30px;
   .title {

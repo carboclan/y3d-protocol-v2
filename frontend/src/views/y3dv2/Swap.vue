@@ -1,39 +1,43 @@
-/* eslint-disable no-alert */ /* eslint-disable max-len */
 <template>
-  <div class="container">
-    <div class="content-box">
-      <div id="swap-page" class="swap-page">
-        <div class="sp-content">
-          <TokenAmountInput
-            :isTokenSelected="!!tokenAInfo"
-            :tokenInfo="tokenAInfo"
-            :tokenLogo="tokenIcon"
-            @select-token="selectTokenA"
-            @amount-changed="tokenAAmountChanged"
-            @isBadInputChange="tokenAIsBadInputChange"
-            :tokenAmount="tokenAAmount"
-          >
-            <template v-slot:title>
-              From
-            </template>
-          </TokenAmountInput>
-          <SplitLine>
-            <arrow-down-icon @click="clickOnSwitch" size="1.5x" class="sac-icon"></arrow-down-icon>
-          </SplitLine>
-          <TokenAmountInput
-            :isTokenSelected="!!tokenBInfo"
-            :tokenInfo="tokenBInfo"
-            :tokenLogo="tokenIcon"
-            @select-token="selectTokenB"
-            @amount-changed="tokenBAmountChanged"
-            :tokenAmount="tokenBAmount"
-            :isToToken="true"
-          >
-            <template v-slot:title>
-              To
-            </template>
-          </TokenAmountInput>
-          <!-- <div class="swap-info">
+  <LayoutUniscam>
+    <div class="container">
+      <div class="content-box">
+        <div id="swap-page" class="swap-page">
+          <div class="sp-content">
+            <TokenAmountInput
+              :isTokenSelected="!!tokenAInfo"
+              :tokenInfo="tokenAInfo"
+              :tokenLogo="tokenIcon"
+              @select-token="selectTokenA"
+              @amount-changed="tokenAAmountChanged"
+              @isBadInputChange="tokenAIsBadInputChange"
+              :tokenAmount="tokenAAmount"
+            >
+              <template v-slot:title>
+                From
+              </template>
+            </TokenAmountInput>
+            <SplitLine>
+              <arrow-down-icon
+                @click="clickOnSwitch"
+                size="1.5x"
+                class="sac-icon"
+              ></arrow-down-icon>
+            </SplitLine>
+            <TokenAmountInput
+              :isTokenSelected="!!tokenBInfo"
+              :tokenInfo="tokenBInfo"
+              :tokenLogo="tokenIcon"
+              @select-token="selectTokenB"
+              @amount-changed="tokenBAmountChanged"
+              :tokenAmount="tokenBAmount"
+              :isToToken="true"
+            >
+              <template v-slot:title>
+                To
+              </template>
+            </TokenAmountInput>
+            <!-- <div class="swap-info">
             <div class="info-content" v-if="swapPrice.B.symbol">
               <div class="sc-content">
                 <div class="scc-text">Price</div>
@@ -43,18 +47,19 @@
               </div>
             </div>
           </div> -->
-        </div>
-        <div class="swap-button-content">
-          <MainButton id="swap-button" :disabled="isBtnDisabled" @click="clickActionButton">{{
-            tipText
-          }}</MainButton>
-          <router-link to="/create" v-if="tokenAInfo && tokenBInfo && !isPairExist">
-            <p>Go to create</p>
-          </router-link>
+          </div>
+          <div class="swap-button-content">
+            <MainButton id="swap-button" :disabled="isBtnDisabled" @click="clickActionButton">{{
+              tipText
+            }}</MainButton>
+            <router-link to="/create" v-if="tokenAInfo && tokenBInfo && !isPairExist">
+              <p>Go to create</p>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </LayoutUniscam>
 </template>
 
 <script>
@@ -63,10 +68,12 @@ import TokenAmountInput from '@/components/TokenAmountInput.vue';
 import { getProvider, utils } from '@/store/ethers/ethersConnect';
 import MainButton from '@/components/MainButton.vue';
 import SplitLine from '@/components/SplitLine.vue';
-import { CommonERC20, y3DToken } from '../contract';
+import LayoutUniscam from '@/layouts/LayoutUniscam.vue';
+import { CommonERC20, y3DToken } from '@/contract';
 
 export default {
   components: {
+    LayoutUniscam,
     TokenAmountInput,
     SplitLine,
     MainButton,
