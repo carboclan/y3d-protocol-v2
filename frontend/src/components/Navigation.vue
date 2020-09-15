@@ -47,15 +47,15 @@ export default Vue.extend({
     routes: [
       {
         name: '兑换',
-        path: '/',
+        path: '/y3dv2/swap',
       },
       {
         name: '治理',
-        path: '/empty',
+        path: '/y3dv2/empty',
       },
       {
         name: '创建',
-        path: '/create',
+        path: '/y3dv2/create',
       },
     ],
   }),
