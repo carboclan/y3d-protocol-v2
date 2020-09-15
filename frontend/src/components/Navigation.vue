@@ -1,14 +1,13 @@
 <template>
-    <div class="nav tabs">
-        <router-link class="styled-navLink"
-            v-for="route in routes" :key="route.name"
-            :to="route.path">
-            {{route.name}}
-        </router-link>
-    </div>
+  <div class="nav tabs">
+    <router-link class="styled-navLink" v-for="route in routes" :key="route.name" :to="route.path">
+      {{ route.name }}
+    </router-link>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/styles/color";
 .tabs {
   display: flex;
   flex-flow: row nowrap;
@@ -18,18 +17,23 @@
   .styled-navLink {
     display: flex;
     flex-flow: row nowrap;
-      align-items: center;
-  justify-content: center;
-  height: 3rem;
-  border-radius: 3rem;
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: rgb(136, 141, 155);
-  font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    border-radius: 3rem;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: $y3d-white-dark; // rgb(136, 141, 155);
+    font-size: 20px;
+  }
+  .styled-navLink:hover {
+    color: $y3d-white-hover;
   }
   .router-link-exact-active {
-      color: black;
+    color: white;
+    font-weight: 500;
+    font-size: 20px;
   }
 }
 </style>
@@ -42,16 +46,16 @@ export default Vue.extend({
   data: () => ({
     routes: [
       {
-        name: 'Home',
-        path: '/',
+        name: '兑换',
+        path: '/swap',
       },
       {
-        name: 'Create',
+        name: '治理',
+        path: '/empty',
+      },
+      {
+        name: '创建',
         path: '/create',
-      },
-      {
-        name: 'United Mint (Beta)',
-        path: '/unitedmint',
       },
     ],
   }),

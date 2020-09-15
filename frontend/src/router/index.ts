@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+import Swap from '../views/Swap.vue';
 import Create from '../views/Create.vue';
+import Empty from '../views/Empty.vue';
 import Y3DToken from '../views/Y3DToken.vue';
 
 Vue.use(VueRouter);
@@ -9,13 +10,23 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'Swap',
+    component: Swap,
+  },
+  {
+    path: '/swap',
+    name: 'Swap',
+    component: Swap,
   },
   {
     path: '/create',
     name: 'Create',
     component: Create,
+  },
+  {
+    path: '/empty',
+    name: 'Empty',
+    component: Empty,
   },
   {
     path: '/y3d/:contractAddress',

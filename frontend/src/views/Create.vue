@@ -1,39 +1,50 @@
 <template>
   <div class="create">
-    <h1 class="title">Create A y3d Token</h1>
+    <p class="title">Create A y3d Token</p>
     <div class="ui icon message" v-if="deploying">
-        <i class="notched circle loading icon"></i>
-        <div class="content">
-            <div class="header">Please wait in patience</div>
-            <p>Deploying your Y3D Token to the blockchain now.</p>
-        </div>
+      <i class="notched circle loading icon"></i>
+      <div class="content">
+        <div class="header">Please wait in patience</div>
+        <p>Deploying your Y3D Token to the blockchain now.</p>
+      </div>
     </div>
     <div class="ui positive message" v-if="deployedY3dToken">
-        <i class="close icon"></i>
-        <div class="header">Your y3dToken is ready.</div>
-        <p> Contract Address: {{deployedY3dToken}} </p>
-        <button class="ui primary button" @click="goToY3dContract">Go Y3D Token page</button>
+      <i class="close icon"></i>
+      <div class="header">Your y3dToken is ready.</div>
+      <p>Contract Address: {{ deployedY3dToken }}</p>
+      <button class="ui primary button" @click="goToY3dContract">Go Y3D Token page</button>
     </div>
     <form class="ui form">
-      <div class="field">
+      <div class="field create-field">
         <label>Underlying Token</label>
         <input type="text" placeholder="Enter Token Contract address..." v-model="tokenContract" />
       </div>
-      <div class="field">
+      <div class="field create-field">
         <label>yToken</label>
-        <input type="text" placeholder="Enter yToken Contract address..."
-          v-model="yTokenContract" />
+        <input
+          type="text"
+          placeholder="Enter yToken Contract address..."
+          v-model="yTokenContract"
+        />
       </div>
-      <div class="field">
+      <div class="field create-field">
         <label>Fee %</label>
-        <input type="number" placeholder="Enter fee..." step="0.1" min="0" max="25.5"
-          v-model="fee" />
+        <input
+          type="number"
+          placeholder="Enter fee..."
+          step="0.1"
+          min="0"
+          max="25.5"
+          v-model="fee"
+        />
       </div>
-      <div class="field">
+      <div class="field create-field">
         <label>Unknown</label>
         <input type="text" />
       </div>
-      <button type="button" class="ui primary button" @click="create_y3dToken">Create</button>
+      <button type="button" class="ui primary button y3d-button" @click="create_y3dToken">
+        Create
+      </button>
     </form>
   </div>
 </template>
@@ -70,8 +81,11 @@ export default {
       this.deploying = true;
       const contract = y3dFactory.connect(getProvider().getSigner());
       try {
-        const response = await contract.create(this.tokenContract, this.yTokenContract,
-          (this.fee * 10).toString());
+        const response = await contract.create(
+          this.tokenContract,
+          this.yTokenContract,
+          (this.fee * 10).toString(),
+        );
         console.log('tx response', response);
 
         // Wait for 1 confirmation
@@ -99,8 +113,45 @@ export default {
 };
 </script>
 
-<style scoped>
-input {
-  width: 388px;
+<style lang="scss" scoped>
+@import "@/assets/styles/color";
+.create {
+  margin-top: 30px;
+  .title {
+    color: white;
+    font-weight: 500;
+    font-size: 16;
+  }
+  .create-field {
+    border-radius: 20px;
+    border: 1px solid $y3d-border;
+    background-color: $y3d-black;
+    padding: 20px;
+    label {
+      color: $y3d-sub-title;
+      margin-bottom: 10px;
+    }
+    input {
+      background-color: transparent;
+      padding-left: 0;
+      padding-right: 0;
+      caret-color: white;
+      outline: none;
+      height: 30px;
+      color: white;
+      border: 0;
+      font-size: 20px;
+    }
+    input:focus {
+      background-color: transparent;
+      border: 0;
+      color: white;
+    }
+  }
+  .y3d-button {
+    height: 56px;
+    border-radius: 20px;
+    width: 100%;
+  }
 }
 </style>

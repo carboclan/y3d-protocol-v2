@@ -2,9 +2,11 @@
   <div id="app">
     <div class="app-container">
       <Header />
-      <div class="ui container segment">
-        <Navigation />
-        <router-view />
+      <div class="app-container-wrap">
+        <div class="ui container segment ">
+          <Navigation />
+          <router-view />
+        </div>
       </div>
     </div>
     <div class="grid-wrapper">
@@ -13,7 +15,8 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
+@import "@/assets/styles/color";
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -21,19 +24,14 @@
   height: 100%;
   background-repeat: no-repeat;
   background-image: url(./assets/background/mountain-left.png),
-    url(./assets/background/mountain-right.png),
-    linear-gradient(#193CB1, #193CB1),
-    linear-gradient(#32C5FF, #32C5FF),
-    linear-gradient(#1B1B1B, #1B1B1B);
+    url(./assets/background/mountain-right.png), linear-gradient(#193cb1, #193cb1),
+    linear-gradient(#32c5ff, #32c5ff), linear-gradient(#1b1b1b, #1b1b1b);
   background-size: auto calc(100% * 0.414814814814815) /* MountainLeftImg */,
-    auto calc(100% * 0.414814814814815) /* MountainRightImg */,
-    100% 50% /* Top background color */,
-    100% 4px /* Blue line */,
-    100% 50% /* Bottom background color */;
+    auto calc(100% * 0.414814814814815) /* MountainRightImg */, 100% 50% /* Top background color */,
+    100% 4px /* Blue line */, 100% 50% /* Bottom background color */;
   background-position: top calc(50% - (100vh * 0.414814814814815 / 2)) left /* MountainLeftImg */,
     top calc(50% - (100vh * 0.414814814814815 / 2)) right /* MountainRightImg */,
-    top center /* Top background color */,
-    top calc(50% + 4px) center /* Blue line */,
+    top center /* Top background color */, top calc(50% + 4px) center /* Blue line */,
     bottom center /* Bottom background color */;
 }
 
@@ -45,6 +43,19 @@
   top: 0;
   left: 0;
   z-index: 2;
+  color: white;
+}
+
+.app-container-wrap {
+  margin-top: 10vh;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  .ui.segment {
+    border-radius: 30px;
+    background-color: $y3d-black;
+    color: white;
+  }
 }
 
 .grid-wrapper {
@@ -64,12 +75,30 @@
 
 .m-grid {
   transform: scaleY(0);
-  background-image: linear-gradient(0deg, transparent 24%, rgba(34, 59, 170, 0.5) 25%,
-  rgba(63, 74, 165, 0.9) 26%, transparent 27%, transparent 74%, rgba(34, 59, 170, 0.5) 75%,
-  rgba(63, 74, 165, 0.9) 76%, transparent 77%, transparent),
-    linear-gradient(90deg, transparent 24%, rgba(34, 59, 170, 0.75) 25%, rgba(0, 6, 59, 0.25) 26%,
-    transparent 27%, transparent 74%, rgba(34, 59, 170, 0.75) 75%, rgba(0, 6, 59, 0.25) 76%,
-    transparent 77%, transparent);
+  background-image: linear-gradient(
+      0deg,
+      transparent 24%,
+      rgba(34, 59, 170, 0.5) 25%,
+      rgba(63, 74, 165, 0.9) 26%,
+      transparent 27%,
+      transparent 74%,
+      rgba(34, 59, 170, 0.5) 75%,
+      rgba(63, 74, 165, 0.9) 76%,
+      transparent 77%,
+      transparent
+    ),
+    linear-gradient(
+      90deg,
+      transparent 24%,
+      rgba(34, 59, 170, 0.75) 25%,
+      rgba(0, 6, 59, 0.25) 26%,
+      transparent 27%,
+      transparent 74%,
+      rgba(34, 59, 170, 0.75) 75%,
+      rgba(0, 6, 59, 0.25) 76%,
+      transparent 77%,
+      transparent
+    );
   background-size: 50px 50px;
   position: absolute;
   top: 53%;
@@ -82,25 +111,27 @@
 
 /* Animation */
 .m-grid.is-animating {
-    animation: fly 3s linear;
-    animation-iteration-count: infinite;
+  animation: fly 3s linear;
+  animation-iteration-count: infinite;
 }
 @keyframes fly {
-    0% { transform: perspective(300px) rotateX(80deg) translateY(0%) }
-    100% { transform: perspective(300px) rotateX(80deg) translateY(50px) }
+  0% {
+    transform: perspective(300px) rotateX(80deg) translateY(0%);
+  }
+  100% {
+    transform: perspective(300px) rotateX(80deg) translateY(50px);
+  }
 }
 
 @media (min-width: 1919.99px) and (max-height: 1079.99px) {
   #app {
     background-size: auto calc(100% * 0.414814814814815) /* MountainLeftImg */,
       auto calc(100% * 0.414814814814815) /* MountainRightImg */,
-      100% 50% /* Top background color */,
-      100% 4px /* Blue line */,
+      100% 50% /* Top background color */, 100% 4px /* Blue line */,
       100% 50% /* Bottom background color */;
     background-position: top calc(50% - (100vh * 0.414814814814815 / 2)) left /* MountainLeftImg */,
       top calc(50% - (100vh * 0.414814814814815 / 2)) right /* MountainRightImg */,
-      top center /* Top background color */,
-      top calc(50% + 4px) center /* Blue line */,
+      top center /* Top background color */, top calc(50% + 4px) center /* Blue line */,
       bottom center /* Bottom background color */;
   }
 }
