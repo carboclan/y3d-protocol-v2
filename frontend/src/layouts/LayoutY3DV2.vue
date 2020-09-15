@@ -19,12 +19,41 @@
 import Vue from 'vue';
 import Navigation from '@/components/Navigation.vue';
 import Header from '@/components/Header.vue';
+import { setCssVariable } from '@/utils/styles';
+// eslint-disable-next-line no-unused-vars
+import { ICSSVariableConfig } from '@/utils/styles/setCssVariable';
+
+export interface ILayoutY3DV2Data {
+  rootVariables: ICSSVariableConfig
+}
 
 export default Vue.extend({
   name: 'LayoutY3DV2',
   components: {
     Header,
     Navigation,
+  },
+  data: (): ILayoutY3DV2Data => ({
+    rootVariables: [
+      ['--cwb-container-background-color', 'rgb(33, 36, 41)'],
+      ['--cwb-container-border-radius', '12px'],
+      ['--cwb-connect-button-color', 'rgb(109, 168, 255)'],
+      ['--cwb-connect-button-background-color', 'rgba(21, 61, 111, 0.44)'],
+      ['--cwb-connect-button-border', 'solid 1px rgba(21, 61, 111, 0.44)'],
+      ['--cwb-connect-button-border-radius', '12px'],
+      ['--cwb-wallet-info-wrapper-background-color', 'rgb(64, 68, 79)'],
+      ['--cwb-wallet-info-wrapper-border-radius', '12px'],
+      ['--cwb-wallet-info-balance-color', '#ffffff'],
+      ['--cwb-wallet-info-balance-font-size', '16px'],
+      ['--cwb-wallet-info-button-color', '#ffffff'],
+      ['--cwb-wallet-info-button-background-color', 'rgb(44, 47, 54)'],
+      ['--cwb-wallet-info-button-border', 'solid 1px rgb(64, 68, 79)'],
+      ['--cwb-wallet-info-button-border-radius', '12px'],
+      ['--cwb-wallet-info-button-font-size', '16px'],
+    ],
+  }),
+  mounted() {
+    setCssVariable(this.rootVariables);
   },
 });
 </script>
@@ -84,11 +113,11 @@ export default Vue.extend({
 
   .grid-wrapper {
     /*
-    About z-index probrem
-    Ref: https://philipwalton.com/articles/what-no-one-told-you-about-z-index/
-    Ref: https://stackoverflow.com/questions/20851452/z-index-is-canceled-by-setting-transformrotate
-    Ref: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
-  */
+      About z-index probrem
+      Ref: https://philipwalton.com/articles/what-no-one-told-you-about-z-index/
+      Ref: https://stackoverflow.com/questions/20851452/z-index-is-canceled-by-setting-transformrotate
+      Ref: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
+    */
     position: absolute;
     top: 0;
     bottom: 0;
