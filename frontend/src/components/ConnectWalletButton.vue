@@ -2,27 +2,22 @@
   <div class="cwb-wrapper">
     <div class="cwb-container">
       <div v-if="connected" class="cwb-wallet-info-wrapper">
-        <!-- <div class="cwb-wallet-info-balance">{{blance}} {{coinName}}</div> -->
+        <div class="cwb-wallet-info-balance">{{blance}} {{coinName}}</div>
         <button id="web3-status-connected" class="cwb-wallet-info-button">
-          <p class="cwb-wallet-info-address">Conected {{ formatedAddress }}</p>
+          <p class="cwb-wallet-info-address">{{formatedAddress}}</p>
           <div class="cwb-wallet-info-icon">
             <Identicon />
           </div>
         </button>
       </div>
-      <button
-        v-else
-        class="cwb-connect-button"
-        @click="onConnectButtonClick"
-        :disabled="!isGoodToConnect"
-      >
+      <button v-else class="cwb-connect-button"
+        @click="onConnectButtonClick" :disabled="isGoodToConnect">
         Connect to a wallet
       </button>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
-@import "@/assets/styles/color.scss";
 .cwb-wrapper {
   display: flex;
   flex-direction: row;
@@ -32,16 +27,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: rgb(33, 36, 41);
-  border-radius: 4px;
+  background-color: var(--cwb-container-background-color);
+  border-radius: var(--cwb-container-border-radius);
   white-space: nowrap;
 }
 .cwb-connect-button {
-  background-color: $um-orange;
-  border: 0px;
-  border-radius: 4px;
-  color: $um-text;
-  font-size: 16px;
+  color: var(--cwb-connect-button-color);
+  background-color: var(--cwb-connect-button-background-color);
+  border: var(--cwb-connect-button-border);
+  border-radius: var(--cwb-connect-button-border-radius);
+  font-size: var(--cwb-connect-button-font-size);
   line-height: 1;
   font-weight: 500;
   text-align: center;
@@ -49,16 +44,20 @@
   outline: none;
   text-decoration: none;
   padding: 0.5rem 0.8rem;
-  &:active,
-  &:focus {
-  }
-  &:hover,
-  &:focus {
-    opacity: 0.8;
+  &:active {
+    box-shadow: var(--cwb-connect-button-box-shadow--active);
+    background-color: var(--cwb-connect-button-background-color--active);
   }
   &:hover {
+    color: var(--cwb-connect-button-color--hover);
+    background-color: var(--cwb-connect-button-background-color--hover);
+    border: var(--cwb-connect-button-border--hover);
   }
   &:focus {
+    color: var(--cwb-connect-button-color--focus);
+    background-color: var(--cwb-connect-button-background-color--focus);
+    border: var(--cwb-connect-button-border--focus);
+    box-shadow: var(--cwb-connect-button-box-shadow--focus);
     outline: none;
   }
 }
@@ -67,13 +66,13 @@
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  background-color: $um-orange; //rgb(64, 68, 79);
-  border-radius: 12px;
+  background-color: var(--cwb-wallet-info-wrapper-background-color);
+  border-radius: var(--cwb-wallet-info-wrapper-border-radius);
   -webkit-box-align: center;
 }
 .cwb-wallet-info-balance {
-  color: #ffffff;
-  font-size: 16px;
+  color: var(--cwb-wallet-info-balance-color);
+  font-size: var(--cwb-wallet-info-balance-font-size);
   line-height: 1;
   font-weight: 500;
   padding-left: 0.75rem;
@@ -84,11 +83,11 @@
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  color: rgb(255, 255, 255);
-  background-color: $um-orange;
-  border: 0px;
-  border-radius: 4px;
-  font-size: 16px;
+  color: var(--cwb-wallet-info-button-color);
+  background-color: var(--cwb-wallet-info-button-background-color);
+  border: var(--cwb-wallet-info-button-border);
+  border-radius: var(--cwb-wallet-info-button-border-radius);
+  font-size: var(--cwb-wallet-info-button-font-size);
   line-height: 1;
   font-weight: 500;
   text-align: center;
@@ -100,8 +99,6 @@
 .cwb-wallet-info-address {
   line-height: 1;
   margin: 0;
-  color: $um-text;
-  font-size: 16px;
 }
 .cwb-wallet-info-icon {
   width: 16px;
@@ -132,7 +129,8 @@ export default Vue.extend({
   methods: {
     ...mapActions('ethers', ['connect']),
     onConnectButtonClick() {
-      this.connected();
+      // TODO: [vuex] unknown action type: connect
+      this.$store.dispatch('connect');
     },
   },
 });
