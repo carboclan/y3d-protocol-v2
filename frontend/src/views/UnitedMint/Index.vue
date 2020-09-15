@@ -1,19 +1,22 @@
 <template>
-  <div class="united-mint-wrap">
-    <switch-btn :btn-click="btnClick" :showExpert="showExpert" />
-    <united-mint-item
-      v-show="showExpert"
-      v-for="(data, index) of mintData"
-      :key="index"
-      :opened="data.opened"
-      :data="data"
-      @itemToggle="toggleItem"
-    />
-    <easy-item v-show="!showExpert" />
-  </div>
+  <LayoutUnitedMint>
+    <div class="united-mint-wrap">
+      <switch-btn :btn-click="btnClick" :showExpert="showExpert" />
+      <united-mint-item
+        v-show="showExpert"
+        v-for="(data, index) of mintData"
+        :key="index"
+        :opened="data.opened"
+        :data="data"
+        @itemToggle="toggleItem"
+      />
+      <easy-item v-show="!showExpert" />
+    </div>
+  </LayoutUnitedMint>
 </template>
 
 <script>
+import LayoutUnitedMint from '@/layouts/LayoutUnitedMint.vue';
 import switchBtn from './components/switchBtn.vue';
 import UnitedMintItem from './components/Item.vue';
 import easyItem from './components/easyItem.vue';
@@ -27,6 +30,7 @@ export default {
     };
   },
   components: {
+    LayoutUnitedMint,
     switchBtn,
     UnitedMintItem,
     easyItem,
