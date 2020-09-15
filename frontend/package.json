@@ -13,6 +13,7 @@
     "@metamask/jazzicon": "^2.0.0",
     "@types/vue-feather-icons": "^5.0.0",
     "bignumber.js": "^9.0.0",
+    "clipboard": "^2.0.6",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "ethers": "^5.0.8",

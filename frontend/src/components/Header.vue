@@ -7,18 +7,33 @@
         </li>
       </ul>
     </nav>
+    <!-- <div class="header-left">
+      <router-link to="/">
+        <div class="header-logo">
+          <img class="header-logo-icon" src="@/assets/united-mint/logo.png" />
+          <img class="header-logo-name" src="@/assets/united-mint/UnitedMint.png" />
+        </div>
+      </router-link>
+    </div> -->
     <div class="header-right">
       <ConnectWalletButton />
     </div>
   </header>
 </template>
 <style lang="scss" scoped>
+@media (max-width: 500px) {
+  .header {
+    &-logo-name {
+      display: none;
+    }
+  }
+}
 .header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  padding: 1rem;
+  padding: 25px;
   &-left,
   &-right,
   &-nav {
@@ -46,6 +61,16 @@
           text-decoration: none;
         }
       }
+    }
+  }
+  &-logo {
+    &-icon {
+      width: 64px;
+      height: 64px;
+    }
+    &-name {
+      margin-left: 10px;
+      height: 26px;
     }
   }
 }
