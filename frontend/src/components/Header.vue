@@ -77,14 +77,10 @@
 </style>
 <script lang="ts">
 import Vue from 'vue';
+// eslint-disable-next-line no-unused-vars
+import { IRootRoutes, rootRoutes } from '@/router';
 import ConnectWalletButton from './ConnectWalletButton.vue';
 
-export type IRootRoutes = Array<IRootRoute>;
-export interface IRootRoute {
-  name: string;
-  match: string;
-  isExternal: boolean;
-}
 export interface IHeaderData {
   rootRoutes: IRootRoutes;
 }
@@ -95,38 +91,7 @@ export default Vue.extend({
     ConnectWalletButton,
   },
   data: (): IHeaderData => ({
-    rootRoutes: [
-      {
-        name: 'Y3D v2',
-        match: '/y3dv2/',
-        isExternal: false,
-      },
-      {
-        name: '3D Farm',
-        match: '/3dfarm/',
-        isExternal: false,
-      },
-      {
-        name: 'Y Vaults',
-        match: '/yvaults/',
-        isExternal: false,
-      },
-      {
-        name: 'United Mint',
-        match: '/unimint/',
-        isExternal: false,
-      },
-      {
-        name: 'Uniscam',
-        match: '/uniscam/',
-        isExternal: false,
-      },
-      {
-        name: 'DAO',
-        match: '/dao/',
-        isExternal: false,
-      },
-    ],
+    rootRoutes,
   }),
 });
 </script>

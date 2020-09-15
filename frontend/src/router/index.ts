@@ -39,9 +39,9 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
-    path: '/unitedmint',
+    path: '/unimint',
     name: 'UnitedMint',
-    component: () => import(/* webpackChunkName: "mint" */ '../views/UnitedMint.vue'),
+    component: () => import(/* webpackChunkName: "mint" */ '../views/UnitedMint/Index.vue'),
   },
 ];
 
@@ -50,5 +50,47 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+const rootRoutes: IRootRoutes = [
+  {
+    name: 'Y3D v2',
+    match: '/y3dv2/',
+    isExternal: false,
+  },
+  {
+    name: '3D Farm',
+    match: '/3dfarm/',
+    isExternal: false,
+  },
+  {
+    name: 'Y Vaults',
+    match: '/yvaults/',
+    isExternal: false,
+  },
+  {
+    name: 'United Mint',
+    match: '/unimint/',
+    isExternal: false,
+  },
+  {
+    name: 'Uniscam',
+    match: '/uniscam/',
+    isExternal: false,
+  },
+  {
+    name: 'DAO',
+    match: '/dao/',
+    isExternal: false,
+  },
+];
+
+type IRootRoutes = Array<IRootRoute>;
+interface IRootRoute {
+  name: string;
+  match: string;
+  isExternal: boolean;
+}
+
+export { IRootRoute, IRootRoutes, rootRoutes };
 
 export default router;
