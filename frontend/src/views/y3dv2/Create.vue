@@ -1,5 +1,5 @@
 <template>
-  <LayoutUniscam>
+  <LayoutY3DV2>
     <div class="create">
       <p class="title">Create A y3d Token</p>
       <div class="ui icon message" v-if="deploying">
@@ -54,11 +54,11 @@
         </div>
       </form>
     </div>
-  </LayoutUniscam>
+  </LayoutY3DV2>
 </template>
 
 <script>
-import LayoutUniscam from '@/layouts/LayoutUniscam.vue';
+import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
 import MainButton from '@/components/MainButton.vue';
 import { getProvider, utils } from '@/store/ethers/ethersConnect';
 import { y3dFactory } from '@/contract';
@@ -74,7 +74,7 @@ export default {
     deployedY3dToken: '',
   }),
   components: {
-    LayoutUniscam,
+    LayoutY3DV2,
     MainButton,
   },
   computed: {},

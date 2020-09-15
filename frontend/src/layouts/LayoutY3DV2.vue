@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-uniscam">
+  <div class="layout-y3dv2">
     <div class="app-container">
       <Header />
       <div class="app-container-wrap">
@@ -21,7 +21,7 @@ import Navigation from '@/components/Navigation.vue';
 import Header from '@/components/Header.vue';
 
 export default Vue.extend({
-  name: 'LayoutUniscam',
+  name: 'LayoutY3DV2',
   components: {
     Header,
     Navigation,
@@ -31,7 +31,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import "@/assets/styles/color";
-.layout-uniscam {
+.layout-y3dv2 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

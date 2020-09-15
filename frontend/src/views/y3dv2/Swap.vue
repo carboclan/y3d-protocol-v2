@@ -1,5 +1,5 @@
 <template>
-  <LayoutUniscam>
+  <LayoutY3DV2>
     <div class="container">
       <div class="content-box">
         <div id="swap-page" class="swap-page">
@@ -59,7 +59,7 @@
         </div>
       </div>
     </div>
-  </LayoutUniscam>
+  </LayoutY3DV2>
 </template>
 
 <script>
@@ -68,12 +68,12 @@ import TokenAmountInput from '@/components/TokenAmountInput.vue';
 import { getProvider, utils } from '@/store/ethers/ethersConnect';
 import MainButton from '@/components/MainButton.vue';
 import SplitLine from '@/components/SplitLine.vue';
-import LayoutUniscam from '@/layouts/LayoutUniscam.vue';
+import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
 import { CommonERC20, y3DToken } from '@/contract';
 
 export default {
   components: {
-    LayoutUniscam,
+    LayoutY3DV2,
     TokenAmountInput,
     SplitLine,
     MainButton,
