@@ -1,20 +1,13 @@
 <template>
   <header class="header">
     <nav class="header-left">
+      <slot name="logo"></slot>
       <ul class="header-nav">
         <li class="header-nav-item" v-for="route in rootRoutes" :key="route.name">
           <router-link :to="route.match">{{ route.name }}</router-link>
         </li>
       </ul>
     </nav>
-    <!-- <div class="header-left">
-      <router-link to="/">
-        <div class="header-logo">
-          <img class="header-logo-icon" src="@/assets/united-mint/logo.png" />
-          <img class="header-logo-name" src="@/assets/united-mint/UnitedMint.png" />
-        </div>
-      </router-link>
-    </div> -->
     <div class="header-right">
       <ConnectWalletButton />
     </div>
@@ -61,16 +54,6 @@
           text-decoration: none;
         }
       }
-    }
-  }
-  &-logo {
-    &-icon {
-      width: 64px;
-      height: 64px;
-    }
-    &-name {
-      margin-left: 10px;
-      height: 26px;
     }
   }
 }

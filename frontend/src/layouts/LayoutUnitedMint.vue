@@ -1,7 +1,16 @@
 <template>
   <div class="layout-united-mint">
     <div class="app-container">
-      <Header />
+      <Header>
+        <template v-slot:logo>
+          <router-link to="/unimint">
+            <div class="header-logo">
+              <img class="header-logo-icon" src="@/assets/united-mint/logo.png" />
+              <img class="header-logo-name" src="@/assets/united-mint/UnitedMint.png" />
+            </div>
+          </router-link>
+        </template>
+      </Header>
       <slot />
     </div>
   </div>
@@ -15,7 +24,7 @@ import { setCssVariable } from '@/utils/styles';
 import { ICSSVariableConfig } from '@/utils/styles/setCssVariable';
 
 export interface ILayoutUnitedMintData {
-  rootVariables: ICSSVariableConfig
+  rootVariables: ICSSVariableConfig;
 }
 
 export default Vue.extend({
@@ -72,6 +81,17 @@ export default Vue.extend({
     top: 0;
     left: 0;
     z-index: 2;
+  }
+}
+.header-logo {
+  margin-right: 32px;
+  &-icon {
+    width: 64px;
+    height: 64px;
+  }
+  &-name {
+    margin-left: 10px;
+    height: 26px;
   }
 }
 </style>
