@@ -21,7 +21,6 @@ import { mapState } from 'vuex';
 import UMItemHeader from './Item/Header.vue';
 import UMItemData from './Item/Data.vue';
 import UMItemOperating from './Item/Operating.vue';
-
 // eslint-disable-next-line no-unused-vars
 import { getProvider, utils } from '../../../store/ethers/ethersConnect';
 import { /* CommonERC20, */ UnitedMint, USDT, yyCrv } from '../../../contract';

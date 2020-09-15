@@ -9,9 +9,11 @@
       </div>
       <div class="united-mint-header-contract">
         <p>Contract</p>
-        <img src="@/assets/united-mint/copy.png"
+        <img
+          src="@/assets/united-mint/copy.png"
           :class="'copy-button_' + yyCrvAddr"
-          :data-clipboard-text="yyCrvAddr" />
+          :data-clipboard-text="yyCrvAddr"
+        />
         <img src="@/assets/united-mint/click.png" @click="clickOnLink" />
       </div>
       <div class="united-mint-header-apy">
@@ -86,7 +88,6 @@ export default {
     }
   }
 }
-
 .united-mint-header {
   display: flex;
   align-items: center;

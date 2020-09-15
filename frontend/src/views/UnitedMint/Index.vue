@@ -1,29 +1,35 @@
 <template>
   <div class="united-mint-wrap">
+    <switch-btn :btn-click="btnClick" :showExpert="showExpert" />
     <united-mint-item
+      v-show="showExpert"
       v-for="(data, index) of mintData"
       :key="index"
       :opened="data.opened"
       :data="data"
       @itemToggle="toggleItem"
     />
+    <easy-item v-show="!showExpert" />
   </div>
 </template>
 
 <script>
+import switchBtn from './components/switchBtn.vue';
 import UnitedMintItem from './components/Item.vue';
+import easyItem from './components/easyItem.vue';
 
 export default {
   name: 'UnitedMintView',
   data() {
     return {
-      mintData: [
-        { key: 'yYCrv', opened: true },
-      ],
+      showExpert: false,
+      mintData: [{ key: 'yYCrv', opened: true }],
     };
   },
   components: {
+    switchBtn,
     UnitedMintItem,
+    easyItem,
   },
   computed: {},
   methods: {
@@ -32,6 +38,13 @@ export default {
         if (this.mintData[i].key === data.key) {
           this.mintData[i].opened = !this.mintData[i].opened;
         }
+      }
+    },
+    btnClick() {
+      if (this.showExpert) {
+        this.showExpert = false;
+      } else {
+        this.showExpert = true;
       }
     },
   },
