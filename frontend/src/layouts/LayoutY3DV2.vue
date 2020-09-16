@@ -2,6 +2,7 @@
   <div class="layout-y3dv2">
     <div class="app-container">
       <Header />
+      <Y3DV2Logo />
       <div class="app-container-wrap">
         <div class="ui container segment ">
           <Navigation />
@@ -22,9 +23,10 @@ import Header from '@/components/Header.vue';
 import { setCssVariable } from '@/utils/styles';
 // eslint-disable-next-line no-unused-vars
 import { ICSSVariableConfig } from '@/utils/styles/setCssVariable';
+import Y3DV2Logo from '@/components/Y3DV2Logo.vue';
 
 export interface ILayoutY3DV2Data {
-  rootVariables: ICSSVariableConfig
+  rootVariables: ICSSVariableConfig;
 }
 
 export default Vue.extend({
@@ -32,6 +34,7 @@ export default Vue.extend({
   components: {
     Header,
     Navigation,
+    Y3DV2Logo,
   },
   data: (): ILayoutY3DV2Data => ({
     rootVariables: [
@@ -69,7 +72,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/color";
+@import '@/assets/styles/color';
+
 .layout-y3dv2 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -109,7 +113,7 @@ export default Vue.extend({
     z-index: 2;
     color: white;
     &-wrap {
-      margin-top: 10vh;
+      margin-top: 0;
       max-width: 480px;
       margin-left: auto;
       margin-right: auto;

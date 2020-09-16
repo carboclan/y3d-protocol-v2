@@ -1,23 +1,32 @@
 <template>
   <div class="cwb-wrapper">
     <div class="cwb-container">
-      <div v-if="connected" class="cwb-wallet-info-wrapper">
-        <div class="cwb-wallet-info-balance">{{blance}} {{coinName}}</div>
+      <div v-if="connected" class="cwb-wallet-info-wrapper" @click="onWalletButtonClick">
+        <div class="cwb-wallet-info-balance">{{ blance }} {{ coinName }}</div>
         <button id="web3-status-connected" class="cwb-wallet-info-button">
-          <p class="cwb-wallet-info-address">{{formatedAddress}}</p>
+          <p class="cwb-wallet-info-address">{{ formatedAddress }}</p>
           <div class="cwb-wallet-info-icon">
             <Identicon />
           </div>
         </button>
       </div>
-      <button v-else class="cwb-connect-button"
-        @click="onConnectButtonClick" :disabled="isGoodToConnect">
+      <button
+        v-else
+        class="cwb-connect-button"
+        @click="onWalletButtonClick"
+      >
         Connect to a wallet
       </button>
     </div>
+    <ConnectWalletModal v-model="showWallet" />
   </div>
 </template>
 <style lang="scss" scoped>
+@media (max-width: 500px) {
+  .cwb-wallet-info-balance {
+    display: none !important;
+  }
+}
 .cwb-wrapper {
   display: flex;
   flex-direction: row;
@@ -110,12 +119,21 @@
 import { mapActions, mapState } from 'vuex';
 import Vue from 'vue';
 import Identicon from './Identicon.vue';
+import ConnectWalletModal from './ConnectWalletModal.vue';
+
+export interface ConnectWalletButtonData {
+  showWallet: Boolean;
+}
 
 export default Vue.extend({
   name: 'ConnectWalletButton',
   components: {
     Identicon,
+    ConnectWalletModal,
   },
+  data: (): ConnectWalletButtonData => ({
+    showWallet: false,
+  }),
   computed: {
     ...mapState('ethers', ['connected', 'address', 'blance', 'coinName', 'initialized']),
     isGoodToConnect() {
@@ -128,9 +146,10 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('ethers', ['connect']),
-    onConnectButtonClick() {
+    onWalletButtonClick() {
       // TODO: [vuex] unknown action type: connect
-      this.$store.dispatch('connect');
+      // this.$store.dispatch('connect');
+      this.showWallet = true;
     },
   },
 });

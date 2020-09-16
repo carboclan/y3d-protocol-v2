@@ -6,7 +6,7 @@
     :modal-append-to-body='false'
   >
     <div class="c-model-container">
-      <div class="c-model-header">
+      <div class="c-model-header" v-if="shownHeader">
         <div class="c-model-header-content">
           <slot name="header"></slot>
         </div>
@@ -29,6 +29,10 @@ import Vue from 'vue';
 export default Vue.extend({
   name: 'Modal',
   props: {
+    shownHeader: {
+      type: Boolean,
+      default: true,
+    },
     customClass: {
       type: String,
       default: '',

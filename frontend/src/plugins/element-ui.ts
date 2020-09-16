@@ -12,6 +12,9 @@ import {
   Alert,
   Tooltip,
   Switch,
+  Radio,
+  RadioGroup,
+  RadioButton,
 } from 'element-ui';
 
 Vue.use(Button)
@@ -21,6 +24,9 @@ Vue.use(Button)
   .use(Input)
   .use(Alert)
   .use(Tooltip)
+  .use(Radio)
+  .use(RadioGroup)
+  .use(RadioButton)
   .use(Switch);
 
 Vue.use(Loading.directive);

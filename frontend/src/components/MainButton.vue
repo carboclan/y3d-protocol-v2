@@ -3,6 +3,7 @@
     :id="id"
     type='button'
     class="c-main-button"
+    :class="plain ? 'c-main-button-plain' : ''"
     :disabled="disabled"
     v-loading="btnLoading"
     element-loading-background="rgba(0, 0, 0, 0.8)"
@@ -14,6 +15,7 @@
   </button>
 </template>
 <style lang="scss" scoped>
+@import "@/assets/styles/color";
 .c-main-button {
   overflow: hidden;
   font-size: inherit;
@@ -32,11 +34,30 @@
   -webkit-box-align: center;
   align-items: center;
 
-  background-color: #2172e5;
+  background-color: $y3d-blue;
   color: white;
   cursor: auto;
   box-shadow: none;
   border: 1px solid transparent;
+  outline: none;
+  opacity: 1;
+  user-select: none;
+
+  &:disabled {
+    background-color: rgb(64, 68, 79);
+    color: rgb(108, 114, 132);
+  }
+
+  &:active {
+    filter: brightness(0.8);
+  }
+}
+.c-main-button-plain {
+  background-color: transparent;
+  color: white;
+  cursor: auto;
+  box-shadow: none;
+  border: 1px solid $y3d-blue;
   outline: none;
   opacity: 1;
   user-select: none;
@@ -65,6 +86,10 @@ import Vue from 'vue';
 export default Vue.extend({
   name: 'MainButton',
   props: {
+    plain: {
+      type: Boolean,
+      default: false,
+    },
     id: {
       type: String,
       default: 'main-button',

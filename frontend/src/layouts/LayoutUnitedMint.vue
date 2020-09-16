@@ -11,6 +11,7 @@
           </router-link>
         </template>
       </Header>
+      <UnitedMintLogo />
       <slot />
     </div>
   </div>
@@ -22,6 +23,7 @@ import Header from '@/components/Header.vue';
 import { setCssVariable } from '@/utils/styles';
 // eslint-disable-next-line no-unused-vars
 import { ICSSVariableConfig } from '@/utils/styles/setCssVariable';
+import UnitedMintLogo from '@/components/UnitedMintLogo.vue';
 
 export interface ILayoutUnitedMintData {
   rootVariables: ICSSVariableConfig;
@@ -31,33 +33,34 @@ export default Vue.extend({
   name: 'LayoutUnitedMint',
   components: {
     Header,
+    UnitedMintLogo,
   },
   data: (): ILayoutUnitedMintData => ({
     rootVariables: [
-      ['--cwb-container-background-color', 'rgb(244, 207, 31)'],
-      ['--cwb-container-border-radius', '4px'],
-      ['--cwb-connect-button-color', 'rgb(35, 24, 21)'],
-      ['--cwb-connect-button-background-color', 'rgb(244, 207, 31)'],
-      ['--cwb-connect-button-border', 'none'],
-      ['--cwb-connect-button-border-radius', '4px'],
+      ['--cwb-container-background-color', 'rgb(33, 36, 41)'],
+      ['--cwb-container-border-radius', '12px'],
+      ['--cwb-connect-button-color', 'rgb(109, 168, 255)'],
+      ['--cwb-connect-button-background-color', 'rgba(21, 61, 111, 0.44)'],
+      ['--cwb-connect-button-border', 'solid 1px rgba(21, 61, 111, 0.44)'],
+      ['--cwb-connect-button-border-radius', '12px'],
       ['--cwb-connect-button-font-size', '16px'],
-      ['--cwb-connect-button-box-shadow--active', 'none'],
-      ['--cwb-connect-button-background-color--active', 'rgb(244, 207, 31)'],
-      ['--cwb-connect-button-color--hover', 'rgba(35, 24, 21, 0.8)'],
-      ['--cwb-connect-button-background-color--hover', 'rgba(244, 207, 31, 0.8)'],
-      ['--cwb-connect-button-border--hover', 'none'],
-      ['--cwb-connect-button-color--focus', 'rgba(35, 24, 21, 0.8)'],
-      ['--cwb-connect-button-background-color--focus', 'rgba(244, 207, 31, 0.8)'],
-      ['--cwb-connect-button-border--focus', 'none'],
-      ['--cwb-connect-button-box-shadow--focus', 'none'],
-      ['--cwb-wallet-info-wrapper-background-color', 'rgb(244, 207, 31)'],
-      ['--cwb-wallet-info-wrapper-border-radius', '4px'],
-      ['--cwb-wallet-info-balance-color', 'rgb(35, 24, 21)'],
+      ['--cwb-connect-button-box-shadow--active', 'rgba(55, 107, 173, 0.44) 0px 0px 0px 1pt'],
+      ['--cwb-connect-button-background-color--active', 'rgba(55, 107, 173, 0.44)'],
+      ['--cwb-connect-button-color--hover', 'rgb(83, 153, 255)'],
+      ['--cwb-connect-button-background-color--hover', 'rgba(55, 107, 173, 0.44)'],
+      ['--cwb-connect-button-border--hover', 'solid 1px rgba(49, 95, 154, 0.44)'],
+      ['--cwb-connect-button-color--focus', 'rgb(83, 153, 255)'],
+      ['--cwb-connect-button-background-color--focus', 'rgba(55, 107, 173, 0.44)'],
+      ['--cwb-connect-button-border--focus', 'solid 1px rgba(49, 95, 154, 0.44)'],
+      ['--cwb-connect-button-box-shadow--focus', 'rgba(55, 107, 173, 0.44) 0px 0px 0px 1pt'],
+      ['--cwb-wallet-info-wrapper-background-color', 'rgb(64, 68, 79)'],
+      ['--cwb-wallet-info-wrapper-border-radius', '12px'],
+      ['--cwb-wallet-info-balance-color', '#ffffff'],
       ['--cwb-wallet-info-balance-font-size', '16px'],
-      ['--cwb-wallet-info-button-color', 'rgb(35, 24, 21)'],
-      ['--cwb-wallet-info-button-background-color', 'rgb(244, 207, 31)'],
-      ['--cwb-wallet-info-button-border', 'none'],
-      ['--cwb-wallet-info-button-border-radius', '4px'],
+      ['--cwb-wallet-info-button-color', '#ffffff'],
+      ['--cwb-wallet-info-button-background-color', 'rgb(44, 47, 54)'],
+      ['--cwb-wallet-info-button-border', 'solid 1px rgb(64, 68, 79)'],
+      ['--cwb-wallet-info-button-border-radius', '12px'],
       ['--cwb-wallet-info-button-font-size', '16px'],
     ],
   }),
