@@ -6,14 +6,14 @@
         <div class="united-mint-data-wrap-info-detail">
           <p>Unminted USDT: <span>{{ contractData.unmintedUSDT }}</span></p>
           <p>Minted USDT: <span>{{ contractData.mintedUSDT }}</span></p>
-          <p>Minted yYCrv: <span>{{ contractData.mintedToken }}</span></p>
+          <p>Minted {{ data.key }}: <span>{{ contractData.mintedToken }}</span></p>
         </div>
       </div>
       <div class="united-mint-data-wrap-info">
         <p>Your Data</p>
         <div class="united-mint-data-wrap-info-detail">
           <p>Unminted USDT: <span>{{ yourData.unmintedUSDT }}</span></p>
-          <p>Unclaimed yYCrv: <span>{{ yourData.unclaimedToken }}</span></p>
+          <p>Unclaimed {{ data.key }}: <span>{{ yourData.unclaimedToken }}</span></p>
         </div>
       </div>
     </div>
@@ -30,6 +30,10 @@ export default {
     contractData: {
       type: Object,
       default: () => ({}),
+    },
+    data: {
+      type: Object,
+      default: () => null,
     },
     yourData: {
       type: Object,

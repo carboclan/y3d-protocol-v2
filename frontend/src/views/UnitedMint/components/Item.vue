@@ -12,6 +12,7 @@
     <transition name="open">
       <u-m-item-operating
         :mode="mode"
+        :data="data"
         :userBalances="userBalances"
         v-show="opened || mode === 'easy'"
       />
@@ -21,6 +22,7 @@
         v-show="opened && mode !== 'easy'"
         :contractData="contractData"
         :yourData="yourData"
+        :data="data"
       />
     </transition>
   </div>
@@ -35,7 +37,7 @@ import UMItemData from './Item/Data.vue';
 import UMItemOperating from './Item/Operating.vue';
 // eslint-disable-next-line no-unused-vars
 import { getProvider, utils } from '../../../store/ethers/ethersConnect';
-import { /* CommonERC20, */ UnitedMint, USDT, yyCrv } from '../../../contract';
+import { /* CommonERC20, */ USDT } from '../../../contract';
 // eslint-disable-next-line no-unused-vars
 import { ContractStat, UserBalances } from '../../../interface';
 
@@ -79,7 +81,7 @@ export default Vue.extend({
       return {
         unmintedUSDT: this.usdtWaitingToMint,
         mintedUSDT: this.usdtThatCanJustClaim,
-        mintedToken: this.yyCrvWaitingToClaim,
+        mintedToken: this.tokenWaitingToClaim,
       };
     },
     yourData() {
@@ -87,14 +89,14 @@ export default Vue.extend({
         unmintedUSDT: this.userUsdtDeposit,
         // TODO: 数据错了
         unclaimedToken: '...',
-        token: this.userYycrv,
+        token: this.userToken,
       };
     },
     usdtWaitingToMint() {
       return this.formatPrice(this.contractStat.usdtBalance, this.userBalances.usdtDecimals);
     },
-    yyCrvWaitingToClaim() {
-      return this.formatPrice(this.contractStat.yyCrvBalance, this.userBalances.yyCrvDecimals);
+    tokenWaitingToClaim() {
+      return this.formatPrice(this.contractStat.tokenBalance, this.userBalances.tokenDecimals);
     },
     usdtThatCanJustClaim() {
       return this.formatPrice(this.contractStat.mintedUsdt, this.userBalances.usdtDecimals);
@@ -105,8 +107,8 @@ export default Vue.extend({
     userUsdtDeposit() {
       return this.formatPrice(this.userBalances.usdtInUnitedMint, this.userBalances.usdtDecimals);
     },
-    userYycrv() {
-      return this.formatPrice(this.userBalances.yyCrv, this.userBalances.yyCrvDecimals);
+    userToken() {
+      return this.formatPrice(this.userBalances.tokenBalance, this.userBalances.tokenDecimals);
     },
   },
   methods: {
@@ -118,37 +120,39 @@ export default Vue.extend({
       return utils.formatUnits(price, decimals);
     },
     async fetchStat() {
-      const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider());
-      const [usdtBalance, yyCrvBalance, mintedUsdt] = await Promise.all([
+      const UNI_DEPOSIT_CONTRACT = this.data.unitedMintContract.connect(getProvider());
+      const [usdtBalance, tokenBalance, mintedUsdt] = await Promise.all([
         UNI_DEPOSIT_CONTRACT.unminted_USDT(),
-        UNI_DEPOSIT_CONTRACT.minted_yyCRV(),
+        this.data.key === 'yYCrv'
+          ? UNI_DEPOSIT_CONTRACT.minted_yyCRV()
+          : UNI_DEPOSIT_CONTRACT.minted_yswUSD(),
         UNI_DEPOSIT_CONTRACT.mintedUSDT(),
       ]);
-      this.contractStat = { usdtBalance, yyCrvBalance, mintedUsdt };
+      this.contractStat = { usdtBalance, tokenBalance, mintedUsdt };
     },
     async fetchUserData() {
-      const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider());
+      const UNI_DEPOSIT_CONTRACT = this.data.unitedMintContract.connect(getProvider());
       // eslint-disable-next-line max-len
-      const [USDT_TOKEN, YYCRV_TOKEN] = [USDT, yyCrv].map((tokenC) => tokenC.connect(getProvider()));
+      const [USDT_TOKEN, Y_TOKEN] = [USDT, this.data.yToken].map((tokenC) => tokenC.connect(getProvider()));
       const [
         usdtBalance,
-        yyCrvBalance,
+        tokenBalance,
         depositUsdtBalance,
         usdtDecimals,
-        yyCrvDecimals,
+        tokenDecimals,
       ] = await Promise.all([
         USDT_TOKEN.balanceOf(this.address),
-        YYCRV_TOKEN.balanceOf(this.address),
+        Y_TOKEN.balanceOf(this.address),
         UNI_DEPOSIT_CONTRACT.balanceOf(this.address),
         USDT_TOKEN.decimals(),
-        YYCRV_TOKEN.decimals(),
+        Y_TOKEN.decimals(),
       ]);
       this.userBalances = {
-        yyCrv: yyCrvBalance,
+        tokenBalance,
         usdt: usdtBalance,
         usdtInUnitedMint: depositUsdtBalance,
         usdtDecimals,
-        yyCrvDecimals,
+        tokenDecimals,
       };
     },
   },

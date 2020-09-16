@@ -50,7 +50,10 @@
       <div class="united-mint-operating-bottom-restore">
         <p>
           Blance:
-          <span>{{ displayBalance(userBalances.yyCrv, userBalances.yyCrvDecimals) }} yYCrv</span>
+          <span
+            >{{ displayBalance(userBalances.tokenBalance, userBalances.tokenDecimals) }}
+            {{ data.key }}</span
+          >
         </p>
         <div class="united-mint-operating-bottom-restore-wrap">
           <div
@@ -113,7 +116,9 @@
       <p>Deposit <span>USDT</span></p>
       <div>
         <img src="@/assets/united-mint/more.png" />
-        <p>Mint <span>yYCrv</span></p>
+        <p>
+          Mint <span>{{ data.key }}</span>
+        </p>
       </div>
     </div>
     <!-- deposit in pc mode -->
@@ -137,7 +142,7 @@
       </button>
     </div>
     <div class="united-mint-operating-info">
-      <p>APY: <span>...</span></p>
+      <p>APY: <span>{{ data.apy }}%</span></p>
       <p>
         Blance:
         <span>{{ displayBalance(userBalances.usdt, userBalances.usdtDecimals) }} USDT</span>
@@ -186,6 +191,10 @@ export default {
     };
   },
   props: {
+    data: {
+      type: Object,
+      default: () => null,
+    },
     mode: {
       type: String,
       // difficult
@@ -216,12 +225,15 @@ export default {
       this.usdtInput = this.formatPrice(this.userBalances.usdt, this.userBalances.usdtDecimals);
     },
     clickOnMaxToken() {
-      this.tokenInput = this.formatPrice(this.userBalances.yyCrv, this.userBalances.yyCrvDecimals);
+      this.tokenInput = this.formatPrice(
+        this.userBalances.tokenBalance,
+        this.userBalances.tokenDecimals,
+      );
     },
     async deposit() {
       this.loadingDeposit = true;
       try {
-        await MintHelper.uniDepositContract_deposit_amount(`${this.usdtInput}`);
+        await MintHelper.uniDepositContract_deposit_amount(`${this.usdtInput}`, this.data);
       } catch (err) {
         console.log(err);
       }
@@ -230,7 +242,7 @@ export default {
     async mint() {
       this.loadingMint = true;
       try {
-        await MintHelper.uniDepositContract_mint();
+        await MintHelper.uniDepositContract_mint(this.data);
       } catch (err) {
         console.log(err);
       }
@@ -239,7 +251,7 @@ export default {
     async claim() {
       this.loadingClaim = true;
       try {
-        await MintHelper.uniDepositContract_claim();
+        await MintHelper.uniDepositContract_claim(this.data);
       } catch (err) {
         console.log(err);
       }
@@ -248,7 +260,7 @@ export default {
     async depositMClaim() {
       this.loadingDepositMClaim = true;
       try {
-        await MintHelper.uniDepositContract_deposit_n_claim(`${this.usdtInput}`);
+        await MintHelper.uniDepositContract_deposit_n_claim(`${this.usdtInput}`, this.data);
       } catch (err) {
         console.log(err);
       }
@@ -257,7 +269,7 @@ export default {
     async restore() {
       this.loadingRestore = true;
       try {
-        await MintHelper.uniDepositContract_restore_amount(`${this.tokenInput}`);
+        await MintHelper.uniDepositContract_restore_amount(`${this.tokenInput}`, this.data);
       } catch (err) {
         console.log(err);
       }
@@ -287,8 +299,8 @@ export default {
       }
       if (
         utils
-          .parseUnits(this.tokenInput, this.userBalances.yyCrvDecimals)
-          .gt(this.userBalances.yyCrv.toString())
+          .parseUnits(this.tokenInput, this.userBalances.tokenDecimals)
+          .gt(this.userBalances.tokenBalance.toString())
       ) {
         this.tokenInputError = true;
       } else {

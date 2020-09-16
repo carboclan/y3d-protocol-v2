@@ -5,19 +5,21 @@
         <p>Deposit <span>USDT</span></p>
         <img src="@/assets/united-mint/more.png" />
 
-        <p>Mint <span>yYCrv</span></p>
+        <p>
+          Mint <span>{{ data.key }}</span>
+        </p>
       </div>
       <div class="united-mint-header-contract">
         <p>Contract</p>
         <img
           src="@/assets/united-mint/copy.png"
-          :class="'copy-button_' + yyCrvAddr"
-          :data-clipboard-text="yyCrvAddr"
+          :ID="'copy-button_' + data.unitedMintContractAddr"
+          :data-clipboard-text="data.unitedMintContractAddr"
         />
         <img src="@/assets/united-mint/click.png" @click="clickOnLink" />
       </div>
       <div class="united-mint-header-apy">
-        <p>APY: <span>...</span></p>
+        <p>APY: <span>{{ data.apy }}%</span></p>
       </div>
     </div>
     <div class="united-mint-header-toggle" @click="clickOnToggle">
@@ -27,7 +29,6 @@
 </template>
 
 <script>
-import { yyCrvAddr } from '@/contract/index';
 import ClipboardJS from 'clipboard';
 
 export default {
@@ -50,22 +51,18 @@ export default {
     },
   },
   components: {},
-  computed: {
-    yyCrvAddr() {
-      return yyCrvAddr;
-    },
-  },
+  computed: {},
   methods: {
     clickOnToggle() {
       this.$emit('headerClickOnToggle', this.data);
     },
     clickOnLink() {
-      window.location.href = `https://etherscan.io/address/${this.yyCrvAddr}`;
+      window.location.href = `https://etherscan.io/address/${this.data.unitedMintContractAddr}`;
     },
   },
   watch: {},
   mounted() {
-    const clipboard = new ClipboardJS(`.copy-button_${this.yyCrvAddr}`);
+    const clipboard = new ClipboardJS(`#copy-button_${this.data.unitedMintContractAddr}`);
     clipboard.on('success', (e) => {
       // eslint-disable-next-line no-alert
       alert('Copy succeeded');
