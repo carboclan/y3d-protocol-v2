@@ -4,16 +4,16 @@
       <div class="united-mint-data-wrap-info mr24">
         <p>Contract Data</p>
         <div class="united-mint-data-wrap-info-detail">
-          <p>Unminted USDT: {{ contractData.unmintedUSDT }}</p>
-          <p>Minted USDT: {{ contractData.mintedUSDT }}</p>
-          <p>Minted yYCrv: {{ contractData.mintedToken }}</p>
+          <p>Unminted USDT: <span>{{ contractData.unmintedUSDT }}</span></p>
+          <p>Minted USDT: <span>{{ contractData.mintedUSDT }}</span></p>
+          <p>Minted yYCrv: <span>{{ contractData.mintedToken }}</span></p>
         </div>
       </div>
       <div class="united-mint-data-wrap-info">
         <p>Your Data</p>
         <div class="united-mint-data-wrap-info-detail">
-          <p>Unminted USDT: {{ yourData.unmintedUSDT }}</p>
-          <p>Unclaimed yYCrv: {{ yourData.unclaimedToken }}</p>
+          <p>Unminted USDT: <span>{{ yourData.unmintedUSDT }}</span></p>
+          <p>Unclaimed yYCrv: <span>{{ yourData.unclaimedToken }}</span></p>
         </div>
       </div>
     </div>
@@ -79,6 +79,10 @@ export default {
         font-size: 14px;
         margin: 0 0 8px 0;
         height: 20px;
+        span {
+          font-weight: bold;
+          color: $um-text;
+        }
       }
       &-detail {
         border-radius: 4px;

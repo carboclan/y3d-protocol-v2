@@ -17,7 +17,7 @@
         <img src="@/assets/united-mint/click.png" @click="clickOnLink" />
       </div>
       <div class="united-mint-header-apy">
-        <p>apy: ...</p>
+        <p>APY: <span>...</span></p>
       </div>
     </div>
     <div class="united-mint-header-toggle" @click="clickOnToggle">
@@ -126,6 +126,9 @@ export default {
   }
   &-apy {
     margin-right: 32px;
+    span {
+      font-weight: 500;
+    }
   }
   &-toggle {
     img {

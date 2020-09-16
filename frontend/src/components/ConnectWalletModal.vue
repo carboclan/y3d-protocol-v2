@@ -89,7 +89,6 @@ export default {
   top: 50%;
   margin-top: unset !important;
   padding: 24px;
-
   .c-model-body {
     display: flex;
     flex-direction: column;
@@ -106,8 +105,10 @@ export default {
       width: 128px;
     }
     p {
+      color: white;
       font-size: 16px;
       margin: 20px 20px 50px 20px;
+      text-align: center;
     }
     .wallet-name {
       font-size: 24px;

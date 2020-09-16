@@ -71,6 +71,9 @@ export default {
     justify-content: center;
     align-items: center;
   }
+  p {
+    color: white;
+  }
   &-title {
     color: #0091ff;
     font-weight: 500;

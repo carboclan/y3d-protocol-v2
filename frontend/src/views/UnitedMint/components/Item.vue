@@ -1,15 +1,27 @@
 <template>
-  <div class="united-mint" :class="opened ? '' : 'united-mint-close'">
+  <div
+    class="united-mint"
+    :class="opened ? 'united-mint-' + mode : ['united-mint-close', 'united-mint-' + mode]"
+  >
     <u-m-item-header
+      v-show="mode !== 'easy'"
       :opened="opened"
       :data="data"
       @headerClickOnToggle="handleHeaderClickOnToggle"
     />
     <transition name="open">
-      <u-m-item-operating :yourData="yourData" v-show="opened" />
+      <u-m-item-operating
+        :mode="mode"
+        :userBalances="userBalances"
+        v-show="opened || mode === 'easy'"
+      />
     </transition>
     <transition name="open">
-      <u-m-item-data v-show="opened" :contractData="contractData" :yourData="yourData" />
+      <u-m-item-data
+        v-show="opened && mode !== 'easy'"
+        :contractData="contractData"
+        :yourData="yourData"
+      />
     </transition>
   </div>
 </template>
@@ -51,6 +63,10 @@ export default Vue.extend({
       type: Function,
       defualt: () => {},
     },
+    mode: {
+      type: String,
+      default: 'easy',
+    },
   },
   components: {
     UMItemHeader,
@@ -68,27 +84,29 @@ export default Vue.extend({
     },
     yourData() {
       return {
-        unmintedUSDT: this.userUsdtBalance,
-        unclaimedToken: this.userYycrv,
+        unmintedUSDT: this.userUsdtDeposit,
+        // TODO: 数据错了
+        unclaimedToken: '...',
+        token: this.userYycrv,
       };
     },
     usdtWaitingToMint() {
-      return this.formatPrice(this.contractStat.usdtBalance, 6);
+      return this.formatPrice(this.contractStat.usdtBalance, this.userBalances.usdtDecimals);
     },
     yyCrvWaitingToClaim() {
-      return this.formatPrice(this.contractStat.yyCrvBalance, 18);
+      return this.formatPrice(this.contractStat.yyCrvBalance, this.userBalances.yyCrvDecimals);
     },
     usdtThatCanJustClaim() {
-      return this.formatPrice(this.contractStat.mintedUsdt, 6);
+      return this.formatPrice(this.contractStat.mintedUsdt, this.userBalances.usdtDecimals);
     },
     userUsdtBalance() {
-      return this.formatPrice(this.userBalances.usdt, 6);
+      return this.formatPrice(this.userBalances.usdt, this.userBalances.usdtDecimals);
     },
     userUsdtDeposit() {
-      return this.formatPrice(this.userBalances.usdtInUnitedMint, 6);
+      return this.formatPrice(this.userBalances.usdtInUnitedMint, this.userBalances.usdtDecimals);
     },
     userYycrv() {
-      return this.formatPrice(this.userBalances.yyCrv, 18);
+      return this.formatPrice(this.userBalances.yyCrv, this.userBalances.yyCrvDecimals);
     },
   },
   methods: {
@@ -103,7 +121,7 @@ export default Vue.extend({
       const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider());
       const [usdtBalance, yyCrvBalance, mintedUsdt] = await Promise.all([
         UNI_DEPOSIT_CONTRACT.unminted_USDT(),
-        UNI_DEPOSIT_CONTRACT.minted_yCRV(),
+        UNI_DEPOSIT_CONTRACT.minted_yyCRV(),
         UNI_DEPOSIT_CONTRACT.mintedUSDT(),
       ]);
       this.contractStat = { usdtBalance, yyCrvBalance, mintedUsdt };
@@ -112,15 +130,25 @@ export default Vue.extend({
       const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider());
       // eslint-disable-next-line max-len
       const [USDT_TOKEN, YYCRV_TOKEN] = [USDT, yyCrv].map((tokenC) => tokenC.connect(getProvider()));
-      const [usdtBalance, yyCrvBalance, depositUsdtBalance] = await Promise.all([
+      const [
+        usdtBalance,
+        yyCrvBalance,
+        depositUsdtBalance,
+        usdtDecimals,
+        yyCrvDecimals,
+      ] = await Promise.all([
         USDT_TOKEN.balanceOf(this.address),
         YYCRV_TOKEN.balanceOf(this.address),
         UNI_DEPOSIT_CONTRACT.balanceOf(this.address),
+        USDT_TOKEN.decimals(),
+        YYCRV_TOKEN.decimals(),
       ]);
       this.userBalances = {
         yyCrv: yyCrvBalance,
         usdt: usdtBalance,
         usdtInUnitedMint: depositUsdtBalance,
+        usdtDecimals,
+        yyCrvDecimals,
       };
     },
   },
@@ -132,13 +160,13 @@ export default Vue.extend({
   },
   mounted() {
     this.fetchStat();
-    if (this.address) this.fetchUserData();
+    this.fetchUserData();
   },
 });
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/color.scss";
+@import '@/assets/styles/color.scss';
 .open-enter-active,
 .open-leave-active {
   transition: opacity 0.1s;
@@ -158,5 +186,8 @@ export default Vue.extend({
   border: 4px solid $um-orange;
   min-height: 52px;
   margin-bottom: 48px;
+}
+.united-mint-easy {
+  padding: 16px 22px;
 }
 </style>

@@ -57,6 +57,7 @@
 @media (max-width: 600px) {
   .header {
     flex-wrap: wrap;
+    padding: 14px 6px !important;
   }
   .header-center {
     display: none !important;
