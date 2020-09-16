@@ -46,7 +46,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/color.scss";
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .united-mint-data {
     &-wrap {
       padding: 0 0px !important;

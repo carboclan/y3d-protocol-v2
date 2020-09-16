@@ -54,7 +54,7 @@
   </header>
 </template>
 <style lang="scss" scoped>
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .header {
     flex-wrap: wrap;
   }

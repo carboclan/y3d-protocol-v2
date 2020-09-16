@@ -22,7 +22,7 @@
   </div>
 </template>
 <style lang="scss" scoped>
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .cwb-wallet-info-balance {
     display: none !important;
   }

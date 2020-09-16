@@ -181,7 +181,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/color.scss";
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .united-mint-operating-center-line-wrap {
     display: none;
   }
@@ -246,7 +246,7 @@ export default {
     &-other {
       width: 47%;
       p {
-        font-size: 14px;
+        font-size: 16px;
         margin: 0 0 8px 0;
         height: 20px;
       }
