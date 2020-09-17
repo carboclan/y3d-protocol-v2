@@ -88,7 +88,7 @@ import { BigNumber, BigNumberish } from 'ethers';
 import { mapState } from 'vuex';
 import { getProvider, utils } from '../store/ethers/ethersConnect';
 import {
-  /* CommonERC20, */UnitedMint, USDT, yyCrv,
+  /* CommonERC20, */yyCrvUnitedMint, USDT, yyCrv,
 } from '../contract';
 // eslint-disable-next-line no-unused-vars
 import { ContractStat, UserBalances } from '../interface';
@@ -135,7 +135,7 @@ export default Vue.extend({
       return utils.formatUnits(price, decimals);
     },
     async fetchStat(): Promise<void> {
-      const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider()!);
+      const UNI_DEPOSIT_CONTRACT = yyCrvUnitedMint.connect(getProvider()!);
       const [usdtBalance, yyCrvBalance, mintedUsdt] = await Promise.all([
         UNI_DEPOSIT_CONTRACT.unminted_USDT(),
         UNI_DEPOSIT_CONTRACT.minted_yyCRV(),
@@ -144,7 +144,7 @@ export default Vue.extend({
       this.contractStat = { usdtBalance, yyCrvBalance, mintedUsdt };
     },
     async fetchUserData() {
-      const UNI_DEPOSIT_CONTRACT = UnitedMint.connect(getProvider()!);
+      const UNI_DEPOSIT_CONTRACT = yyCrvUnitedMint.connect(getProvider()!);
       const [USDT_TOKEN, YYCRV_TOKEN] = [
         USDT,
         yyCrv,

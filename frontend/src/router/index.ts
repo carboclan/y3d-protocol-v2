@@ -1,43 +1,47 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-import Create from '../views/Create.vue';
-import Y3DToken from '../views/Y3DToken.vue';
+import VueRouter, { RouteConfig } from 'vue-router';
 
 Vue.use(VueRouter);
 
-const routes = [
+const routes: Array<RouteConfig> = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    redirect: '/y3dv2/swap',
   },
   {
-    path: '/create',
+    path: '/y3dv2',
+    redirect: '/y3dv2/swap',
+  },
+  {
+    path: '/y3dv2/swap',
+    name: 'Swap',
+    component: () => import(/* webpackChunkName: "swap" */ '../views/y3dv2/Swap.vue'),
+  },
+  {
+    path: '/y3dv2/empty',
+    name: 'Empty',
+    component: () => import(/* webpackChunkName: "empty" */ '../views/y3dv2/Empty.vue'),
+  },
+  {
+    path: '/y3dv2/create',
     name: 'Create',
-    component: Create,
+    component: () => import(/* webpackChunkName: "create" */ '../views/y3dv2/Create.vue'),
   },
   {
     path: '/y3d/:contractAddress',
     name: 'Y3DToken',
-    component: Y3DToken,
+    component: () => import(/* webpackChunkName: "y3dtoken" */ '../views/y3dv2/Y3DToken.vue'),
     props: true,
   },
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
-    path: '/unitedmint',
+    path: '/unimint',
     name: 'UnitedMint',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "mint" */ '../views/UnitedMint.vue'),
+    component: () => import(/* webpackChunkName: "mint" */ '../views/UnitedMint/Index.vue'),
   },
 ];
 
@@ -46,5 +50,47 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+const rootRoutes: IRootRoutes = [
+  {
+    name: 'Y3D v2',
+    match: '/y3dv2/',
+    isExternal: false,
+  },
+  // {
+  //   name: '3D Farm',
+  //   match: '/3dfarm/',
+  //   isExternal: false,
+  // },
+  // {
+  //   name: 'Y Vaults',
+  //   match: '/yvaults/',
+  //   isExternal: false,
+  // },
+  {
+    name: 'United Mint',
+    match: '/unimint/',
+    isExternal: false,
+  },
+  // {
+  //   name: 'Uniscam',
+  //   match: '/uniscam/',
+  //   isExternal: false,
+  // },
+  {
+    name: 'DAO',
+    match: 'https://y3d.vercel.app/#/y3d',
+    isExternal: true,
+  },
+];
+
+type IRootRoutes = Array<IRootRoute>;
+interface IRootRoute {
+  name: string;
+  match: string;
+  isExternal: boolean;
+}
+
+export { IRootRoute, IRootRoutes, rootRoutes };
 
 export default router;

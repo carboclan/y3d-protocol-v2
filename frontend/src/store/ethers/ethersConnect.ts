@@ -5,6 +5,7 @@ import {
   Contract as ContractModule,
   utils as utilsModule,
   Wallet,
+  BigNumber,
 } from 'ethers';
 
 export const PROVIDER_CHECK_MS = 500;
@@ -106,6 +107,14 @@ export function getWallet() {
 export async function getWalletAddress() {
   const addr = userWallet && await userWallet.getAddress();
   return addr;
+}
+
+export async function getBlance(address: string = 'ricmoo.firefly.eth') {
+  if (provider) {
+    const blance = await provider.getBalance(address);
+    return blance;
+  }
+  return BigNumber.from(0);
 }
 
 export function ready() {
