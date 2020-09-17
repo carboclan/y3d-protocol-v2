@@ -1,6 +1,5 @@
 <template>
   <div class="y3dv2-logo">
-    <p>♨️</p>
   </div>
 </template>
 <style lang="scss" scoped>
