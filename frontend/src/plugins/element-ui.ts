@@ -8,6 +8,8 @@ import {
   Message,
   MessageBox,
   Notification,
+  Select,
+  Option,
   Input,
   Alert,
   Tooltip,
@@ -27,7 +29,9 @@ Vue.use(Button)
   .use(Radio)
   .use(RadioGroup)
   .use(RadioButton)
-  .use(Switch);
+  .use(Switch)
+  .use(Option)
+  .use(Select);
 
 Vue.use(Loading.directive);
 

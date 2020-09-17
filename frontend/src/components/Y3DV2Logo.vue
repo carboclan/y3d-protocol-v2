@@ -14,7 +14,11 @@
   width: 100%;
   padding: 25px 25px 37px 25px;
   p {
-    font-size: 128px;
+    font-size: 6rem;
+    color: transparent;
+    background-color: white;
+    background-clip: text;
+    -webkit-background-clip: text;
   }
 }
 </style>
