@@ -1,9 +1,7 @@
 <template>
-  <router-link to="/unimint">
-    <div class="y3dv2-logo">
-      <p>♨️</p>
-    </div>
-  </router-link>
+  <div class="y3dv2-logo">
+    <p>♨️</p>
+  </div>
 </template>
 <style lang="scss" scoped>
 .y3dv2-logo {

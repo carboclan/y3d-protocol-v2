@@ -7,7 +7,13 @@
   </button>
   <button v-else class="token-select open-currency-select-button" @click="$emit('click')">
     <span class="token-select-symbol">
-      <img :src="tokenLogo" class="token-select-symbol-logo" alt="Token logo" />
+      <img
+        v-if="tokenLogo === ''"
+        src="@/assets/base/y3d.png"
+        class="token-select-symbol-logo-y3d"
+        alt="Token logo"
+      />
+      <img v-else :src="tokenLogo" class="token-select-symbol-logo" alt="Token logo" />
       <span class="token-select-token token-symbol-container">
         <slot></slot>
       </span>
@@ -65,6 +71,16 @@ export default Vue.extend({
   align-items: center;
   -webkit-box-pack: justify;
   justify-content: space-between;
+}
+.token-select-symbol-logo-y3d {
+  background-color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .token-select-symbol-logo {
   width: 24px;

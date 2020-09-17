@@ -32,12 +32,13 @@
       <div class="select-token-model-list">
         <template v-if="searchTokenList.length <= 0">
           <SelectTokenListItem
-            v-for="(item, idx) in originalList"
+            v-for="(item, idx) in processedOriginalList"
             :key="idx"
             :symbol="item.symbol"
             :name="item.symbol"
             :logo="item.logo"
             :balance="item.dBalance"
+            :isYToken="item.tag === 'y_3dToken'"
             @on-click="selectToken(item)"
           />
         </template>
@@ -49,6 +50,7 @@
             :name="item.name"
             :logo="item.logo"
             :balance="item.dBalance"
+            :isYToken="item.tag === 'y_3dToken'"
             @on-click="selectToken(item)"
           />
         </template>
@@ -58,7 +60,9 @@
 </template>
 
 <script>
-import { debounce, sortBy, find } from 'lodash';
+import {
+  debounce, sortBy, find, filter,
+} from 'lodash';
 import { mapState } from 'vuex';
 import Modal from './Modal.vue';
 import HelpTooltip from './HelpTooltip.vue';
@@ -73,6 +77,10 @@ export default {
     SelectTokenListItem,
   },
   props: {
+    isUToken: {
+      type: Boolean,
+      default: false,
+    },
     value: {
       type: Boolean,
       default: false,
@@ -97,6 +105,14 @@ export default {
   },
   computed: {
     ...mapState('ethers', ['address']),
+    processedOriginalList() {
+      return filter(this.originalList, (v) => {
+        if (this.isUToken) {
+          return v.tag === 'uToken';
+        }
+        return v.tag !== 'uToken';
+      });
+    },
   },
   data() {
     return {
@@ -110,37 +126,11 @@ export default {
           symbol: 'FUSDT',
           address: '0x7f76315337E63482043F92A1bD4784290159AD6f',
           tag: 'uToken',
-          yToken: 'yFUSDT3d',
-        },
-        {
-          symbol: 'fy3d',
-          address: '0x7a672B200f906D56E8B528413d02D12abABcc231',
-          tag: 'uToken',
-          yToken: 'yfy3d3d',
-        },
-        {
-          symbol: 'SHUIHU',
-          address: '0xA56d8FD390D6dAc025070100b49010720Db5A685',
-          tag: 'uToken',
-          yToken: 'ySHUIHU3d',
         },
         {
           symbol: 'yFUSDT3d',
-          address: '0x14Ac98d0B38ACce572c76c76501ABD648Eefea6f',
+          address: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
           tag: 'y_3dToken',
-          uToken: 'FUSDT',
-        },
-        {
-          symbol: 'yfy3d3d',
-          address: '0x2e34f61ffa1605da4ee88a6d10e5d75ba8ce246b',
-          tag: 'y_3dToken',
-          uToken: 'fy3d',
-        },
-        {
-          symbol: 'ySHUIHU3d',
-          address: '0x1d8c0ef5639445faca65951423dec250bd0e68fc',
-          tag: 'y_3dToken',
-          uToken: 'SHUIHU',
         },
       ],
     };
@@ -186,7 +176,6 @@ export default {
       const result = (
         await Promise.all(rest.map((item) => this.fetchERC20Detail(item)))
       ).map(({ balance, ...res }) => ({ ...res, balance: balance.toString() }));
-      console.log('fetchBalanceOfDefaultList result', result);
       this.originalList = [...result];
       this.originalList = sortBy(this.originalList, 'balance').reverse();
     },

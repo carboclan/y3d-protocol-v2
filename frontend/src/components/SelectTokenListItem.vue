@@ -8,7 +8,10 @@
     }"
   >
     <div class="c-select-token-icon">
-      <div class="c-select-token-icon" v-if="logo">
+      <div class="c-select-token-icon" v-if="isYToken">
+        <img src="@/assets/base/y3d.png" class="c-select-token-icon-image" alt="Token logo" />
+      </div>
+      <div class="c-select-token-icon" v-else-if="logo">
         <img :src="logo" class="c-select-token-icon-image" alt="Token logo" />
       </div>
       <div class="c-select-token-icon" v-else>
@@ -51,6 +54,10 @@ export default Vue.extend({
       default: '0',
     },
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+    isYToken: {
       type: Boolean,
       default: false,
     },

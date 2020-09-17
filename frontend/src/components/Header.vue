@@ -54,7 +54,7 @@
   </header>
 </template>
 <style lang="scss" scoped>
-@media (max-width: 600px) {
+@media (max-width: 1000px) {
   .header {
     flex-wrap: wrap;
     padding: 14px 6px !important;
@@ -95,6 +95,13 @@
   align-items: center;
   width: 100%;
   padding: 25px;
+  &-left, &-right, &-center {
+    width: calc(100% / 3);
+    flex-grow: 0;
+  }
+  &-center {
+    justify-content: center;
+  }
   &-left,
   &-right,
   &-center {
@@ -128,6 +135,7 @@
   }
   &-center-nav {
     margin: 0;
+    padding: 0;
     &-item {
       padding-left: 16px;
       padding-right: 16px;
@@ -154,6 +162,7 @@
     }
   }
   &-right {
+    justify-content: flex-end;
     .hic-operating {
       display: flex;
       -webkit-box-align: center;

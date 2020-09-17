@@ -1,10 +1,8 @@
 <template>
-  <router-link to="/unimint">
-    <div class="united-mint-logo">
-      <img class="united-mint-logo-icon" src="@/assets/united-mint/logo.png" />
-      <img class="united-mint-logo-name" src="@/assets/united-mint/UnitedMint.png" />
-    </div>
-  </router-link>
+  <div class="united-mint-logo">
+    <img class="united-mint-logo-icon" src="@/assets/united-mint/logo.png" />
+    <img class="united-mint-logo-name" src="@/assets/united-mint/UnitedMint.png" />
+  </div>
 </template>
 <style lang="scss" scoped>
 .united-mint-logo {

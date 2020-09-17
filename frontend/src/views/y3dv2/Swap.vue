@@ -7,34 +7,37 @@
             <TokenAmountInput
               :isTokenSelected="!!tokenAInfo"
               :tokenInfo="tokenAInfo"
-              :tokenLogo="tokenIcon"
+              :tokenLogo="tokenAInfo && tokenAInfo.tag === 'y_3dToken' ? ''  : tokenIcon"
               @select-token="selectTokenA"
               @amount-changed="tokenAAmountChanged"
               @isBadInputChange="tokenAIsBadInputChange"
               :tokenAmount="tokenAAmount"
+              :isUToken="uTokenIndexTag === 'A'"
             >
               <template v-slot:title>
-                From
+                {{ uTokenIndexTag === 'A' ? 'Stake' : 'Unstake' }}
               </template>
             </TokenAmountInput>
-            <SplitLine>
+            <SplitLine class="split-line">
               <arrow-down-icon
                 @click="clickOnSwitch"
                 size="1.5x"
                 class="sac-icon"
               ></arrow-down-icon>
+              <p @click="clickOnSwitch">Change path</p>
             </SplitLine>
             <TokenAmountInput
               :isTokenSelected="!!tokenBInfo"
               :tokenInfo="tokenBInfo"
-              :tokenLogo="tokenIcon"
+              :tokenLogo="tokenBInfo && tokenBInfo.tag === 'y_3dToken' ? ''  : tokenIcon"
               @select-token="selectTokenB"
               @amount-changed="tokenBAmountChanged"
               :tokenAmount="tokenBAmount"
               :isToToken="true"
+              :isUToken="uTokenIndexTag === 'B'"
             >
               <template v-slot:title>
-                To
+                {{ uTokenIndexTag === 'A' ? 'Mint' : 'Withdraw' }}
               </template>
             </TokenAmountInput>
             <!-- <div class="swap-info">
@@ -52,9 +55,9 @@
             <MainButton id="swap-button" :disabled="isBtnDisabled" @click="clickActionButton">{{
               tipText
             }}</MainButton>
-            <router-link to="/create" v-if="tokenAInfo && tokenBInfo && !isPairExist">
+            <!-- <router-link to="/create" v-if="tokenAInfo && tokenBInfo && !isPairExist">
               <p>Go to create</p>
-            </router-link>
+            </router-link> -->
           </div>
         </div>
       </div>
@@ -86,18 +89,24 @@ export default {
       pair: '',
       tokenA: '0x7f76315337E63482043F92A1bD4784290159AD6f',
       tokenB: '',
-      payloadTokenA: null,
+      payloadTokenA: {
+        symbol: 'FUSDT',
+        address: '0x7f76315337E63482043F92A1bD4784290159AD6f',
+        tag: 'uToken',
+        balance: '0',
+        dBalance: '0.0',
+        decimals: 6,
+      },
       payloadTokenB: null,
       tokenAInfo: {
         symbol: 'FUSDT',
         address: '0x7f76315337E63482043F92A1bD4784290159AD6f',
         tag: 'uToken',
-        yToken: 'yFUSDT3d',
         balance: '0',
         dBalance: '0.0',
         decimals: 6,
-        name: 'Fake USDT',
       },
+      uTokenIndexTag: 'A',
       tokenBInfo: null,
       reserves: null,
       tokenAAmount: '',
@@ -109,19 +118,7 @@ export default {
           name: 'FUSDT/yFUSDT3d',
           uToken: 'FUSDT',
           y_3dToken: 'yFUSDT3d',
-          yaddress: '0x14Ac98d0B38ACce572c76c76501ABD648Eefea6f',
-        },
-        {
-          name: 'fy3d/yfy3d3d',
-          uToken: 'fy3d',
-          y_3dToken: 'yfy3d3d',
-          yaddress: '0x2e34f61ffa1605da4ee88a6d10e5d75ba8ce246b',
-        },
-        {
-          name: 'SHUIHU/ySHUIHU3d',
-          uToken: 'SHUIHU',
-          y_3dToken: 'ySHUIHU3d',
-          yaddress: '0x1d8c0ef5639445faca65951423dec250bd0e68fc',
+          yaddress: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
         },
       ],
     };
@@ -141,7 +138,7 @@ export default {
       if (this.tokenAIsBadInput) {
         return `Insufficient ${this.tokenAInfo.symbol} balance`;
       }
-      return this.workMode.toUpperCase();
+      return `${this.workMode.toUpperCase()} ${this.tokenAInfo.symbol}`;
     },
     isPairExist() {
       if (!this.tokenAInfo || !this.tokenBInfo) {
@@ -203,6 +200,7 @@ export default {
   },
   methods: {
     clickOnSwitch() {
+      this.uTokenIndexTag = this.uTokenIndexTag === 'A' ? 'B' : 'A';
       [this.payloadTokenA, this.payloadTokenB] = [this.payloadTokenB, this.payloadTokenA];
       [this.tokenA, this.tokenB] = [this.tokenB, this.tokenA];
       [this.tokenAAmount, this.tokenBAmount] = [this.tokenBAmount, this.tokenAAmount];
@@ -277,7 +275,7 @@ export default {
       }
     },
     tokenAAmountChanged(val, rawAmount) {
-      console.log(`val ${val}, rawAmount ${rawAmount}`);
+      console.log(rawAmount);
       if (!val) {
         this.tokenAAmount = '';
         return;
@@ -311,7 +309,7 @@ export default {
       }
     },
     tokenBAmountChanged(val, rawAmount) {
-      console.log(`val ${val}, rawAmount ${rawAmount}`);
+      console.log(rawAmount);
       if (!val) {
         this.tokenBAmount = '';
         return;
@@ -352,7 +350,6 @@ export default {
       const uTContract = this.getERC20(this.tokenAInfo.address);
       const user = this.address;
       const approvedAmount = await uTContract.allowance(user, this.tokenBInfo.address);
-      console.log(`approvedAmount: ${approvedAmount}`);
       const uTokenUnit = this.tokenAInfo.decimals;
       const parsedInput = utils.parseUnits(this.tokenAAmount, uTokenUnit);
       if (parsedInput.gt(this.tokenAInfo.balance)) {
@@ -414,10 +411,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/color';
+
 .swap-page {
   position: relative;
   margin-top: 30px;
+  .split-line {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    p {
+      margin-left: 6px;
+      background-color: rgba($color: white, $alpha: 0.5);
+      border-radius: 6px;
+      font-size: 12px;
+      padding: 0 8px;
+      color: $um-text;
+    }
+  }
 }
+
 .sp-content {
   display: grid;
   grid-auto-rows: auto;
