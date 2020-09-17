@@ -3,4 +3,5 @@ pragma solidity ^0.6.0;
 
 interface IUnimint {
     function depositAndClaim(uint) external; 
+    function depositAndClaim2(uint) external; 
 }
