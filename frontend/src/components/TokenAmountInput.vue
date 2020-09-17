@@ -34,7 +34,8 @@
         </div>
       </div>
     </div>
-    <SelectTokenModal v-model="isModalShowing" @select-token="selectToken"></SelectTokenModal>
+    <SelectTokenModal
+      :isUToken="isUToken" v-model="isModalShowing" @select-token="selectToken"></SelectTokenModal>
   </div>
 </template>
 
@@ -76,6 +77,10 @@ export default Vue.extend({
       default: () => {},
     },
     isToToken: {
+      type: Boolean,
+      default: false,
+    },
+    isUToken: {
       type: Boolean,
       default: false,
     },
@@ -124,7 +129,6 @@ export default Vue.extend({
       this.setAmount(utils.formatUnits(this.tokenInfo.balance, this.tokenInfo.decimals).toString());
     },
     selectToken(payload: any) {
-      console.log('payload', payload);
       this.$emit('select-token', payload.data);
     },
   },
