@@ -53,10 +53,6 @@ export default Vue.extend({
         name: '治理',
         path: '/y3dv2/empty',
       },
-      {
-        name: '创建',
-        path: '/y3dv2/create',
-      },
     ],
   }),
 });
