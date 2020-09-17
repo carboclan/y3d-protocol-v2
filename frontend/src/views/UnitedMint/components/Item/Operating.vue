@@ -1,10 +1,16 @@
 <template>
-  <div class="united-mint-operating">
+  <div class="united-mint-operating" v-if="mode === 'difficult'">
     <div class="united-mint-operating-top">
       <div class="united-mint-operating-top-deposit">
-        <p>Blance: {{ yourData.unmintedUSDT }} USDT</p>
+        <p>
+          Blance:
+          <span>{{ displayBalance(userBalances.usdt, userBalances.usdtDecimals) }} USDT</span>
+        </p>
         <div class="united-mint-operating-top-deposit-wrap">
-          <div class="united-mint-operating-wrap-input">
+          <div
+            class="united-mint-operating-wrap-input"
+            :class="usdtInputError ? 'input-error' : ''"
+          >
             <input type="text" placeholder="0.0" v-model="usdtInput" />
             <button class="max-button basic button" @click="clickOnMaxUSDT">
               MAX
@@ -42,9 +48,18 @@
     </div>
     <div class="united-mint-operating-bottom">
       <div class="united-mint-operating-bottom-restore">
-        <p>Blance: {{ yourData.unclaimedToken }} yYCrv (... USDT)</p>
+        <p>
+          Blance:
+          <span
+            >{{ displayBalance(userBalances.tokenBalance, userBalances.tokenDecimals) }}
+            {{ data.key }}</span
+          >
+        </p>
         <div class="united-mint-operating-bottom-restore-wrap">
-          <div class="united-mint-operating-wrap-input">
+          <div
+            class="united-mint-operating-wrap-input"
+            :class="tokenInputError ? 'input-error' : ''"
+          >
             <input type="text" placeholder="0.0" v-model="tokenInput" />
             <button class="max-button basic button" @click="clickOnMaxToken">
               MAX
@@ -95,10 +110,70 @@
     </div>
     <div class="united-mint-operating-bottom-line" />
   </div>
+  <!-- easy mode -->
+  <div class="united-mint-operating united-mint-operating-easy" v-else>
+    <div class="united-mint-operating-deposit">
+      <p>Deposit <span>USDT</span></p>
+      <div>
+        <img src="@/assets/united-mint/more.png" />
+        <p>
+          Mint <span>{{ data.key }}</span>
+        </p>
+      </div>
+    </div>
+    <!-- deposit in pc mode -->
+    <div
+      class="united-mint-operating-top-deposit-wrap united-mint-operating-top-deposit-wrap-center"
+    >
+      <div class="united-mint-operating-wrap-input" :class="usdtInputError ? 'input-error' : ''">
+        <input type="text" placeholder="0.0" v-model="usdtInput" />
+        <button class="max-button basic button" @click="clickOnMaxUSDT">
+          MAX
+        </button>
+      </div>
+      <button
+        class="operating-button ui icon button ml8"
+        @click="deposit"
+        :disabled="loadingDeposit"
+        :class="loadingDeposit && 'loading'"
+      >
+        <img src="@/assets/united-mint/deposit.png" />
+        <p>DEPOSIT</p>
+      </button>
+    </div>
+    <div class="united-mint-operating-info">
+      <p>APY: <span>{{ data.apy }}%</span></p>
+      <p>
+        Blance:
+        <span>{{ displayBalance(userBalances.usdt, userBalances.usdtDecimals) }} USDT</span>
+      </p>
+    </div>
+    <!-- deposit in phone mode -->
+    <div
+      class="united-mint-operating-top-deposit-wrap united-mint-operating-top-deposit-wrap-phone"
+    >
+      <div class="united-mint-operating-wrap-input" :class="usdtInputError ? 'input-error' : ''">
+        <input type="text" placeholder="0.0" v-model="usdtInput" />
+        <button class="max-button basic button" @click="clickOnMaxUSDT">
+          MAX
+        </button>
+      </div>
+      <button
+        class="operating-button ui icon button ml8"
+        @click="deposit"
+        :disabled="loadingDeposit"
+        :class="loadingDeposit && 'loading'"
+      >
+        <img src="@/assets/united-mint/deposit.png" />
+        <p>DEPOSIT</p>
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
 import MintHelper from '@/contract/mint-helper';
+import { utils } from '../../../../store/ethers/ethersConnect';
 
 export default {
   name: 'UnitedMintItemOperating',
@@ -111,10 +186,21 @@ export default {
       loadingClaim: false,
       loadingDepositMClaim: false,
       loadingRestore: false,
+      usdtInputError: false,
+      tokenInputError: false,
     };
   },
   props: {
-    yourData: {
+    data: {
+      type: Object,
+      default: () => null,
+    },
+    mode: {
+      type: String,
+      // difficult
+      default: 'easy',
+    },
+    userBalances: {
       type: Object,
       default: () => ({}),
     },
@@ -122,16 +208,32 @@ export default {
   components: {},
   computed: {},
   methods: {
+    displayBalance(price, decimals) {
+      if (!price) return '...';
+      const p = this.formatPrice(price, decimals);
+      const pointIndex = p.indexOf('.');
+      if (p !== -1) {
+        return p.substring(0, pointIndex + 5);
+      }
+      return p;
+    },
+    formatPrice(price, decimals) {
+      if (!price) return '...';
+      return utils.formatUnits(price, decimals);
+    },
     clickOnMaxUSDT() {
-      this.usdtInput = parseFloat(this.yourData.unmintedUSDT);
+      this.usdtInput = this.formatPrice(this.userBalances.usdt, this.userBalances.usdtDecimals);
     },
     clickOnMaxToken() {
-      this.tokenInput = parseFloat(this.yourData.unclaimedToken);
+      this.tokenInput = this.formatPrice(
+        this.userBalances.tokenBalance,
+        this.userBalances.tokenDecimals,
+      );
     },
     async deposit() {
       this.loadingDeposit = true;
       try {
-        await MintHelper.uniDepositContract_deposit_amount(`${this.usdtInput}`);
+        await MintHelper.uniDepositContract_deposit_amount(`${this.usdtInput}`, this.data);
       } catch (err) {
         console.log(err);
       }
@@ -140,7 +242,7 @@ export default {
     async mint() {
       this.loadingMint = true;
       try {
-        await MintHelper.uniDepositContract_mint();
+        await MintHelper.uniDepositContract_mint(this.data);
       } catch (err) {
         console.log(err);
       }
@@ -149,7 +251,7 @@ export default {
     async claim() {
       this.loadingClaim = true;
       try {
-        await MintHelper.uniDepositContract_claim();
+        await MintHelper.uniDepositContract_claim(this.data);
       } catch (err) {
         console.log(err);
       }
@@ -158,7 +260,7 @@ export default {
     async depositMClaim() {
       this.loadingDepositMClaim = true;
       try {
-        await MintHelper.uniDepositContract_deposit_n_claim(`${this.usdtInput}`);
+        await MintHelper.uniDepositContract_deposit_n_claim(`${this.usdtInput}`, this.data);
       } catch (err) {
         console.log(err);
       }
@@ -167,21 +269,94 @@ export default {
     async restore() {
       this.loadingRestore = true;
       try {
-        await MintHelper.uniDepositContract_restore_amount(`${this.tokenInput}`);
+        await MintHelper.uniDepositContract_restore_amount(`${this.tokenInput}`, this.data);
       } catch (err) {
         console.log(err);
       }
       this.loadingRestore = false;
     },
   },
-  watch: {},
+  watch: {
+    usdtInput() {
+      if (this.usdtInput === '') {
+        this.usdtInputError = false;
+        return;
+      }
+      if (
+        utils
+          .parseUnits(this.usdtInput, this.userBalances.usdtDecimals)
+          .gt(this.userBalances.usdt.toString())
+      ) {
+        this.usdtInputError = true;
+      } else {
+        this.usdtInputError = false;
+      }
+    },
+    tokenInput() {
+      if (this.tokenInput === '') {
+        this.tokenInputError = false;
+        return;
+      }
+      if (
+        utils
+          .parseUnits(this.tokenInput, this.userBalances.tokenDecimals)
+          .gt(this.userBalances.tokenBalance.toString())
+      ) {
+        this.tokenInputError = true;
+      } else {
+        this.tokenInputError = false;
+      }
+    },
+  },
   mounted() {},
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/color.scss";
-@media (max-width: 500px) {
+@import '@/assets/styles/color.scss';
+@media (max-width: 600px) {
+  .united-mint-operating-easy {
+    flex-wrap: wrap;
+    .united-mint-operating-top-deposit-wrap-phone {
+      display: flex !important;
+      width: 100%;
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+    .united-mint-operating-top-deposit-wrap-center {
+      display: none !important;
+    }
+    .united-mint-operating-deposit,
+    .united-mint-operating-info {
+      width: 50%;
+    }
+    .united-mint-operating-deposit {
+      flex-shrink: 0;
+      flex-direction: column;
+      align-items: flex-start !important;
+      div {
+        display: flex;
+        align-items: center;
+      }
+      img {
+        margin-left: 0 !important;
+      }
+    }
+    .united-mint-operating-info {
+      flex-shrink: 0;
+      flex-direction: column;
+      align-items: flex-end !important;
+      p {
+        text-align: right;
+      }
+      p:first-of-type {
+        margin-right: 0 !important;
+      }
+      span {
+        font-weight: bold;
+      }
+    }
+  }
   .united-mint-operating-center-line-wrap {
     display: none;
   }
@@ -206,6 +381,46 @@ export default {
         margin-top: 20px;
         width: 100% !important;
       }
+    }
+  }
+}
+
+.united-mint-operating-easy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  .united-mint-operating-top-deposit-wrap-phone {
+    display: none;
+  }
+  .united-mint-operating-deposit,
+  .united-mint-operating-info {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    p {
+      font-size: 14px;
+      margin: 0;
+      span {
+        font-weight: bold;
+      }
+    }
+    img {
+      height: 10px;
+      margin: 0 5px 0 8px;
+    }
+  }
+  .united-mint-operating-deposit {
+    flex-shrink: 0;
+    div {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .united-mint-operating-info {
+    p:first-of-type {
+      margin-right: 16px;
     }
   }
 }
@@ -246,9 +461,12 @@ export default {
     &-other {
       width: 47%;
       p {
-        font-size: 14px;
+        font-size: 16px;
         margin: 0 0 8px 0;
         height: 20px;
+        span {
+          font-weight: bold;
+        }
       }
       &-wrap {
         display: flex;
@@ -286,6 +504,9 @@ export default {
             align-items: center;
             color: $um-text;
           }
+        }
+        .input-error {
+          border: 1px solid red !important;
         }
         .united-mint-operating-wrap-input {
           display: flex;

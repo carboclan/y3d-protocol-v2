@@ -57,30 +57,30 @@ const rootRoutes: IRootRoutes = [
     match: '/y3dv2/',
     isExternal: false,
   },
-  {
-    name: '3D Farm',
-    match: '/3dfarm/',
-    isExternal: false,
-  },
-  {
-    name: 'Y Vaults',
-    match: '/yvaults/',
-    isExternal: false,
-  },
+  // {
+  //   name: '3D Farm',
+  //   match: '/3dfarm/',
+  //   isExternal: false,
+  // },
+  // {
+  //   name: 'Y Vaults',
+  //   match: '/yvaults/',
+  //   isExternal: false,
+  // },
   {
     name: 'United Mint',
     match: '/unimint/',
     isExternal: false,
   },
-  {
-    name: 'Uniscam',
-    match: '/uniscam/',
-    isExternal: false,
-  },
+  // {
+  //   name: 'Uniscam',
+  //   match: '/uniscam/',
+  //   isExternal: false,
+  // },
   {
     name: 'DAO',
-    match: '/dao/',
-    isExternal: false,
+    match: 'https://y3d.vercel.app/#/y3d',
+    isExternal: true,
   },
 ];
 

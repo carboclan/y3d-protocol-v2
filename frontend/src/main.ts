@@ -6,6 +6,7 @@ import './registerServiceWorker';
 
 import './plugins/element-ui';
 import './plugins/icons';
+import './plugins/rem';
 
 import './assets/styles/reset.scss';
 

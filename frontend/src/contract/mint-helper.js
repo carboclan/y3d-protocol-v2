@@ -1,31 +1,30 @@
-/* eslint-disable indent */
-/* eslint-disable no-alert */
-/* eslint-disable max-len */
-/* eslint-disable func-names */
-/* eslint-disable camelcase */
-/* eslint-disable no-unused-vars */
+/* eslint-disable */
 
 import { ethers } from 'ethers';
 import { getProvider, getWallet, getWalletAddress } from '@/store/ethers/ethersConnect';
 import IERC20_ABI from './abi/IERC20.json';
-import UnitedMintABI from './abi/UnitedMint.json';
-import { usdtAddr, yyCrvAddr } from './index';
+import { usdtContractAddr } from './index';
 
 // #region Mint Functions
-const uniDepositContract_deposit_n_claim = async function (amount) {
+const uniDepositContract_deposit_n_claim = async function(amount, toeknData) {
   const signer = getProvider().getSigner();
   getWallet();
   const address = await getWalletAddress();
-  const USDT_TOKEN_SIGNED = new ethers.Contract(usdtAddr, IERC20_ABI, signer);
-  const UNI_DEPOSIT_SIGNED = new ethers.Contract(yyCrvAddr, UnitedMintABI, signer);
-  const currentUSDT = ethers.utils.parseUnits(amount, 6);
-  const allowedUSDT = await USDT_TOKEN_SIGNED.allowance(address, yyCrvAddr);
+  const USDT_TOKEN_SIGNED = new ethers.Contract(usdtContractAddr, IERC20_ABI, signer);
+  const UNI_DEPOSIT_SIGNED = new ethers.Contract(
+    toeknData.unitedMintContractAddr,
+    toeknData.unitedMintContractABI,
+    signer
+  );
+  const decimals = await USDT_TOKEN_SIGNED.decimals();
+  const currentUSDT = ethers.utils.parseUnits(amount, decimals);
+  const allowedUSDT = await USDT_TOKEN_SIGNED.allowance(address, toeknData.unitedMintContractAddr);
 
   let allow = Promise.resolve();
 
   if (allowedUSDT.lt(currentUSDT)) {
-    allow = USDT_TOKEN_SIGNED.approve(yyCrvAddr, ethers.constants.MaxUint256)
-      .then((t) => getProvider().waitForTransaction(t.hash))
+    allow = USDT_TOKEN_SIGNED.approve(toeknData.unitedMintContractAddr, ethers.constants.MaxUint256)
+      .then(t => getProvider().waitForTransaction(t.hash))
       .catch(() => {
         alert('Try resetting your approval to 0 first');
       });
@@ -35,7 +34,7 @@ const uniDepositContract_deposit_n_claim = async function (amount) {
     allow
       .then(async () => {
         UNI_DEPOSIT_SIGNED.depositAndClaim(currentUSDT)
-          .then((t) => {
+          .then(t => {
             getProvider()
               .waitForTransaction(t.hash)
               .then(() => {});
@@ -48,18 +47,23 @@ const uniDepositContract_deposit_n_claim = async function (amount) {
   }
 };
 
-const uniDepositContract_deposit_amount = async function (amount) {
+const uniDepositContract_deposit_amount = async function(amount, toeknData) {
   const signer = getProvider().getSigner();
   getWallet();
   const address = await getWalletAddress();
-  const USDT_TOKEN_SIGNED = new ethers.Contract(usdtAddr, IERC20_ABI, signer);
-  const UNI_DEPOSIT_SIGNED = new ethers.Contract(yyCrvAddr, UnitedMintABI, signer);
-  const currentUSDT = ethers.utils.parseUnits(amount, 6);
-  const allowedUSDT = await USDT_TOKEN_SIGNED.allowance(address, yyCrvAddr);
+  const USDT_TOKEN_SIGNED = new ethers.Contract(usdtContractAddr, IERC20_ABI, signer);
+  const UNI_DEPOSIT_SIGNED = new ethers.Contract(
+    toeknData.unitedMintContractAddr,
+    toeknData.unitedMintContractABI,
+    signer
+  );
+  const decimals = await USDT_TOKEN_SIGNED.decimals();
+  const currentUSDT = ethers.utils.parseUnits(amount, decimals);
+  const allowedUSDT = await USDT_TOKEN_SIGNED.allowance(address, toeknData.unitedMintContractAddr);
   let allow = Promise.resolve();
   if (allowedUSDT.lt(currentUSDT)) {
-    allow = USDT_TOKEN_SIGNED.approve(yyCrvAddr, ethers.constants.MaxUint256)
-      .then((t) => getProvider().waitForTransaction(t.hash))
+    allow = USDT_TOKEN_SIGNED.approve(toeknData.unitedMintContractAddr, ethers.constants.MaxUint256)
+      .then(t => getProvider().waitForTransaction(t.hash))
       .catch(() => {
         alert('Try resetting your approval to 0 first');
       });
@@ -68,7 +72,7 @@ const uniDepositContract_deposit_amount = async function (amount) {
     allow
       .then(async () => {
         UNI_DEPOSIT_SIGNED.deposit(currentUSDT)
-          .then((t) => {
+          .then(t => {
             getProvider()
               .waitForTransaction(t.hash)
               .then(() => {});
@@ -81,71 +85,90 @@ const uniDepositContract_deposit_amount = async function (amount) {
   }
 };
 
-const uniDepositContract_mint = async function () {
+const uniDepositContract_mint = async function(toeknData) {
   const signer = getProvider().getSigner();
-  const UNI_DEPOSIT_SIGNED = new ethers.Contract(yyCrvAddr, UnitedMintABI, signer);
+  const UNI_DEPOSIT_SIGNED = new ethers.Contract(
+    toeknData.unitedMintContractAddr,
+    toeknData.unitedMintContractABI,
+    signer
+  );
   const currentUnmintedUsdt = await UNI_DEPOSIT_SIGNED.unminted_USDT();
 
   if (currentUnmintedUsdt > 0) {
     UNI_DEPOSIT_SIGNED.mint()
-      .then((t) => getProvider().waitForTransaction(t.hash))
+      .then(t => getProvider().waitForTransaction(t.hash))
       .catch(() => {});
   } else {
-    alert('Current have no USDT for yCrv to mint!!');
+    alert(`Current have no USDT for ${toeknData.key} to mint!!`);
   }
 };
 
-const uniDepositContract_claim = async function () {
+const uniDepositContract_claim = async function(toeknData) {
   const signer = getProvider().getSigner();
-  const UNI_DEPOSIT_SIGNED = new ethers.Contract(yyCrvAddr, UnitedMintABI, signer);
-  const currentMinted_yyCrv = await UNI_DEPOSIT_SIGNED.minted_yyCRV();
-  if (currentMinted_yyCrv > 0) {
+  const UNI_DEPOSIT_SIGNED = new ethers.Contract(
+    toeknData.unitedMintContractAddr,
+    toeknData.unitedMintContractABI,
+    signer
+  );
+  const currentMinted_token =
+    toeknData.key === 'yYCrv'
+      ? await UNI_DEPOSIT_SIGNED.minted_yyCRV()
+      : await UNI_DEPOSIT_SIGNED.minted_yswUSD();
+  if (currentMinted_token > 0) {
     UNI_DEPOSIT_SIGNED.claim()
-      .then((t) => getProvider().waitForTransaction(t.hash))
+      .then(t => getProvider().waitForTransaction(t.hash))
       .catch(() => {});
   } else {
-    alert('Current there are no yyCrv to claim!!');
+    alert(`Current there are no ${toeknData.key} to claim!!`);
   }
 };
 
-const uniDepositContract_restore_amount = async function (amount) {
+const uniDepositContract_restore_amount = async function(amount, toeknData) {
   const signer = getProvider().getSigner();
   getWallet();
   const address = await getWalletAddress();
-  const UNI_DEPOSIT_CONTRACT = new ethers.Contract(yyCrvAddr, UnitedMintABI, signer);
-  const yyCrvTokenAddr = await UNI_DEPOSIT_CONTRACT.yyCrv();
-  const yyCrv_TOKEN_SIGNED = new ethers.Contract(yyCrvTokenAddr, IERC20_ABI, signer);
-  const UNI_DEPOSIT_SIGNED = new ethers.Contract(yyCrvAddr, UnitedMintABI, signer);
-
-  const current_yyCrv = ethers.utils.parseUnits(amount, 18);
-  const allowed_yCrv = await yyCrv_TOKEN_SIGNED.allowance(address, yyCrvAddr);
+  const UNI_DEPOSIT_CONTRACT = new ethers.Contract(
+    toeknData.unitedMintContractAddr,
+    toeknData.unitedMintContractABI,
+    signer
+  );
+  const yTokenAddr =
+    toeknData.key === 'yYCrv'
+      ? await UNI_DEPOSIT_CONTRACT.yyCrv()
+      : await UNI_DEPOSIT_CONTRACT.yswUSD();
+  const y_TOKEN_SIGNED = new ethers.Contract(yTokenAddr, IERC20_ABI, signer);
+  const UNI_DEPOSIT_SIGNED = new ethers.Contract(
+    toeknData.unitedMintContractAddr,
+    toeknData.unitedMintContractABI,
+    signer
+  );
+  const decimals = await y_TOKEN_SIGNED.decimals();
+  const current_token = ethers.utils.parseUnits(amount, decimals);
+  const allowed_token = await y_TOKEN_SIGNED.allowance(address, toeknData.unitedMintContractAddr);
 
   let allow = Promise.resolve();
 
-  if (allowed_yCrv.lt(current_yyCrv)) {
-    allow = yyCrv_TOKEN_SIGNED
-      .approve(yyCrvAddr, ethers.constants.MaxUint256)
-      .then((t) => getProvider().waitForTransaction(t.hash))
+  if (allowed_token.lt(current_token)) {
+    allow = y_TOKEN_SIGNED
+      .approve(toeknData.unitedMintContractAddr, ethers.constants.MaxUint256)
+      .then(t => getProvider().waitForTransaction(t.hash))
       .catch(() => {
         alert('Try resetting your approval to 0 first');
       });
   }
 
-  if (current_yyCrv.gt(0)) {
+  if (current_token.gt(0)) {
     allow
       .then(async () => {
-        UNI_DEPOSIT_SIGNED.restore(current_yyCrv)
-          .then((t) => {
+        UNI_DEPOSIT_SIGNED.restore(current_token)
+          .then(t => {
             getProvider()
               .waitForTransaction(t.hash)
-              .then(() => {
-              });
+              .then(() => {});
           })
-          .catch(() => {
-          });
+          .catch(() => {});
       })
-      .catch(() => {
-      });
+      .catch(() => {});
   } else {
     alert('You have no tokens to restore!!');
   }
