@@ -51,7 +51,7 @@ export default Vue.extend({
       },
       {
         name: '治理',
-        path: '/y3dv2/empty',
+        path: '/y3dv2/govern',
       },
     ],
   }),

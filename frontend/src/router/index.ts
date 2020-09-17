@@ -18,9 +18,9 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "swap" */ '../views/y3dv2/Swap.vue'),
   },
   {
-    path: '/y3dv2/empty',
+    path: '/y3dv2/govern',
     name: 'Empty',
-    component: () => import(/* webpackChunkName: "empty" */ '../views/y3dv2/Empty.vue'),
+    component: () => import(/* webpackChunkName: "empty" */ '../views/y3dv2/Govern.vue'),
   },
   {
     path: '/y3d/:contractAddress',
