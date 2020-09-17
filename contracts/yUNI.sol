@@ -14,21 +14,6 @@ interface IUniswap {
     function swapExactTokensForTokens(uint, uint, address[] calldata, address, uint) external;
 }
 
-contract Context {
-    constructor () internal { }
-    // solhint-disable-previous-line no-empty-blocks
-
-    function _msgSender() internal view returns (address payable) {
-        return msg.sender;
-    }
-
-    function _msgData() internal view returns (bytes memory) {
-        this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
-        return msg.data;
-    }
-}
-
-
 contract ERC20Detailed is IERC20 {
     string constant private _name = "yUniswap-ETH-USDT-LP";
     string constant private _symbol = "yUniswap-ETH-USDT-LP";
