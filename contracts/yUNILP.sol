@@ -150,9 +150,9 @@ contract yUNILP is ERC20, ReentrancyGuard, Ownable {
 
     address constant public miner = address(0x6C3e4cb2E96B01F4b866965A91ed4437839A121a); // ETH/DAI UNI Pool
     address constant public uniswap = address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
-    address constant public unimint = address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);    
+    address public unimint = address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);    
 
-    address public UNISWAP_1 = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
+    address public UNISWAP_1 = address(0xd3d2E2692501A5c9Ca623199D38826e513033a17);
     address public UNISWAP_2;     
 
     uint public pool;
@@ -225,6 +225,9 @@ contract yUNILP is ERC20, ReentrancyGuard, Ownable {
     function set_UNISWAP_2(address uni) external onlyOwner {
         UNISWAP_2 = uni;
     }
+    function set_UNIMINT(address uni) external onlyOwner {
+        unimint = uni;
+    }    
 
     function deposit_S(uint a) internal {
         IStakingRewards(miner).stake(a);
@@ -244,22 +247,19 @@ contract yUNILP is ERC20, ReentrancyGuard, Ownable {
         IStakingRewards(miner).withdraw(_amount);
     }
 
-/*
 
     function harvest_to_uniswap() external onlyY3dHolder() {
-        ICrvMinter(miner).mint(miner);
-        uint _crv = CRV.balanceOf(address(this));
-        require(_crv > 0, "no enough Crv");
-        CRV.safeApprove(uniswap, 0);
-        CRV.safeApprove(uniswap, _crv);
+        IStakingRewards(miner).getReward();        
+        uint t = T.balanceOf(address(this));
+        require(t > 0, "no enough target token");
+        T.safeApprove(uniswap, 0);
+        T.safeApprove(uniswap, t);
         address[] memory path = new address[](2);
         path[0] = UNISWAP_1;
-        IUniswap(uniswap).swapExactTokensForTokens(_crv, uint(0), path, address(this), now.add(1800));
-
-   
-
+        path[1] = UNISWAP_2;        
+        IUniswap(uniswap).swapExactTokensForTokens(t, uint(0), path, address(this), now.add(1800));
         recycle();
-    }*/
+    }
 
     function harvest_and_mint() external onlyY3dHolder() {
         IStakingRewards(miner).getReward();        
