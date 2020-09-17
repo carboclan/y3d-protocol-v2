@@ -23,11 +23,6 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "empty" */ '../views/y3dv2/Empty.vue'),
   },
   {
-    path: '/y3dv2/create',
-    name: 'Create',
-    component: () => import(/* webpackChunkName: "create" */ '../views/y3dv2/Create.vue'),
-  },
-  {
     path: '/y3d/:contractAddress',
     name: 'Y3DToken',
     component: () => import(/* webpackChunkName: "y3dtoken" */ '../views/y3dv2/Y3DToken.vue'),
