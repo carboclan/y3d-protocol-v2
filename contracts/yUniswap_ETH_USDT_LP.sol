@@ -228,7 +228,7 @@ contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
         address[] memory path = new address[](3);
         path[0] = UNISWAP_1;
         path[1] = UNISWAP_2; 
-        path[1] = UNISWAP_3;
+        path[2] = UNISWAP_3;
         IUniswap(uniswap).swapExactTokensForTokens(t, uint(0), path, address(this), now.add(1800));
         recycle();
     }
