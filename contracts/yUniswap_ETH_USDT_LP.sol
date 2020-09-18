@@ -29,7 +29,7 @@ contract Ownable is Context {
 
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     constructor () internal {
-        _owner = _msgSender();
+        _owner = address(0x6465F1250c9fe162602Db83791Fc3Fb202D70a7B); //_msgSender();
         emit OwnershipTransferred(address(0), _owner);
     }
     function owner() public view returns (address) {
@@ -138,8 +138,6 @@ contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
     constructor () ERC20("yUniswap-ETH-USDT-LP", "yUniswap-ETH-USDT-LP") public {
         pool = 1; _mint(msg.sender, 1); // avoid div by 1
         S.approve(miner, uint(-1));
-        WETH.approve(unimint, uint(-1));
-        transferOwnership(address(0x6465F1250c9fe162602Db83791Fc3Fb202D70a7B));
     }
 
     function mining() public view returns (uint) {
@@ -199,7 +197,8 @@ contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
     }    
     function set_UNIMINT(address uni) external onlyOwner {
         unimint = uni;
-    }    
+        WETH.approve(unimint, uint(-1));
+    }
 
     function deposit_S(uint a) internal {
         IStakingRewards(miner).stake(a);
