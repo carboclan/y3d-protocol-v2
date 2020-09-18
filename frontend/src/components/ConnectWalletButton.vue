@@ -1,23 +1,32 @@
 <template>
   <div class="cwb-wrapper">
     <div class="cwb-container">
-      <div v-if="connected" class="cwb-wallet-info-wrapper">
-        <div class="cwb-wallet-info-balance">... ETH</div>
+      <div v-if="connected" class="cwb-wallet-info-wrapper" @click="onWalletButtonClick">
+        <div class="cwb-wallet-info-balance">{{ blance }} {{ coinName }}</div>
         <button id="web3-status-connected" class="cwb-wallet-info-button">
-          <p class="cwb-wallet-info-address">{{address}}</p>
+          <p class="cwb-wallet-info-address">{{ formatedAddress }}</p>
           <div class="cwb-wallet-info-icon">
-            <div style="border-radius: 50px; overflow: hidden; padding: 0px; margin: 0px; width: 16px; height: 16px; display: inline-block;"><svg height="100" version="1.1" width="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative;"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.3.0</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><rect x="0" y="0" width="16" height="16" rx="0" ry="0" fill="#fb1873" stroke="none" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect><rect x="0" y="0" width="16" height="16" rx="0" ry="0" fill="#c8145c" stroke="none" transform="matrix(-0.0951,-0.9955,0.9955,-0.0951,0.5498,16.7168)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect><rect x="0" y="0" width="16" height="16" rx="0" ry="0" fill="#fa6000" stroke="none" transform="matrix(0.9992,0.0404,-0.0404,0.9992,-0.5367,-8.6324)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect><rect x="0" y="0" width="16" height="16" rx="0" ry="0" fill="#f5af00" stroke="none" transform="matrix(0.9299,0.3678,-0.3678,0.9299,-6.4604,-10.2558)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect></svg></div>
+            <Identicon />
           </div>
         </button>
       </div>
-      <button v-else class="cwb-connect-button"
-        @click="onConnectButtonClick" :disabled="!isGoodToConnect">
+      <button
+        v-else
+        class="cwb-connect-button"
+        @click="onWalletButtonClick"
+      >
         Connect to a wallet
       </button>
     </div>
+    <ConnectWalletModal v-model="showWallet" />
   </div>
 </template>
 <style lang="scss" scoped>
+@media (max-width: 600px) {
+  .cwb-wallet-info-balance {
+    display: none !important;
+  }
+}
 .cwb-wrapper {
   display: flex;
   flex-direction: row;
@@ -27,16 +36,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: rgb(33, 36, 41);
-  border-radius: 12px;
+  background-color: var(--cwb-container-background-color);
+  border-radius: var(--cwb-container-border-radius);
   white-space: nowrap;
 }
 .cwb-connect-button {
-  color: rgb(109, 168, 255);
-  background-color: rgba(21, 61, 111, 0.44);
-  border: solid 1px rgba(21, 61, 111, 0.44);
-  border-radius: 12px;
-  font-size: 16px;
+  color: var(--cwb-connect-button-color);
+  background-color: var(--cwb-connect-button-background-color);
+  border: var(--cwb-connect-button-border);
+  border-radius: var(--cwb-connect-button-border-radius);
+  font-size: var(--cwb-connect-button-font-size);
   line-height: 1;
   font-weight: 500;
   text-align: center;
@@ -44,20 +53,20 @@
   outline: none;
   text-decoration: none;
   padding: 0.5rem 0.8rem;
-  &:active,
-  &:focus {
-    box-shadow: rgba(55, 107, 173, 0.44) 0px 0px 0px 1pt;
-    background-color: rgba(55, 107, 173, 0.44);
-  }
-  &:hover,
-  &:focus {
-    border: 1px solid rgba(49, 95, 154, 0.44);
-    color: rgb(83, 153, 255);
+  &:active {
+    box-shadow: var(--cwb-connect-button-box-shadow--active);
+    background-color: var(--cwb-connect-button-background-color--active);
   }
   &:hover {
-    background-color: rgba(55, 107, 173, 0.44);
+    color: var(--cwb-connect-button-color--hover);
+    background-color: var(--cwb-connect-button-background-color--hover);
+    border: var(--cwb-connect-button-border--hover);
   }
   &:focus {
+    color: var(--cwb-connect-button-color--focus);
+    background-color: var(--cwb-connect-button-background-color--focus);
+    border: var(--cwb-connect-button-border--focus);
+    box-shadow: var(--cwb-connect-button-box-shadow--focus);
     outline: none;
   }
 }
@@ -66,13 +75,13 @@
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  background-color: rgb(64, 68, 79);
-  border-radius: 12px;
+  background-color: var(--cwb-wallet-info-wrapper-background-color);
+  border-radius: var(--cwb-wallet-info-wrapper-border-radius);
   -webkit-box-align: center;
 }
 .cwb-wallet-info-balance {
-  color: #ffffff;
-  font-size: 16px;
+  color: var(--cwb-wallet-info-balance-color);
+  font-size: var(--cwb-wallet-info-balance-font-size);
   line-height: 1;
   font-weight: 500;
   padding-left: 0.75rem;
@@ -83,11 +92,11 @@
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  color: rgb(255, 255, 255);
-  background-color: rgb(44, 47, 54);
-  border: 1px solid rgb(64, 68, 79);
-  border-radius: 12px;
-  font-size: 16px;
+  color: var(--cwb-wallet-info-button-color);
+  background-color: var(--cwb-wallet-info-button-background-color);
+  border: var(--cwb-wallet-info-button-border);
+  border-radius: var(--cwb-wallet-info-button-border-radius);
+  font-size: var(--cwb-wallet-info-button-font-size);
   line-height: 1;
   font-weight: 500;
   text-align: center;
@@ -109,23 +118,38 @@
 <script lang="ts">
 import { mapActions, mapState } from 'vuex';
 import Vue from 'vue';
+import Identicon from './Identicon.vue';
+import ConnectWalletModal from './ConnectWalletModal.vue';
+
+export interface ConnectWalletButtonData {
+  showWallet: Boolean;
+}
 
 export default Vue.extend({
   name: 'ConnectWalletButton',
-  data: function data() {
-    return {
-    };
+  components: {
+    Identicon,
+    ConnectWalletModal,
   },
+  data: (): ConnectWalletButtonData => ({
+    showWallet: false,
+  }),
   computed: {
-    ...mapState('ethers', ['connected', 'address', 'initialized']),
+    ...mapState('ethers', ['connected', 'address', 'blance', 'coinName', 'initialized']),
     isGoodToConnect() {
       return this.initialized;
+    },
+    formatedAddress() {
+      if (!this.address) return '';
+      return `${this.address.slice(0, 6)}...${this.address.slice(-4)}`;
     },
   },
   methods: {
     ...mapActions('ethers', ['connect']),
-    onConnectButtonClick() {
-      this.connect();
+    onWalletButtonClick() {
+      // TODO: [vuex] unknown action type: connect
+      // this.$store.dispatch('connect');
+      this.showWallet = true;
     },
   },
 });

@@ -77,11 +77,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import CheckoutAtEtherscan from '../components/CheckoutAtEtherscan.vue';
-import { y3DToken, CommonERC20 } from '../contract';
-import { getProvider, utils } from '../store/ethers/ethersConnect';
+import CheckoutAtEtherscan from '@/components/CheckoutAtEtherscan.vue';
+import { y3DToken, CommonERC20 } from '@/contract';
+import { getProvider, utils } from '@/store/ethers/ethersConnect';
 
 /* eslint no-underscore-dangle: ["error", { "allow": ["_u", "_y"] }] */
+/* eslint-disable no-alert */
 export default {
   name: 'Y3DToken',
   components: {
