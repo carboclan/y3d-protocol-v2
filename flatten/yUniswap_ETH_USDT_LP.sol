@@ -815,7 +815,7 @@ contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
   
     constructor () ERC20("yUniswap-ETH-USDT-LP", "yUniswap-ETH-USDT-LP") public {
         pool = 1; _mint(msg.sender, 1); // avoid div by 1
-        S.approve(miner, uint(-1));
+        // S.approve(miner, uint(-1));
     }
 
     function mining() public view returns (uint) {
