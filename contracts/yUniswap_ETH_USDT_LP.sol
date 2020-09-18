@@ -2,8 +2,11 @@ pragma solidity ^0.6.0;
 
 pragma experimental ABIEncoderV2;
 
-import "./interfaces/IUnimint.sol";
 import "./libraries/ERC20.sol";
+
+interface IUnimint {
+    function depositAndClaim(address, address, uint, uint) external; 
+}
 
 interface IUniswap {
     function swapExactTokensForTokens(uint, uint, address[] calldata, address, uint) external;
@@ -122,7 +125,8 @@ contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
     IERC20 constant public y3d = IERC20(0xc7fD9aE2cf8542D71186877e21107E1F3A0b55ef);
     IERC20 constant public WETH = IERC20(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
 
-    address constant public miner = address(0x6C3e4cb2E96B01F4b866965A91ed4437839A121a); // ETH/DAI UNI Pool
+    address constant public USDT = address(0xdAC17F958D2ee523a2206206994597C13D831ec7);
+    address constant public miner = address(0x6C3e4cb2E96B01F4b866965A91ed4437839A121a); // Uniswap V2: ETH/USDT UNI Pool
     address constant public uniswap = address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
     address public unimint;
 
@@ -135,9 +139,9 @@ contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
     uint public y3d_threhold = 1e16; // You want to be a Consul?
     mapping (address => uint8) fees; // use P3D to against front-running
   
-    constructor () ERC20("yUniswap-ETH-USDT-LP", "yUniswap-ETH-USDT-LP") public {
+    constructor () ERC20("yUniswap-ETH/USDT-LP", "yUniswap-ETH/USDT-LP") public {
         pool = 1; _mint(msg.sender, 1); // avoid div by 1
-        // S.approve(miner, uint(-1));
+        S.approve(miner, uint(-1));
     }
 
     function mining() public view returns (uint) {
@@ -242,7 +246,7 @@ contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
         path[0] = UNISWAP_1;
         path[1] = UNISWAP_2;        
         IUniswap(uniswap).swapExactTokensForTokens(t, uint(0), path, address(this), now.add(1800));
-        IUnimint(unimint).depositAndClaim(WETH.balanceOf(address(this)));
+        IUnimint(unimint).depositAndClaim(UNISWAP_2, USDT, WETH.balanceOf(address(this)), 0);
         recycle();
     }    
 
