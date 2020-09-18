@@ -143,17 +143,18 @@ contract yUNILP is ERC20, ReentrancyGuard, Ownable {
     using Address for address;
     using SafeMath for uint256;
     
-    IERC20 constant public S = IERC20(0x77C6E4a580c0dCE4E5c7a17d0bc077188a83A059); // Source Token: UNI-LP
-    IERC20 constant public T = IERC20(0xB8BAa0e4287890a5F79863aB62b7F175ceCbD433); // Target Token: UNI
+    IERC20 constant public S = IERC20(0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852); // Source Token: UNI-LP
+    IERC20 constant public T = IERC20(0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984); // Target Token: UNI
     IERC20 constant public y3d = IERC20(0xc7fD9aE2cf8542D71186877e21107E1F3A0b55ef);
-    IERC20 constant public WETH = IERC20(0xB8BAa0e4287890a5F79863aB62b7F175ceCbD433);
+    IERC20 constant public WETH = IERC20(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
 
     address constant public miner = address(0x6C3e4cb2E96B01F4b866965A91ed4437839A121a); // ETH/DAI UNI Pool
     address constant public uniswap = address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
-    address public unimint = address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);    
+    address public unimint;
 
-    address public UNISWAP_1 = address(0xd3d2E2692501A5c9Ca623199D38826e513033a17);
-    address public UNISWAP_2;     
+    address public UNISWAP_1 = address(0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984); // UNI
+    address public UNISWAP_2 = address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2); // WETH
+    address public UNISWAP_3 = address(0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852); // UNI-LP
 
     uint public pool;
 
@@ -225,6 +226,9 @@ contract yUNILP is ERC20, ReentrancyGuard, Ownable {
     function set_UNISWAP_2(address uni) external onlyOwner {
         UNISWAP_2 = uni;
     }
+    function set_UNISWAP_3(address uni) external onlyOwner {
+        UNISWAP_3 = uni;
+    }    
     function set_UNIMINT(address uni) external onlyOwner {
         unimint = uni;
     }    
@@ -254,9 +258,10 @@ contract yUNILP is ERC20, ReentrancyGuard, Ownable {
         require(t > 0, "no enough target token");
         T.safeApprove(uniswap, 0);
         T.safeApprove(uniswap, t);
-        address[] memory path = new address[](2);
+        address[] memory path = new address[](3);
         path[0] = UNISWAP_1;
-        path[1] = UNISWAP_2;        
+        path[1] = UNISWAP_2; 
+        path[1] = UNISWAP_3;
         IUniswap(uniswap).swapExactTokensForTokens(t, uint(0), path, address(this), now.add(1800));
         recycle();
     }
@@ -267,8 +272,9 @@ contract yUNILP is ERC20, ReentrancyGuard, Ownable {
         require(t > 0, "no enough target token");
         T.safeApprove(uniswap, 0);
         T.safeApprove(uniswap, t);
-        address[] memory path = new address[](1);
+        address[] memory path = new address[](2);
         path[0] = UNISWAP_1;
+        path[1] = UNISWAP_2;        
         IUniswap(uniswap).swapExactTokensForTokens(t, uint(0), path, address(this), now.add(1800));
         IUnimint(unimint).depositAndClaim(WETH.balanceOf(address(this)));
         recycle();
