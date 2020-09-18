@@ -73,4 +73,5 @@ python -m http.server --cgi 8000
 
 ```shell
 truffle deploy --network rinkeby
+npx waffle flatten
 ```

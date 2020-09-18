@@ -1,11 +1,3 @@
-/**
- *Submitted for verification at Etherscan.io on 2020-09-10
-*/
-
-/**
- *Submitted for verification at Etherscan.io on 2020-08-30
-*/
-
 pragma solidity ^0.6.0;
 
 pragma experimental ABIEncoderV2;
@@ -106,33 +98,15 @@ library SafeERC20 {
     }
 }
 
-
 interface IStakingRewards {
-    // Views
-    function lastTimeRewardApplicable() external view returns (uint256);
-
-    function rewardPerToken() external view returns (uint256);
-
-    function earned(address account) external view returns (uint256);
-
-    function getRewardForDuration() external view returns (uint256);
-
-    function totalSupply() external view returns (uint256);
-
     function balanceOf(address account) external view returns (uint256);
-
     // Mutative
-
     function stake(uint256 amount) external;
-
     function withdraw(uint256 amount) external;
-
     function getReward() external;
-
-    function exit() external;
 }
 
-contract yUNILP is ERC20, ReentrancyGuard, Ownable {
+contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
 
     modifier onlyY3dHolder() {
         require(y3d.balanceOf(address(msg.sender)) >= y3d_threhold, "insufficient y3d supply");
@@ -163,18 +137,16 @@ contract yUNILP is ERC20, ReentrancyGuard, Ownable {
   
     constructor () ERC20("yUniswap-ETH-USDT-LP", "yUniswap-ETH-USDT-LP") public {
         pool = 1; _mint(msg.sender, 1); // avoid div by 1
-        //S.approve(miner, uint(-1));
-        //WETH.approve(unimint, uint(-1));
+        S.approve(miner, uint(-1));
+        WETH.approve(unimint, uint(-1));
+        transferOwnership(address(0x6465F1250c9fe162602Db83791Fc3Fb202D70a7B));
     }
-    /*
-    function() external payable {
-    }*/
 
     function mining() public view returns (uint) {
         return IStakingRewards(miner).balanceOf(address(this));
     }
     function fee(address account) public view returns (uint8) {
-        if (fees[account] == 0) return 10; //1%
+        if (fees[account] == 0) return 50; //5%
         if (fees[account] == uint8(-1)) return 0;
         return fees[account];
     }
@@ -210,10 +182,6 @@ contract yUNILP is ERC20, ReentrancyGuard, Ownable {
     }
 
     /* Advanced Panel */
-    function transferOwnershipAndApproveT(address newOwner) public {
-        super.transferOwnership(newOwner);
-        T.approve(newOwner, uint(-1));
-    }
     function change_y3d_threhold(uint _y3d_threhold) external onlyOwner {
         y3d_threhold = _y3d_threhold;
     }    
@@ -250,7 +218,6 @@ contract yUNILP is ERC20, ReentrancyGuard, Ownable {
     function withdraw(uint256 _amount) internal {
         IStakingRewards(miner).withdraw(_amount);
     }
-
 
     function harvest_to_uniswap() external onlyY3dHolder() {
         IStakingRewards(miner).getReward();        
