@@ -15,43 +15,47 @@
         </div>
         <div class="blank-container">
           <div class="blank-container-wrap" v-if="uTD && y3dTD">
-            <div class="blank-container-wrap-info">
-              <p class="info-name">{{ uTD.symbol }} stacked</p>
+            <div class="blank-container-info-wrap">
+              <div class="blank-container-info">
+                <p class="blank-container-info-name">{{ uTD.symbol }} stacked</p>
+                <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.staked) }}</p>
+              </div>
               <div class="contract-info">
                 <img src="@/assets/base/copy.png" />
                 <a :href="'https://rinkeby.etherscan.io/address/' + uTD.address" target="__blank"><p>{{ uTD.address }}</p></a>
               </div>
-              <p class="info-value">{{ formatGrovernInfo(y3dTD.staked) }}</p>
             </div>
-            <div class="blank-container-wrap-info">
-              <p class="info-name">{{ y3dTD.symbol }} supply</p>
+            <div class="blank-container-info-wrap">
+              <div class="blank-container-info">
+                <p class="blank-container-info-name">{{ y3dTD.symbol }} supply</p>
+                <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.supply) }}</p>
+              </div>
               <div class="contract-info">
                 <img src="@/assets/base/copy.png" />
                 <a :href="'https://rinkeby.etherscan.io/address/' + value" target="__blank"><p>{{ value }}</p></a>
               </div>
-              <p class="info-value">{{ formatGrovernInfo(y3dTD.supply) }}</p>
             </div>
-            <div class="blank-container-wrap-info">
-              <p class="info-name">{{ y3dTD.symbol }} price</p>
-              <p class="info-value">{{ formatGrovernInfo(y3dTD.price) }}$</p>
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">{{ y3dTD.symbol }} price</p>
+              <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.price) }}$</p>
             </div>
-            <div class="blank-container-wrap-info">
-              <p class="info-name">Mining {{ uTD.symbol }}</p>
-              <p class="info-value">{{
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">Mining {{ uTD.symbol }}</p>
+              <p class="blank-container-info-value">{{
                 formatGrovernInfo(y3dTD.miningAmount)
               }}({{ formatGrovernInfo(y3dTD.miningRatio) }}%)</p>
             </div>
-            <div class="blank-container-wrap-info">
-              <p class="info-name">P3D ratio</p>
-              <p class="info-value">{{ formatGrovernInfo(y3dTD.p3DRatio) }}</p>
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">P3D ratio</p>
+              <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.p3DRatio) }}</p>
             </div>
-            <div class="blank-container-wrap-info">
-              <p class="info-name">Timelock</p>
-              <p class="info-value">{{ formatGrovernInfo(y3dTD.timelock) }}</p>
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">Timelock</p>
+              <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.timelock) }}</p>
             </div>
-            <div class="blank-container-wrap-info">
-              <p class="info-name">Created time</p>
-              <p class="info-value">{{ formatGrovernInfo(y3dTD.createdTime) }}</p>
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">Created time</p>
+              <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.createdTime) }}</p>
             </div>
           </div>
         </div>
@@ -242,43 +246,57 @@ export default Vue.extend({
   border: 2px solid #777;
   border-radius: 15px;
   margin-top: 16px;
-  .blank-container-wrap {
-    padding: 16px 20px;
-    .blank-container-wrap-info {
+  padding: 16px 20px;
+  &-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    p {
+      font-size: 14px;
+      margin: 0;
+    }
+    &-name {
+      color: #b2b2b2;
+      width: 35%;
+      margin-right: 32px;
+    }
+    &-value {
+      flex: 1;
+      color: #FFFFFF;
+      text-align: right;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    &-wrap {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
       margin-bottom: 16px;
-      p {
-        font-size: 14px;
-        margin: 0;
+      .blank-container-info {
+        margin-bottom: 0px;
       }
-      .info-name {
-        color: #b2b2b2;
-        width: 35%;
-      }
-      .info-value {
-        color: #FFFFFF;
-      }
-      .contract-info {
-        display: flex;
-        align-items: center;
-        img {
-          width: 14px;
-          height: 14px;
-          margin-right: 8px;
-        }
-        a,
-        p {
-          max-width: 80px;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          margin: 0;
-          color: $y3d-blue;
-          text-decoration: underline;
-          white-space: nowrap;
-        }
-      }
+    }
+  }
+  .contract-info {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+    img {
+      width: 12px;
+      height: 12px;
+      margin-right: 8px;
+    }
+    a,
+    p {
+      font-size: 12px;
+      // max-width: 80px;
+      // text-overflow: ellipsis;
+      // overflow: hidden;
+      margin: 0;
+      color: $y3d-blue;
+      text-decoration: underline;
+      white-space: nowrap;
     }
   }
 }
