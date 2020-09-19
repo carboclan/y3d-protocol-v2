@@ -15,6 +15,7 @@
   border-radius: 3rem;
   justify-content: space-evenly;
   .styled-navLink {
+    flex: 1;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
