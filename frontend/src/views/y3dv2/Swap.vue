@@ -52,7 +52,11 @@
           </div> -->
           </div>
           <div class="swap-button-content">
-            <MainButton id="swap-button" :disabled="isBtnDisabled" @click="clickActionButton">{{
+            <MainButton
+              :btnLoading="isSendingTx"
+              id="swap-button"
+              :disabled="isBtnDisabled"
+              @click="clickActionButton">{{
               tipText
             }}</MainButton>
             <!-- <router-link to="/create" v-if="tokenAInfo && tokenBInfo && !isPairExist">
@@ -121,6 +125,7 @@ export default {
           yaddress: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
         },
       ],
+      isSendingTx: false,
     };
   },
   computed: {
@@ -346,30 +351,37 @@ export default {
       this.tokenAIsBadInput = isBadInput;
     },
     async stake() {
-      this.isSendingTx = true;
-      const uTContract = this.getERC20(this.tokenAInfo.address);
-      const user = this.address;
-      const approvedAmount = await uTContract.allowance(user, this.tokenBInfo.address);
-      const uTokenUnit = this.tokenAInfo.decimals;
-      const parsedInput = utils.parseUnits(this.tokenAAmount, uTokenUnit);
-      if (parsedInput.gt(this.tokenAInfo.balance)) {
+      try {
+        this.isSendingTx = true;
+        const uTContract = this.getERC20(this.tokenAInfo.address);
+        const user = this.address;
+        const approvedAmount = await uTContract.allowance(user, this.tokenBInfo.address);
+        const uTokenUnit = this.tokenAInfo.decimals;
+        const parsedInput = utils.parseUnits(this.tokenAAmount, uTokenUnit);
+        if (parsedInput.gt(this.tokenAInfo.balance)) {
+          // eslint-disable-next-line no-alert
+          alert("You don't have so much token, sorry.");
+          this.isSendingTx = false;
+          return;
+        }
+        if (parsedInput.gt(approvedAmount)) {
+          const txRes = await uTContract.approve(this.tokenBInfo.address, parsedInput);
+          await txRes.wait(1);
+        }
+        const y3dT = y3DToken.attach(this.tokenBInfo.address).connect(getProvider().getSigner());
+        const stakeRes = await y3dT.stake(parsedInput);
+        const stakeReceipt = await stakeRes.wait(1);
+        console.info('stake::receipt', stakeReceipt);
         // eslint-disable-next-line no-alert
-        alert("You don't have so much token, sorry.");
+        alert('Stake successfully.');
+        this.lastTxHash = stakeReceipt.transactionHash;
         this.isSendingTx = false;
-        return;
+      } catch (err) {
+        // eslint-disable-next-line no-alert
+        alert(err.message);
+        this.isSendingTx = false;
       }
-      if (parsedInput.gt(approvedAmount)) {
-        const txRes = await uTContract.approve(this.tokenBInfo.address, parsedInput);
-        await txRes.wait(1);
-      }
-      const y3dT = y3DToken.attach(this.tokenBInfo.address).connect(getProvider().getSigner());
-      const stakeRes = await y3dT.stake(parsedInput);
-      const stakeReceipt = await stakeRes.wait(1);
-      console.info('stake::receipt', stakeReceipt);
-      // eslint-disable-next-line no-alert
-      alert('Stake successfully.');
-      this.lastTxHash = stakeReceipt.transactionHash;
-      this.isSendingTx = false;
+      this.updateTokenInfo();
     },
     async unstake() {
       try {
@@ -394,7 +406,9 @@ export default {
       } catch (err) {
         // eslint-disable-next-line no-alert
         alert(err.message);
+        this.isSendingTx = false;
       }
+      this.updateTokenInfo();
     },
     clickActionButton() {
       if (this.workMode === 'stake') {
