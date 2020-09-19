@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 <template>
   <Modal v-model="dialogVisibleSelectToken" :customClass="customClass" :width="width">
     <template v-slot:header>
@@ -59,18 +58,65 @@
   </Modal>
 </template>
 
-<script>
+<script lang="ts">
+/* eslint-disable no-unused-vars */
+import Vue from 'vue';
 import {
-  debounce, sortBy, find, filter,
+  debounce, sortBy, find, filter, DebouncedFunc,
 } from 'lodash';
 import { mapState } from 'vuex';
+import { Contract } from 'ethers';
+import { IERC20DetailInfo, fetchERC20Detail as fetchERC20DetailInfo } from '@/utils/contract/fetchContractInfo';
 import Modal from './Modal.vue';
 import HelpTooltip from './HelpTooltip.vue';
 import SelectTokenListItem from './SelectTokenListItem.vue';
 import { CommonERC20 } from '../contract';
 import { getProvider, utils } from '../store/ethers/ethersConnect';
 
-export default {
+export interface ITokenListItem {
+  symbol: string
+  address: string
+  tag: string
+}
+
+export type ISearchTokenListItem = ITokenListItem & IERC20DetailInfo
+
+export interface ISelectTokenModalProps {
+  isUToken: boolean
+  value: boolean
+  customClass: string
+  width: string
+  symbol: string
+  commonBasesShow: boolean
+}
+
+export interface ISelectTokenModalData {
+  dialogVisibleSelectToken: boolean
+  tokenNameOrAddress: string
+  searchTokenList: Array<ISearchTokenListItem>
+  commonBases: Array<any>
+  originalList: Array<ITokenListItem>
+}
+
+export interface ISelectTokenModalMethods {
+  searchToken: DebouncedFunc<(val: string) => Promise<void>>
+  selectToken: (item: ITokenListItem) => void
+  fetchBalanceOfDefaultList: () => Promise<void>
+  getERC20: (_address: string) => Contract
+  fetchERC20Detail: (item: ITokenListItem) => Promise<ISearchTokenListItem>
+}
+
+export interface ISelectTokenModalComputed {
+  address: string
+  processedOriginalList: Array<ITokenListItem>
+}
+
+export default Vue.extend<
+  ISelectTokenModalData,
+  ISelectTokenModalMethods,
+  ISelectTokenModalComputed,
+  ISelectTokenModalProps
+>({
   components: {
     Modal,
     HelpTooltip,
@@ -103,20 +149,8 @@ export default {
       default: false,
     },
   },
-  computed: {
-    ...mapState('ethers', ['address']),
-    processedOriginalList() {
-      return filter(this.originalList, (v) => {
-        if (this.isUToken) {
-          return v.tag === 'uToken';
-        }
-        return v.tag !== 'uToken';
-      });
-    },
-  },
-  data() {
+  data(): ISelectTokenModalData {
     return {
-      // TronLink,
       dialogVisibleSelectToken: this.value,
       tokenNameOrAddress: '',
       searchTokenList: [],
@@ -134,6 +168,17 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    ...mapState('ethers', ['address']),
+    processedOriginalList() {
+      return filter(this.originalList, (v) => {
+        if (this.isUToken) {
+          return v.tag === 'uToken';
+        }
+        return v.tag !== 'uToken';
+      });
+    },
   },
   watch: {
     value(newVal) {
@@ -157,12 +202,17 @@ export default {
   },
   methods: {
     // eslint-disable-next-line func-names
-    searchToken: debounce(async function (val) {
-      const res = await this.fetchERC20Detail({
+    searchToken: debounce(async function (val: string) {
+      // @ts-ignore
+      const self = this as ISelectTokenModalData & ISelectTokenModalMethods;
+      const res = await self.fetchERC20Detail({
         address: val,
+        symbol: '',
+        tag: '',
       });
-      const fined = find(this.originalList, (o) => o.address === res.address);
-      this.searchTokenList.push(fined || res);
+      const fined = find(self.originalList, (o) => o.address === res.address);
+      // @ts-ignore
+      self.searchTokenList.push(fined || res);
     }, 300),
     selectToken(item) {
       this.$emit('select-token', {
@@ -180,21 +230,14 @@ export default {
       this.originalList = sortBy(this.originalList, 'balance').reverse();
     },
     getERC20(_address) {
-      return CommonERC20.attach(_address).connect(getProvider().getSigner());
+      return CommonERC20.attach(_address).connect(getProvider()!.getSigner());
     },
     async fetchERC20Detail(item) {
       // eslint-disable-next-line no-underscore-dangle
       const _address = item.address;
-      const contract = this.getERC20(_address);
-      const [name, symbol, totalSupply, decimals, balance] = await Promise.all([
-        contract.name(),
-        contract.symbol(),
-        contract.totalSupply(),
-        contract.decimals(),
-        contract.balanceOf(this.address),
-      ]);
-      // balance that for display
-      const dBalance = utils.formatUnits(balance, decimals);
+      const {
+        name, symbol, totalSupply, decimals, balance, dBalance,
+      } = await fetchERC20DetailInfo(_address, this.address);
       return {
         ...item,
         name,
@@ -206,7 +249,7 @@ export default {
       };
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
