@@ -19,37 +19,39 @@
               <p class="info-name">{{ uTD.symbol }} stacked</p>
               <div class="contract-info">
                 <img src="@/assets/base/copy.png" />
-                  <a :href="'https://rinkeby.etherscan.io/address/' + uTD.address" target="__blank"><p>{{ uTD.address }}</p></a>
+                <a :href="'https://rinkeby.etherscan.io/address/' + uTD.address" target="__blank"><p>{{ uTD.address }}</p></a>
               </div>
-              <p class="info-value">--</p>
+              <p class="info-value">{{ formatGrovernInfo(y3dTD.staked) }}</p>
             </div>
             <div class="blank-container-wrap-info">
               <p class="info-name">{{ y3dTD.symbol }} supply</p>
               <div class="contract-info">
                 <img src="@/assets/base/copy.png" />
-                  <a :href="'https://rinkeby.etherscan.io/address/' + value" target="__blank"><p>{{ value }}</p></a>
+                <a :href="'https://rinkeby.etherscan.io/address/' + value" target="__blank"><p>{{ value }}</p></a>
               </div>
-              <p class="info-value">--</p>
+              <p class="info-value">{{ formatGrovernInfo(y3dTD.supply) }}</p>
             </div>
             <div class="blank-container-wrap-info">
               <p class="info-name">{{ y3dTD.symbol }} price</p>
-              <p class="info-value">--</p>
+              <p class="info-value">{{ formatGrovernInfo(y3dTD.price) }}$</p>
             </div>
             <div class="blank-container-wrap-info">
               <p class="info-name">Mining {{ uTD.symbol }}</p>
-              <p class="info-value">--(--%)</p>
+              <p class="info-value">{{
+                formatGrovernInfo(y3dTD.miningAmount)
+              }}({{ formatGrovernInfo(y3dTD.miningRatio) }}%)</p>
             </div>
             <div class="blank-container-wrap-info">
               <p class="info-name">P3D ratio</p>
-              <p class="info-value">--</p>
+              <p class="info-value">{{ formatGrovernInfo(y3dTD.p3DRatio) }}</p>
             </div>
             <div class="blank-container-wrap-info">
               <p class="info-name">Timelock</p>
-              <p class="info-value">--</p>
+              <p class="info-value">{{ formatGrovernInfo(y3dTD.timelock) }}</p>
             </div>
             <div class="blank-container-wrap-info">
               <p class="info-name">Created time</p>
-              <p class="info-value">--</p>
+              <p class="info-value">{{ formatGrovernInfo(y3dTD.createdTime) }}</p>
             </div>
           </div>
         </div>
@@ -60,30 +62,73 @@
       v-model="shownSelectTokenModal" @select-token="selectToken"></SelectTokenModal>
   </LayoutY3DV2>
 </template>
-<script>
+<script lang="ts">
+/* eslint-disable no-unused-vars */
+/* eslint no-underscore-dangle: ["error", { "allow": ["_u", "_y"] }] */
+/* eslint-disable no-alert */
 import Vue from 'vue';
 import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
 import { mapState } from 'vuex';
-import { y3DToken, CommonERC20 } from '@/contract';
-import { getProvider, utils } from '@/store/ethers/ethersConnect';
-import SelectTokenModal from '@/components/SelectTokenModal.vue';
+import {
+  fetchERC20Detail, IERC20DetailInfo, IUTokenDetailInfo, IYTokenDetailInfo,
+} from '@/utils/contract/fetchContractInfo';
+import { formatGrovernInfo } from '@/utils/formatter/formatGrovernInfo';
+import { getY3DContract } from '@/utils/contract/getContract';
+import SelectTokenModal, { ITokenListItem } from '@/components/SelectTokenModal.vue';
 import IconTokenSelectArrow from '@/components/Icons/IconTokenSelectArrow.vue';
+import { formatUnits } from 'ethers/lib/utils';
 
-/* eslint no-underscore-dangle: ["error", { "allow": ["_u", "_y"] }] */
-/* eslint-disable no-alert */
+export interface IGovernData {
+  shownSelectTokenModal: boolean
+  loadingTokenInfo: boolean
+  y3dTD: IYTokenDetail | null
+  uTD: IUTokenDetail | null
+  value: string
+  options: Array<IOptionListItem>
+  optionsY3dTokenInfo: Array<IOptionY3dTokenInfoListItem>
+}
+
+export interface IYTokenDetail extends IYTokenDetailInfo {
+  staked?: string
+  supply?: string
+  price?: number
+  miningAmount?: string
+  miningRatio?: number
+  p3DRatio?: number
+  timelock?: string
+  createdTime?: string
+}
+
+export interface IUTokenDetail extends IUTokenDetailInfo {}
+
+export interface IOptionListItem {
+  token: {
+    y3dToken: string
+  }
+}
+
+export type IOptionY3dTokenInfoListItem = IOptionListItem & IERC20DetailInfo
+
+export interface ISelectTokenParam {
+  data: ITokenListItem
+  symbol: string
+}
+
 export default Vue.extend({
   components: {
     LayoutY3DV2,
     SelectTokenModal,
     IconTokenSelectArrow,
   },
-  data() {
+  data(): IGovernData {
     return {
       shownSelectTokenModal: false,
       loadingTokenInfo: false,
       y3dTD: null,
       uTD: null,
       value: '',
+      options: [],
+      optionsY3dTokenInfo: [],
     };
   },
   computed: {
@@ -106,7 +151,7 @@ export default Vue.extend({
     async fetchOptionsTokenInfo() {
       const result = await Promise.all(
         this.options.map(async (item) => {
-          const r = await this.fetchERC20Detail(item.token.y3dToken);
+          const r = await fetchERC20Detail(item.token.y3dToken, this.address);
           return {
             ...item,
             ...r,
@@ -115,46 +160,34 @@ export default Vue.extend({
       );
       this.optionsY3dTokenInfo = result;
     },
-    getContract() {
-      return y3DToken.attach(this.value).connect(getProvider().getSigner());
-    },
-    getERC20(_address) {
-      return CommonERC20.attach(_address).connect(getProvider().getSigner());
-    },
-    async fetchERC20Detail(_address) {
-      const contract = this.getERC20(_address);
-      const [name, symbol, totalSupply, decimals, balance] = await Promise.all([
-        contract.name(),
-        contract.symbol(),
-        contract.totalSupply(),
-        contract.decimals(),
-        contract.balanceOf(this.address),
-      ]);
-      const dBalance = utils.formatUnits(balance, decimals);
-      return {
-        name,
-        symbol,
-        totalSupply,
-        decimals,
-        balance,
-        dBalance,
-      };
-    },
     async fetchTokenInfo() {
       this.loadingTokenInfo = true;
-      const contract = this.getContract();
-      const underlying = await contract._u();
+      const contract = getY3DContract(this.value);
+      const underlying: string = await contract._u();
       const [uTokenDetail, y3dTD] = await Promise.all([
-        this.fetchERC20Detail(underlying),
-        this.fetchERC20Detail(this.value),
+        fetchERC20Detail(underlying, this.address),
+        fetchERC20Detail(this.value, this.address),
       ]);
-      this.y3dTD = { underlying, ...y3dTD };
-      this.uTD = { address: underlying, ...uTokenDetail };
+      // eslint-disable-next-line no-underscore-dangle
+      const yTStaked = formatUnits(await contract.pool(), 18);
+      const yTSupply = formatUnits(y3dTD.totalSupply, 18);
+      const yTPrice = Math.round((Number(yTStaked) / Number(yTSupply)) * 1.05 * 1000) / 1000;
+      this.y3dTD = {
+        ...this.y3dTD,
+        underlying,
+        ...y3dTD,
+        staked: yTStaked,
+        supply: yTSupply,
+        price: yTPrice,
+      };
+      this.uTD = { ...this.uTD, address: underlying, ...uTokenDetail };
+      console.log('y3dTD', this.y3dTD, 'uTD', this.uTD);
       this.loadingTokenInfo = false;
     },
-    selectToken(token) {
+    selectToken(token: ISelectTokenParam) {
       this.value = token.data.address;
     },
+    formatGrovernInfo,
   },
 });
 </script>
