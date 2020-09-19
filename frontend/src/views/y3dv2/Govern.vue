@@ -5,35 +5,13 @@
         <div>
           <span class="title-text">Select A y3dToken Address</span>
         </div>
-        <div class="selection">
-          <el-select v-model="value" placeholder="Token..." class="selection-container">
-            <el-option
-              class="option-select"
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-              <div class="selection-item">
-                <div class="selection-item-token">
-                  <img src="@/assets/base/y3d.png" />
-                  <p>{{ item.label }}</p>
-                </div>
-                <div class="selection-item-contract">
-                  <img src="@/assets/base/copy.png" />
-                  <a :href="item.token.y3dUrl" target="__blank"
-                    ><p>{{ item.token.y3dToken }}</p></a
-                  >
-                </div>
-                <div class="selection-item-bal">
-                  {{
-                    balanceForY3dToken(item.token.y3dToken) &&
-                      balanceForY3dToken(item.token.y3dToken).dBalance
-                  }}
-                </div>
-              </div>
-            </el-option>
-          </el-select>
+        <div class="selection" @click="shownSelectTokenModal = true">
+          <p v-if="!value || value === ''">Select a token</p>
+          <div class="token-info" v-else>
+            <img src="@/assets/base/y3d.png" />
+            <p>{{ y3dTD && y3dTD.symbol }}</p>
+          </div>
+          <IconTokenSelectArrow />
         </div>
         <div class="blank-container">
           <div class="blank-container-wrap" v-if="uTD && y3dTD">
@@ -77,41 +55,35 @@
         </div>
       </div>
     </div>
+    <SelectTokenModal
+      :isUToken="false"
+      v-model="shownSelectTokenModal" @select-token="selectToken"></SelectTokenModal>
   </LayoutY3DV2>
 </template>
 <script>
 import Vue from 'vue';
 import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
-import { filter } from 'lodash';
 import { mapState } from 'vuex';
 import { y3DToken, CommonERC20 } from '@/contract';
 import { getProvider, utils } from '@/store/ethers/ethersConnect';
+import SelectTokenModal from '@/components/SelectTokenModal.vue';
+import IconTokenSelectArrow from '@/components/Icons/IconTokenSelectArrow.vue';
 
 /* eslint no-underscore-dangle: ["error", { "allow": ["_u", "_y"] }] */
 /* eslint-disable no-alert */
 export default Vue.extend({
   components: {
     LayoutY3DV2,
+    SelectTokenModal,
+    IconTokenSelectArrow,
   },
   data() {
     return {
+      shownSelectTokenModal: false,
       loadingTokenInfo: false,
       y3dTD: null,
       uTD: null,
       value: '',
-      options: [
-        {
-          value: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
-          label: 'yFUSDT3d',
-          token: {
-            uToken: '0x7f76315337E63482043F92A1bD4784290159AD6f',
-            y3dToken: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
-            uUrl: 'https://rinkeby.etherscan.io/address/0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
-            y3dUrl: 'https://rinkeby.etherscan.io/address/0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
-          },
-        },
-      ],
-      optionsY3dTokenInfo: [],
     };
   },
   computed: {
@@ -131,10 +103,6 @@ export default Vue.extend({
     this.fetchOptionsTokenInfo();
   },
   methods: {
-    balanceForY3dToken(token) {
-      const r = filter(this.optionsY3dTokenInfo, (v) => v.value === token);
-      return r ? r[0] : {};
-    },
     async fetchOptionsTokenInfo() {
       const result = await Promise.all(
         this.options.map(async (item) => {
@@ -184,30 +152,15 @@ export default Vue.extend({
       this.uTD = { address: underlying, ...uTokenDetail };
       this.loadingTokenInfo = false;
     },
+    selectToken(token) {
+      this.value = token.data.address;
+    },
   },
 });
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/color';
-@media (max-width: 600px) {
-  .selection {
-    &-item {
-      &-token {
-        flex-grow: 1;
-        p {
-          white-space: pre-line;
-        }
-      }
-      &-contract {
-        width: 25% !important;
-      }
-      &-bal {
-        width: 25% !important;
-      }
-    }
-  }
-}
 .govern-container {
   margin-top: 10px;
 }
@@ -218,57 +171,36 @@ export default Vue.extend({
 }
 
 .selection {
+  display: flex;
+  align-items: center;
   margin-top: 16px;
-  &-item {
-    padding: 0 24px;
-    background-color: #333;
+  border: 1px solid #555555;
+  height: 60px;
+  border-radius: 16px;
+  padding: 0 24px;
+  p {
+    color: #B2B2B2;
+    font-size: 16px;
+    flex-grow: 1;
+    margin: 0;
+  }
+  .token-info {
     display: flex;
-    height: 50px;
+    align-items: center;
+    flex-grow: 1;
+    img {
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
+    }
     p {
+      font-size: 16px;
       color: white;
-    }
-    &-token {
-      display: flex;
-      align-items: center;
-      width: 40%;
-      img {
-        // margin-left: 24px;
-        width: 32px;
-        height: 32px;
-      }
-      p {
-        margin-left: 11px;
-        font-size: 16px;
-        font-weight: bold;
-      }
-    }
-    &-contract {
-      width: 30%;
-      flex-shrink: 1;
-      display: flex;
-      align-items: center;
-      img {
-        width: 14px;
-        height: 14px;
-        margin-right: 8px;
-      }
-      a,
-      p {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        margin: 0;
-        color: $y3d-blue;
-        text-decoration: underline;
-      }
-    }
-    &-bal {
-      text-align: right;
-      width: 30%;
-      color: white;
-      font-size: 14px;
-      line-height: 50px;
     }
   }
+}
+.selection:hover {
+  opacity: 0.7;
 }
 
 .blank-container {
