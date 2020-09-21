@@ -33,7 +33,7 @@
           <SelectTokenListItem
             v-for="(item, idx) in processedOriginalList"
             :key="idx"
-            :symbol="item.symbol"
+            :symbol="item.dsymbol"
             :name="item.symbol"
             :logo="item.logo"
             :balance="item.dBalance"
@@ -45,7 +45,7 @@
           <SelectTokenListItem
             v-for="(item, idx) in searchTokenList"
             :key="idx"
-            :symbol="item.symbol"
+            :symbol="item.dsymbol"
             :name="item.name"
             :logo="item.logo"
             :balance="item.dBalance"
@@ -75,6 +75,7 @@ import { getProvider, utils } from '../store/ethers/ethersConnect';
 
 export interface ITokenListItem {
   symbol: string
+  dsymbol: string
   address: string
   tag: string
 }
@@ -149,28 +150,20 @@ export default Vue.extend<
       default: false,
     },
   },
+  mounted() {
+    this.initializationBaseTokenInfo();
+  },
   data(): ISelectTokenModalData {
     return {
       dialogVisibleSelectToken: this.value,
       tokenNameOrAddress: '',
       searchTokenList: [],
       commonBases: [],
-      originalList: [
-        {
-          symbol: 'FUSDT',
-          address: '0x7f76315337E63482043F92A1bD4784290159AD6f',
-          tag: 'uToken',
-        },
-        {
-          symbol: 'yFUSDT3d',
-          address: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
-          tag: 'y_3dToken',
-        },
-      ],
+      originalList: [],
     };
   },
   computed: {
-    ...mapState('ethers', ['address']),
+    ...mapState('ethers', ['address', 'network']),
     processedOriginalList() {
       return filter(this.originalList, (v) => {
         if (this.isUToken) {
@@ -181,6 +174,9 @@ export default Vue.extend<
     },
   },
   watch: {
+    network() {
+      this.initializationBaseTokenInfo();
+    },
     value(newVal) {
       this.dialogVisibleSelectToken = newVal;
       if (newVal) this.fetchBalanceOfDefaultList();
@@ -201,6 +197,53 @@ export default Vue.extend<
     },
   },
   methods: {
+    initializationBaseTokenInfo() {
+      if (this.network === 'Rinkeby Test Network') {
+        this.originalList = [
+          {
+            // display symobl
+            dsymbol: 'FUSDT',
+            symbol: 'FUSDT',
+            address: '0x7f76315337E63482043F92A1bD4784290159AD6f',
+            tag: 'uToken',
+          },
+          {
+            dsymbol: 'yFUSDT3d',
+            symbol: 'yFUSDT3d',
+            address: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
+            tag: 'y_3dToken',
+          },
+        ];
+        return;
+      }
+      this.originalList = [
+        {
+          // display symobl
+          dsymbol: 'yCrv',
+          symbol: 'yCrv',
+          address: '0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8',
+          tag: 'uToken',
+        },
+        {
+          dsymbol: 'yyCrv',
+          symbol: 'yyCrv',
+          address: '0x199ddb4bdf09f699d2cf9ca10212bd5e3b570ac2',
+          tag: 'y_3dToken',
+        },
+        {
+          dsymbol: 'swUSD',
+          symbol: 'swUSD',
+          address: '0x77C6E4a580c0dCE4E5c7a17d0bc077188a83A059',
+          tag: 'uToken',
+        },
+        {
+          dsymbol: 'yswUSD',
+          symbol: 'yswUSD',
+          address: '0x2b1120F0C8238C098C767282092D49d9ac527e8C',
+          tag: 'y_3dToken',
+        },
+      ];
+    },
     // eslint-disable-next-line func-names
     searchToken: debounce(async function (val: string) {
       // @ts-ignore

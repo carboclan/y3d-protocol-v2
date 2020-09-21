@@ -29,7 +29,7 @@
             :isTokenSelected="isTokenSelected"
             :tokenLogo="tokenLogo"
             @click="showTokenMenu"
-            >{{ tokenInfo && tokenInfo.symbol }}</SelectdTokenButton
+            >{{ tokenInfo && tokenInfo.dsymbol }}</SelectdTokenButton
           >
         </div>
       </div>

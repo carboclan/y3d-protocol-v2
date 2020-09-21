@@ -167,7 +167,14 @@ export default Vue.extend({
     async fetchTokenInfo() {
       this.loadingTokenInfo = true;
       const contract = getY3DContract(this.value);
-      const underlying: string = await contract._u();
+      let underlying: string = '';
+      try {
+        underlying = await contract._u();
+      } catch (err) {
+        const cname = await contract.name();
+        const uname = cname.substr(1, cname.length - 1);
+        underlying = await contract[uname]();
+      }
       const [uTokenDetail, y3dTD] = await Promise.all([
         fetchERC20Detail(underlying, this.address),
         fetchERC20Detail(this.value, this.address),
@@ -185,7 +192,6 @@ export default Vue.extend({
         price: yTPrice,
       };
       this.uTD = { ...this.uTD, address: underlying, ...uTokenDetail };
-      console.log('y3dTD', this.y3dTD, 'uTD', this.uTD);
       this.loadingTokenInfo = false;
     },
     selectToken(token: ISelectTokenParam) {
