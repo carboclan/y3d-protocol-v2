@@ -37,7 +37,7 @@
             :name="item.symbol"
             :logo="item.logo"
             :balance="item.dBalance"
-            :isYToken="item.tag === 'y_3dToken'"
+            :isYToken="item.tag === 'y3dToken'"
             @on-click="selectToken(item)"
           />
         </template>
@@ -49,7 +49,7 @@
             :name="item.name"
             :logo="item.logo"
             :balance="item.dBalance"
-            :isYToken="item.tag === 'y_3dToken'"
+            :isYToken="item.tag === 'y3dToken'"
             @on-click="selectToken(item)"
           />
         </template>
@@ -82,6 +82,13 @@ export interface ITokenListItem {
 
 export type ISearchTokenListItem = ITokenListItem & IERC20DetailInfo
 
+export interface PairListModel {
+  name: string
+  uToken: string
+  y3dToken: string
+  yaddress: string
+}
+
 export interface ISelectTokenModalProps {
   isUToken: boolean
   value: boolean
@@ -89,11 +96,12 @@ export interface ISelectTokenModalProps {
   width: string
   symbol: string
   commonBasesShow: boolean
+  otherTokenInfo: ITokenListItem
+  pairList: Array<PairListModel>
 }
 
 export interface ISelectTokenModalData {
   dialogVisibleSelectToken: boolean
-  network: String
   tokenNameOrAddress: string
   searchTokenList: Array<ISearchTokenListItem>
   commonBases: Array<any>
@@ -111,6 +119,7 @@ export interface ISelectTokenModalMethods {
 
 export interface ISelectTokenModalComputed {
   address: string
+  network: string
   processedOriginalList: Array<ITokenListItem>
 }
 
@@ -126,6 +135,14 @@ export default Vue.extend<
     SelectTokenListItem,
   },
   props: {
+    otherTokenInfo: {
+      type: Object,
+      default: null,
+    },
+    pairList: {
+      type: Array,
+      default: () => [],
+    },
     isUToken: {
       type: Boolean,
       default: false,
@@ -162,21 +179,44 @@ export default Vue.extend<
       searchTokenList: [],
       commonBases: [],
       originalList: [],
-      network: '',
     };
   },
   computed: {
     ...mapState('ethers', ['address', 'network']),
     processedOriginalList() {
-      return filter(this.originalList, (v: ITokenListItem) => {
+      const filterTagToken = filter(this.originalList, (v: ITokenListItem) => {
         if (this.isUToken) {
           return v.tag === 'uToken';
         }
         return v.tag !== 'uToken';
       });
+      if (this.isUToken) {
+        return filterTagToken;
+      }
+      if (this.otherTokenInfo) {
+        const usablePairList = filter(
+          this.pairList,
+          (v: PairListModel) => v.uToken === this.otherTokenInfo.dsymbol,
+        ).flatMap((v: PairListModel) => v.y3dToken);
+        const filterPairToken = filter(
+          filterTagToken,
+          (v: ITokenListItem) => usablePairList.indexOf(v.dsymbol) !== -1,
+        );
+        return filterPairToken;
+      }
+      return filterTagToken;
     },
   },
   watch: {
+    otherTokenInfo() {
+      if (!this.isUToken) {
+        this.$emit('select-token', {
+          data: this.processedOriginalList[0],
+          symbol: this.symbol,
+        });
+        this.dialogVisibleSelectToken = false;
+      }
+    },
     network() {
       this.initializationBaseTokenInfo();
     },
@@ -214,7 +254,7 @@ export default Vue.extend<
             dsymbol: 'yFUSDT3d',
             symbol: 'yFUSDT3d',
             address: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
-            tag: 'y_3dToken',
+            tag: 'y3dToken',
           },
         ];
         return;
@@ -231,7 +271,7 @@ export default Vue.extend<
           dsymbol: 'yyCrv',
           symbol: 'yyCrv',
           address: '0x199ddb4bdf09f699d2cf9ca10212bd5e3b570ac2',
-          tag: 'y_3dToken',
+          tag: 'y3dToken',
         },
         {
           dsymbol: 'swUSD',
@@ -243,7 +283,7 @@ export default Vue.extend<
           dsymbol: 'yswUSD',
           symbol: 'yswUSD',
           address: '0x2b1120F0C8238C098C767282092D49d9ac527e8C',
-          tag: 'y_3dToken',
+          tag: 'y3dToken',
         },
       ];
     },

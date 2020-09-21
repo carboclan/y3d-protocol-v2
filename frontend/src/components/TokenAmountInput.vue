@@ -35,7 +35,12 @@
       </div>
     </div>
     <SelectTokenModal
-      :isUToken="isUToken" v-model="isModalShowing" @select-token="selectToken"></SelectTokenModal>
+      :isUToken="isUToken"
+      v-model="isModalShowing"
+      @select-token="selectToken"
+      :pairList="pairList"
+      :otherTokenInfo="otherTokenInfo"
+    ></SelectTokenModal>
   </div>
 </template>
 
@@ -56,6 +61,14 @@ export default Vue.extend({
     SelectTokenModal,
   },
   props: {
+    otherTokenInfo: {
+      type: Object,
+      default: null,
+    },
+    pairList: {
+      type: Array,
+      default: () => [],
+    },
     tokenInfo: {
       type: Object,
       default: null,

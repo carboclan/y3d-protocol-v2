@@ -7,12 +7,14 @@
             <TokenAmountInput
               :isTokenSelected="!!tokenAInfo"
               :tokenInfo="tokenAInfo"
-              :tokenLogo="tokenAInfo && tokenAInfo.tag === 'y_3dToken' ? ''  : tokenIcon"
+              :tokenLogo="tokenAInfo && tokenAInfo.tag === 'y3dToken' ? ''  : tokenIcon"
               @select-token="selectTokenA"
               @amount-changed="tokenAAmountChanged"
               @isBadInputChange="tokenAIsBadInputChange"
               :tokenAmount="tokenAAmount"
               :isUToken="uTokenIndexTag === 'A'"
+              :pairList="pairList"
+              :otherTokenInfo="tokenBInfo"
             >
               <template v-slot:title>
                 {{ uTokenIndexTag === 'A' ? 'Stake' : 'Unstake' }}
@@ -29,12 +31,14 @@
             <TokenAmountInput
               :isTokenSelected="!!tokenBInfo"
               :tokenInfo="tokenBInfo"
-              :tokenLogo="tokenBInfo && tokenBInfo.tag === 'y_3dToken' ? ''  : tokenIcon"
+              :tokenLogo="tokenBInfo && tokenBInfo.tag === 'y3dToken' ? ''  : tokenIcon"
               @select-token="selectTokenB"
               @amount-changed="tokenBAmountChanged"
               :tokenAmount="tokenBAmount"
               :isToToken="true"
               :isUToken="uTokenIndexTag === 'B'"
+              :pairList="pairList"
+              :otherTokenInfo="tokenAInfo"
             >
               <template v-slot:title>
                 {{ uTokenIndexTag === 'A' ? 'Mint' : 'Withdraw' }}
@@ -107,13 +111,13 @@ export default {
         {
           name: 'yCrv/yyCrv',
           uToken: 'yCrv',
-          y_3dToken: 'yyCrv',
+          y3dToken: 'yyCrv',
           yaddress: '0x199ddb4bdf09f699d2cf9ca10212bd5e3b570ac2',
         },
         {
           name: 'swUSD/yswUSD',
           uToken: 'swUSD',
-          y_3dToken: 'yswUSD',
+          y3dToken: 'yswUSD',
           yaddress: '0x2b1120F0C8238C098C767282092D49d9ac527e8C',
         },
       ],
@@ -148,15 +152,15 @@ export default {
           ? this.tokenBInfo
           : null;
       // eslint-disable-next-line no-nested-ternary
-      const yT = this.tokenAInfo.tag === 'y_3dToken'
+      const yT = this.tokenAInfo.tag === 'y3dToken'
         ? this.tokenAInfo
-        : this.tokenBInfo.tag === 'y_3dToken'
+        : this.tokenBInfo.tag === 'y3dToken'
           ? this.tokenBInfo
           : null;
       if (uT && yT) {
         let r = false;
         this.pairList.forEach((e) => {
-          if (e.uToken === uT.dsymbol && e.y_3dToken === yT.dsymbol && e.yaddress === yT.address) {
+          if (e.uToken === uT.dsymbol && e.y3dToken === yT.dsymbol && e.yaddress === yT.address) {
             r = true;
           }
         });
@@ -216,7 +220,7 @@ export default {
           {
             name: 'FUSDT/yFUSDT3d',
             uToken: 'FUSDT',
-            y_3dToken: 'yFUSDT3d',
+            y3dToken: 'yFUSDT3d',
             yaddress: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
           },
         ];
@@ -237,13 +241,13 @@ export default {
         {
           name: 'yCrv/yyCrv',
           uToken: 'yCrv',
-          y_3dToken: 'yyCrv',
+          y3dToken: 'yyCrv',
           yaddress: '0x199ddb4bdf09f699d2cf9ca10212bd5e3b570ac2',
         },
         {
           name: 'swUSD/yswUSD',
           uToken: 'swUSD',
-          y_3dToken: 'yswUSD',
+          y3dToken: 'yswUSD',
           yaddress: '0x2b1120F0C8238C098C767282092D49d9ac527e8C',
         },
       ];
