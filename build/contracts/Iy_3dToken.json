@@ -1,0 +1,124 @@
+{
+  "contractName": "Iy_3dToken",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"details\":\"Interface of the ERC20 standard as defined in the EIP.\",\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/interfaces/Iy_3dToken.sol\":\"Iy_3dToken\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/interfaces/Iy_3dToken.sol\":{\"keccak256\":\"0x22434720e499d1d8eae609c735aae9b9e2cdb4b3103766a7b5321f5d24b2dbf9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://46ce1bf2f09f5a0f652969a12f8f889b741ab27b4c7a8e9ff7d94a419f40159d\",\"dweb:/ipfs/QmNbSzRs6DyznEdKi4WYgvnx8RtAbZcALSiDCKk2ASWXDp\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.6.0;\n\n/**\n * @dev Interface of the ERC20 standard as defined in the EIP.\n */\ninterface Iy_3dToken {\n}",
+  "sourcePath": "/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/interfaces/Iy_3dToken.sol",
+  "ast": {
+    "absolutePath": "/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/interfaces/Iy_3dToken.sol",
+    "exportedSymbols": {
+      "Iy_3dToken": [
+        249
+      ]
+    },
+    "id": 250,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 247,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:4"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 248,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:70:4",
+          "text": " @dev Interface of the ERC20 standard as defined in the EIP."
+        },
+        "fullyImplemented": true,
+        "id": 249,
+        "linearizedBaseContracts": [
+          249
+        ],
+        "name": "Iy_3dToken",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 250,
+        "src": "129:24:4"
+      }
+    ],
+    "src": "33:120:4"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/interfaces/Iy_3dToken.sol",
+    "exportedSymbols": {
+      "Iy_3dToken": [
+        249
+      ]
+    },
+    "id": 250,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 247,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:4"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 248,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:70:4",
+          "text": " @dev Interface of the ERC20 standard as defined in the EIP."
+        },
+        "fullyImplemented": true,
+        "id": 249,
+        "linearizedBaseContracts": [
+          249
+        ],
+        "name": "Iy_3dToken",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 250,
+        "src": "129:24:4"
+      }
+    ],
+    "src": "33:120:4"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.12+commit.27d51765.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.2.0",
+  "updatedAt": "2020-09-18T01:37:31.317Z",
+  "devdoc": {
+    "details": "Interface of the ERC20 standard as defined in the EIP.",
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

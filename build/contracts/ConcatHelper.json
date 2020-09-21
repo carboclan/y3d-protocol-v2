@@ -1,0 +1,1919 @@
+{
+  "contractName": "ConcatHelper",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/y3dfactory.sol\":\"ConcatHelper\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/interfaces/IERC20.sol\":{\"keccak256\":\"0x16046e69187528838e2bfa96f255f8377b983fb20747d7d5887a63f5dfbe7e3a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://55737c728aac909420dec082d1b286c5aa82b90e0f290b5e9cb7fbf7f8d2348f\",\"dweb:/ipfs/QmdmSSL6X8ozzQDqsyApSQqKjJrRH3QZiTDhA1mW5ErfJH\"]},\"/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/libraries/Address.sol\":{\"keccak256\":\"0xc0c169dcdc04f9138593357097f622f850b323d38ca07414e7e4465a857752ec\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d8e920bc225de4f6e3ab86bbbf547ddf5a1d7f556ed31ced934551d4273b4105\",\"dweb:/ipfs/Qmd9BPKyVNqTVfEM3NGDpVCdB8s33qT6Rk4oU4UXmPhj8T\"]},\"/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/libraries/Context.sol\":{\"keccak256\":\"0xb6232cf1921a36b072814b88b8508f2cf9890919fd9e678f1bdade789a0620cd\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://3e8724a72d8e6c11ebd6ccb727e01ee7fa68895ece92207c08dba57be21a8088\",\"dweb:/ipfs/QmaVZaBFmxmid2FYb6ERk5kPoNUij8xqyErUxDwhTLSryW\"]},\"/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/libraries/ERC20.sol\":{\"keccak256\":\"0x31d37e90609981f7b8c355ad6f5e7dcbbf6c37b87532a152d2de699738429d4d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://75d9810d2017a6b2a604f7f3fe11993ef7eb148ee717be908ebb8ec1beac0d5c\",\"dweb:/ipfs/QmSDM2xpBVAkofZvcgU53L9yQpFkNefCbPfazP7tdUzXdZ\"]},\"/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/libraries/SafeMath.sol\":{\"keccak256\":\"0x2e1df665169560627c2a0dce65572e63de974bb41c759cdeed973cd570b4d7cf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0785d9859de8fd9d90e10e085500fd9aceebd71bbb018f7959b5bd4de5759878\",\"dweb:/ipfs/QmPC3ockcg49rizy1DJiBErQLsH4FR7W4KRfcoxEMFAgPS\"]},\"/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/y3dfactory.sol\":{\"keccak256\":\"0xc3038fbd07df26e285bae1cd9caf24d027dc904a95669c1383d56dd583a632df\",\"urls\":[\"bzz-raw://071cfbee5ddf120e60a93a0769b0baeb5494128219e926313efc9a2cf7515337\",\"dweb:/ipfs/QmdMnYKPGddiCEN2gPBydpnUzw27Dh4nkVa7jDcRQhRXH2\"]},\"/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/y3dtoken.sol\":{\"keccak256\":\"0xe7ae873d82915aca86bfce3c93e84da481eb4bb34a50af7048fe1aaca9d84289\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a57a44b713877136c235c95655e341492f869a7d6cf785ce077c5ed170970a09\",\"dweb:/ipfs/QmbAvVpLzrVmt8GwBYfPnNU6yVATbiwAr1bNvcfkz66GLy\"]}},\"version\":1}",
+  "bytecode": "0x60566023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea264697066735822122076845b08d1a837b43cac5b5970b30307bf492628154c811b991ef3725e2212d964736f6c634300060c0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea264697066735822122076845b08d1a837b43cac5b5970b30307bf492628154c811b991ef3725e2212d964736f6c634300060c0033",
+  "immutableReferences": {},
+  "sourceMap": "388:25:6:-:0;;;;;;;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "388:25:6:-:0;;;;;;;;",
+  "source": "pragma solidity ^0.6.0;\n\n/*\n ___    ___ ________  ________     \n |\\  \\  /  /|\\_____  \\|\\   ___ \\    \n \\ \\  \\/  / \\|____|\\ /\\ \\  \\_|\\ \\   \n  \\ \\    / /      \\|\\  \\ \\  \\ \\\\ \\  \n   \\/  /  /      __\\_\\  \\ \\  \\_\\\\ \\ \n __/  / /       |\\_______\\ \\_______\\\n|\\___/ /        \\|_______|\\|_______|\n\\|___|/                             \n                                    */\nimport \"./y3dtoken.sol\";\n\nlibrary ConcatHelper {\n\n}\n\ncontract y3dFactory {\n    \n    event y3dTokenCreated(address indexed y);\n\n    function y_3d(string memory _) internal pure returns (string memory) {\n        return string(abi.encodePacked('y', bytes(_), '3d'));\n    }\n\n    function create(address u) external {\n        address y = address(new y3dToken(u, y_3d(IERC20(u).name()), y_3d(IERC20(u).symbol())));\n        emit y3dTokenCreated(y);\n    }\n}",
+  "sourcePath": "/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/y3dfactory.sol",
+  "ast": {
+    "absolutePath": "/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/y3dfactory.sol",
+    "exportedSymbols": {
+      "ConcatHelper": [
+        929
+      ],
+      "y3dFactory": [
+        989
+      ]
+    },
+    "id": 990,
+    "license": null,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 927,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:6"
+      },
+      {
+        "absolutePath": "/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/y3dtoken.sol",
+        "file": "./y3dtoken.sol",
+        "id": 928,
+        "nodeType": "ImportDirective",
+        "scope": 990,
+        "sourceUnit": 1017,
+        "src": "362:24:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 929,
+        "linearizedBaseContracts": [
+          929
+        ],
+        "name": "ConcatHelper",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 990,
+        "src": "388:25:6"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [
+          1016
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 989,
+        "linearizedBaseContracts": [
+          989
+        ],
+        "name": "y3dFactory",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 933,
+            "name": "y3dTokenCreated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 932,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 931,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "y",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 933,
+                  "src": "468:17:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 930,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "468:7:6",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "467:19:6"
+            },
+            "src": "446:41:6"
+          },
+          {
+            "body": {
+              "id": 953,
+              "nodeType": "Block",
+              "src": "562:69:6",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "hexValue": "79",
+                            "id": 944,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "string",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "603:3:6",
+                            "subdenomination": null,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_stringliteral_83847cf31c36389df832d0d4d3df7cf28f211e3f83173e5c157bab31573d61f3",
+                              "typeString": "literal_string \"y\""
+                            },
+                            "value": "y"
+                          },
+                          {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "id": 947,
+                                "name": "_",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 935,
+                                "src": "614:1:6",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              ],
+                              "id": 946,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "nodeType": "ElementaryTypeNameExpression",
+                              "src": "608:5:6",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_type$_t_bytes_storage_ptr_$",
+                                "typeString": "type(bytes storage pointer)"
+                              },
+                              "typeName": {
+                                "id": 945,
+                                "name": "bytes",
+                                "nodeType": "ElementaryTypeName",
+                                "src": "608:5:6",
+                                "typeDescriptions": {
+                                  "typeIdentifier": null,
+                                  "typeString": null
+                                }
+                              }
+                            },
+                            "id": 948,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "typeConversion",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "608:8:6",
+                            "tryCall": false,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes_memory_ptr",
+                              "typeString": "bytes memory"
+                            }
+                          },
+                          {
+                            "argumentTypes": null,
+                            "hexValue": "3364",
+                            "id": 949,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "string",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "618:4:6",
+                            "subdenomination": null,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_stringliteral_1cef0646e7fe7cb478d3a93d2e07774697c9239d0ee8b4294b768c91af329e66",
+                              "typeString": "literal_string \"3d\""
+                            },
+                            "value": "3d"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_stringliteral_83847cf31c36389df832d0d4d3df7cf28f211e3f83173e5c157bab31573d61f3",
+                              "typeString": "literal_string \"y\""
+                            },
+                            {
+                              "typeIdentifier": "t_bytes_memory_ptr",
+                              "typeString": "bytes memory"
+                            },
+                            {
+                              "typeIdentifier": "t_stringliteral_1cef0646e7fe7cb478d3a93d2e07774697c9239d0ee8b4294b768c91af329e66",
+                              "typeString": "literal_string \"3d\""
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 942,
+                            "name": "abi",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": -1,
+                            "src": "586:3:6",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_abi",
+                              "typeString": "abi"
+                            }
+                          },
+                          "id": 943,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "encodePacked",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "586:16:6",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_abiencodepacked_pure$__$returns$_t_bytes_memory_ptr_$",
+                            "typeString": "function () pure returns (bytes memory)"
+                          }
+                        },
+                        "id": 950,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "586:37:6",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes_memory_ptr",
+                          "typeString": "bytes memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bytes_memory_ptr",
+                          "typeString": "bytes memory"
+                        }
+                      ],
+                      "id": 941,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "nodeType": "ElementaryTypeNameExpression",
+                      "src": "579:6:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_type$_t_string_storage_ptr_$",
+                        "typeString": "type(string storage pointer)"
+                      },
+                      "typeName": {
+                        "id": 940,
+                        "name": "string",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "579:6:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": null,
+                          "typeString": null
+                        }
+                      }
+                    },
+                    "id": 951,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "typeConversion",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "579:45:6",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_memory_ptr",
+                      "typeString": "string memory"
+                    }
+                  },
+                  "functionReturnParameters": 939,
+                  "id": 952,
+                  "nodeType": "Return",
+                  "src": "572:52:6"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 954,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "y_3d",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 936,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 935,
+                  "mutability": "mutable",
+                  "name": "_",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 954,
+                  "src": "507:15:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 934,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "507:6:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "506:17:6"
+            },
+            "returnParameters": {
+              "id": 939,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 938,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 954,
+                  "src": "547:13:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 937,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "547:6:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "546:15:6"
+            },
+            "scope": 989,
+            "src": "493:138:6",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 987,
+              "nodeType": "Block",
+              "src": "673:136:6",
+              "statements": [
+                {
+                  "assignments": [
+                    960
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 960,
+                      "mutability": "mutable",
+                      "name": "y",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 987,
+                      "src": "683:9:6",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      },
+                      "typeName": {
+                        "id": 959,
+                        "name": "address",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "683:7:6",
+                        "stateMutability": "nonpayable",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 982,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 965,
+                            "name": "u",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 956,
+                            "src": "716:1:6",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          },
+                          {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "arguments": [],
+                                "expression": {
+                                  "argumentTypes": [],
+                                  "expression": {
+                                    "argumentTypes": null,
+                                    "arguments": [
+                                      {
+                                        "argumentTypes": null,
+                                        "id": 968,
+                                        "name": "u",
+                                        "nodeType": "Identifier",
+                                        "overloadedDeclarations": [],
+                                        "referencedDeclaration": 956,
+                                        "src": "731:1:6",
+                                        "typeDescriptions": {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      }
+                                    ],
+                                    "expression": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      ],
+                                      "id": 967,
+                                      "name": "IERC20",
+                                      "nodeType": "Identifier",
+                                      "overloadedDeclarations": [],
+                                      "referencedDeclaration": 132,
+                                      "src": "724:6:6",
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_type$_t_contract$_IERC20_$132_$",
+                                        "typeString": "type(contract IERC20)"
+                                      }
+                                    },
+                                    "id": 969,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": false,
+                                    "kind": "typeConversion",
+                                    "lValueRequested": false,
+                                    "names": [],
+                                    "nodeType": "FunctionCall",
+                                    "src": "724:9:6",
+                                    "tryCall": false,
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_contract$_IERC20_$132",
+                                      "typeString": "contract IERC20"
+                                    }
+                                  },
+                                  "id": 970,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "memberName": "name",
+                                  "nodeType": "MemberAccess",
+                                  "referencedDeclaration": 45,
+                                  "src": "724:14:6",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_function_external_view$__$returns$_t_string_memory_ptr_$",
+                                    "typeString": "function () view external returns (string memory)"
+                                  }
+                                },
+                                "id": 971,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": false,
+                                "kind": "functionCall",
+                                "lValueRequested": false,
+                                "names": [],
+                                "nodeType": "FunctionCall",
+                                "src": "724:16:6",
+                                "tryCall": false,
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              ],
+                              "id": 966,
+                              "name": "y_3d",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 954,
+                              "src": "719:4:6",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_pure$_t_string_memory_ptr_$returns$_t_string_memory_ptr_$",
+                                "typeString": "function (string memory) pure returns (string memory)"
+                              }
+                            },
+                            "id": 972,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "719:22:6",
+                            "tryCall": false,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            }
+                          },
+                          {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "arguments": [],
+                                "expression": {
+                                  "argumentTypes": [],
+                                  "expression": {
+                                    "argumentTypes": null,
+                                    "arguments": [
+                                      {
+                                        "argumentTypes": null,
+                                        "id": 975,
+                                        "name": "u",
+                                        "nodeType": "Identifier",
+                                        "overloadedDeclarations": [],
+                                        "referencedDeclaration": 956,
+                                        "src": "755:1:6",
+                                        "typeDescriptions": {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      }
+                                    ],
+                                    "expression": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      ],
+                                      "id": 974,
+                                      "name": "IERC20",
+                                      "nodeType": "Identifier",
+                                      "overloadedDeclarations": [],
+                                      "referencedDeclaration": 132,
+                                      "src": "748:6:6",
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_type$_t_contract$_IERC20_$132_$",
+                                        "typeString": "type(contract IERC20)"
+                                      }
+                                    },
+                                    "id": 976,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": false,
+                                    "kind": "typeConversion",
+                                    "lValueRequested": false,
+                                    "names": [],
+                                    "nodeType": "FunctionCall",
+                                    "src": "748:9:6",
+                                    "tryCall": false,
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_contract$_IERC20_$132",
+                                      "typeString": "contract IERC20"
+                                    }
+                                  },
+                                  "id": 977,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "memberName": "symbol",
+                                  "nodeType": "MemberAccess",
+                                  "referencedDeclaration": 51,
+                                  "src": "748:16:6",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_function_external_view$__$returns$_t_string_memory_ptr_$",
+                                    "typeString": "function () view external returns (string memory)"
+                                  }
+                                },
+                                "id": 978,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": false,
+                                "kind": "functionCall",
+                                "lValueRequested": false,
+                                "names": [],
+                                "nodeType": "FunctionCall",
+                                "src": "748:18:6",
+                                "tryCall": false,
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              ],
+                              "id": 973,
+                              "name": "y_3d",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 954,
+                              "src": "743:4:6",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_pure$_t_string_memory_ptr_$returns$_t_string_memory_ptr_$",
+                                "typeString": "function (string memory) pure returns (string memory)"
+                              }
+                            },
+                            "id": 979,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "743:24:6",
+                            "tryCall": false,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            },
+                            {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            },
+                            {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            }
+                          ],
+                          "id": 964,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "NewExpression",
+                          "src": "703:12:6",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_creation_nonpayable$_t_address_$_t_string_memory_ptr_$_t_string_memory_ptr_$returns$_t_contract$_y3dToken_$1016_$",
+                            "typeString": "function (address,string memory,string memory) returns (contract y3dToken)"
+                          },
+                          "typeName": {
+                            "contractScope": null,
+                            "id": 963,
+                            "name": "y3dToken",
+                            "nodeType": "UserDefinedTypeName",
+                            "referencedDeclaration": 1016,
+                            "src": "707:8:6",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_contract$_y3dToken_$1016",
+                              "typeString": "contract y3dToken"
+                            }
+                          }
+                        },
+                        "id": 980,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "703:65:6",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_y3dToken_$1016",
+                          "typeString": "contract y3dToken"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_y3dToken_$1016",
+                          "typeString": "contract y3dToken"
+                        }
+                      ],
+                      "id": 962,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "nodeType": "ElementaryTypeNameExpression",
+                      "src": "695:7:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_type$_t_address_$",
+                        "typeString": "type(address)"
+                      },
+                      "typeName": {
+                        "id": 961,
+                        "name": "address",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "695:7:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": null,
+                          "typeString": null
+                        }
+                      }
+                    },
+                    "id": 981,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "typeConversion",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "695:74:6",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "683:86:6"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 984,
+                        "name": "y",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 960,
+                        "src": "800:1:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 983,
+                      "name": "y3dTokenCreated",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 933,
+                      "src": "784:15:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 985,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "784:18:6",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 986,
+                  "nodeType": "EmitStatement",
+                  "src": "779:23:6"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "9ed93318",
+            "id": 988,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "create",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 957,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 956,
+                  "mutability": "mutable",
+                  "name": "u",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 988,
+                  "src": "653:9:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 955,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "653:7:6",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "652:11:6"
+            },
+            "returnParameters": {
+              "id": 958,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "673:0:6"
+            },
+            "scope": 989,
+            "src": "637:172:6",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 990,
+        "src": "415:396:6"
+      }
+    ],
+    "src": "0:811:6"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/y3dfactory.sol",
+    "exportedSymbols": {
+      "ConcatHelper": [
+        929
+      ],
+      "y3dFactory": [
+        989
+      ]
+    },
+    "id": 990,
+    "license": null,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 927,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:6"
+      },
+      {
+        "absolutePath": "/Users/minakokojima/Documents/GitHub/y3d-protocol-v2/contracts/y3dtoken.sol",
+        "file": "./y3dtoken.sol",
+        "id": 928,
+        "nodeType": "ImportDirective",
+        "scope": 990,
+        "sourceUnit": 1017,
+        "src": "362:24:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 929,
+        "linearizedBaseContracts": [
+          929
+        ],
+        "name": "ConcatHelper",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 990,
+        "src": "388:25:6"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [
+          1016
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 989,
+        "linearizedBaseContracts": [
+          989
+        ],
+        "name": "y3dFactory",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 933,
+            "name": "y3dTokenCreated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 932,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 931,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "y",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 933,
+                  "src": "468:17:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 930,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "468:7:6",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "467:19:6"
+            },
+            "src": "446:41:6"
+          },
+          {
+            "body": {
+              "id": 953,
+              "nodeType": "Block",
+              "src": "562:69:6",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "hexValue": "79",
+                            "id": 944,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "string",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "603:3:6",
+                            "subdenomination": null,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_stringliteral_83847cf31c36389df832d0d4d3df7cf28f211e3f83173e5c157bab31573d61f3",
+                              "typeString": "literal_string \"y\""
+                            },
+                            "value": "y"
+                          },
+                          {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "id": 947,
+                                "name": "_",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 935,
+                                "src": "614:1:6",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              ],
+                              "id": 946,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "nodeType": "ElementaryTypeNameExpression",
+                              "src": "608:5:6",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_type$_t_bytes_storage_ptr_$",
+                                "typeString": "type(bytes storage pointer)"
+                              },
+                              "typeName": {
+                                "id": 945,
+                                "name": "bytes",
+                                "nodeType": "ElementaryTypeName",
+                                "src": "608:5:6",
+                                "typeDescriptions": {
+                                  "typeIdentifier": null,
+                                  "typeString": null
+                                }
+                              }
+                            },
+                            "id": 948,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "typeConversion",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "608:8:6",
+                            "tryCall": false,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes_memory_ptr",
+                              "typeString": "bytes memory"
+                            }
+                          },
+                          {
+                            "argumentTypes": null,
+                            "hexValue": "3364",
+                            "id": 949,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "string",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "618:4:6",
+                            "subdenomination": null,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_stringliteral_1cef0646e7fe7cb478d3a93d2e07774697c9239d0ee8b4294b768c91af329e66",
+                              "typeString": "literal_string \"3d\""
+                            },
+                            "value": "3d"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_stringliteral_83847cf31c36389df832d0d4d3df7cf28f211e3f83173e5c157bab31573d61f3",
+                              "typeString": "literal_string \"y\""
+                            },
+                            {
+                              "typeIdentifier": "t_bytes_memory_ptr",
+                              "typeString": "bytes memory"
+                            },
+                            {
+                              "typeIdentifier": "t_stringliteral_1cef0646e7fe7cb478d3a93d2e07774697c9239d0ee8b4294b768c91af329e66",
+                              "typeString": "literal_string \"3d\""
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 942,
+                            "name": "abi",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": -1,
+                            "src": "586:3:6",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_abi",
+                              "typeString": "abi"
+                            }
+                          },
+                          "id": 943,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "encodePacked",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "586:16:6",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_abiencodepacked_pure$__$returns$_t_bytes_memory_ptr_$",
+                            "typeString": "function () pure returns (bytes memory)"
+                          }
+                        },
+                        "id": 950,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "586:37:6",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes_memory_ptr",
+                          "typeString": "bytes memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bytes_memory_ptr",
+                          "typeString": "bytes memory"
+                        }
+                      ],
+                      "id": 941,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "nodeType": "ElementaryTypeNameExpression",
+                      "src": "579:6:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_type$_t_string_storage_ptr_$",
+                        "typeString": "type(string storage pointer)"
+                      },
+                      "typeName": {
+                        "id": 940,
+                        "name": "string",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "579:6:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": null,
+                          "typeString": null
+                        }
+                      }
+                    },
+                    "id": 951,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "typeConversion",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "579:45:6",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_memory_ptr",
+                      "typeString": "string memory"
+                    }
+                  },
+                  "functionReturnParameters": 939,
+                  "id": 952,
+                  "nodeType": "Return",
+                  "src": "572:52:6"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 954,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "y_3d",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 936,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 935,
+                  "mutability": "mutable",
+                  "name": "_",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 954,
+                  "src": "507:15:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 934,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "507:6:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "506:17:6"
+            },
+            "returnParameters": {
+              "id": 939,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 938,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 954,
+                  "src": "547:13:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 937,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "547:6:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "546:15:6"
+            },
+            "scope": 989,
+            "src": "493:138:6",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 987,
+              "nodeType": "Block",
+              "src": "673:136:6",
+              "statements": [
+                {
+                  "assignments": [
+                    960
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 960,
+                      "mutability": "mutable",
+                      "name": "y",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 987,
+                      "src": "683:9:6",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      },
+                      "typeName": {
+                        "id": 959,
+                        "name": "address",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "683:7:6",
+                        "stateMutability": "nonpayable",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 982,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 965,
+                            "name": "u",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 956,
+                            "src": "716:1:6",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          },
+                          {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "arguments": [],
+                                "expression": {
+                                  "argumentTypes": [],
+                                  "expression": {
+                                    "argumentTypes": null,
+                                    "arguments": [
+                                      {
+                                        "argumentTypes": null,
+                                        "id": 968,
+                                        "name": "u",
+                                        "nodeType": "Identifier",
+                                        "overloadedDeclarations": [],
+                                        "referencedDeclaration": 956,
+                                        "src": "731:1:6",
+                                        "typeDescriptions": {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      }
+                                    ],
+                                    "expression": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      ],
+                                      "id": 967,
+                                      "name": "IERC20",
+                                      "nodeType": "Identifier",
+                                      "overloadedDeclarations": [],
+                                      "referencedDeclaration": 132,
+                                      "src": "724:6:6",
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_type$_t_contract$_IERC20_$132_$",
+                                        "typeString": "type(contract IERC20)"
+                                      }
+                                    },
+                                    "id": 969,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": false,
+                                    "kind": "typeConversion",
+                                    "lValueRequested": false,
+                                    "names": [],
+                                    "nodeType": "FunctionCall",
+                                    "src": "724:9:6",
+                                    "tryCall": false,
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_contract$_IERC20_$132",
+                                      "typeString": "contract IERC20"
+                                    }
+                                  },
+                                  "id": 970,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "memberName": "name",
+                                  "nodeType": "MemberAccess",
+                                  "referencedDeclaration": 45,
+                                  "src": "724:14:6",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_function_external_view$__$returns$_t_string_memory_ptr_$",
+                                    "typeString": "function () view external returns (string memory)"
+                                  }
+                                },
+                                "id": 971,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": false,
+                                "kind": "functionCall",
+                                "lValueRequested": false,
+                                "names": [],
+                                "nodeType": "FunctionCall",
+                                "src": "724:16:6",
+                                "tryCall": false,
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              ],
+                              "id": 966,
+                              "name": "y_3d",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 954,
+                              "src": "719:4:6",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_pure$_t_string_memory_ptr_$returns$_t_string_memory_ptr_$",
+                                "typeString": "function (string memory) pure returns (string memory)"
+                              }
+                            },
+                            "id": 972,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "719:22:6",
+                            "tryCall": false,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            }
+                          },
+                          {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "arguments": [],
+                                "expression": {
+                                  "argumentTypes": [],
+                                  "expression": {
+                                    "argumentTypes": null,
+                                    "arguments": [
+                                      {
+                                        "argumentTypes": null,
+                                        "id": 975,
+                                        "name": "u",
+                                        "nodeType": "Identifier",
+                                        "overloadedDeclarations": [],
+                                        "referencedDeclaration": 956,
+                                        "src": "755:1:6",
+                                        "typeDescriptions": {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      }
+                                    ],
+                                    "expression": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      ],
+                                      "id": 974,
+                                      "name": "IERC20",
+                                      "nodeType": "Identifier",
+                                      "overloadedDeclarations": [],
+                                      "referencedDeclaration": 132,
+                                      "src": "748:6:6",
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_type$_t_contract$_IERC20_$132_$",
+                                        "typeString": "type(contract IERC20)"
+                                      }
+                                    },
+                                    "id": 976,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": false,
+                                    "kind": "typeConversion",
+                                    "lValueRequested": false,
+                                    "names": [],
+                                    "nodeType": "FunctionCall",
+                                    "src": "748:9:6",
+                                    "tryCall": false,
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_contract$_IERC20_$132",
+                                      "typeString": "contract IERC20"
+                                    }
+                                  },
+                                  "id": 977,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "memberName": "symbol",
+                                  "nodeType": "MemberAccess",
+                                  "referencedDeclaration": 51,
+                                  "src": "748:16:6",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_function_external_view$__$returns$_t_string_memory_ptr_$",
+                                    "typeString": "function () view external returns (string memory)"
+                                  }
+                                },
+                                "id": 978,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": false,
+                                "kind": "functionCall",
+                                "lValueRequested": false,
+                                "names": [],
+                                "nodeType": "FunctionCall",
+                                "src": "748:18:6",
+                                "tryCall": false,
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              ],
+                              "id": 973,
+                              "name": "y_3d",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 954,
+                              "src": "743:4:6",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_pure$_t_string_memory_ptr_$returns$_t_string_memory_ptr_$",
+                                "typeString": "function (string memory) pure returns (string memory)"
+                              }
+                            },
+                            "id": 979,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "743:24:6",
+                            "tryCall": false,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            },
+                            {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            },
+                            {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            }
+                          ],
+                          "id": 964,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "NewExpression",
+                          "src": "703:12:6",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_creation_nonpayable$_t_address_$_t_string_memory_ptr_$_t_string_memory_ptr_$returns$_t_contract$_y3dToken_$1016_$",
+                            "typeString": "function (address,string memory,string memory) returns (contract y3dToken)"
+                          },
+                          "typeName": {
+                            "contractScope": null,
+                            "id": 963,
+                            "name": "y3dToken",
+                            "nodeType": "UserDefinedTypeName",
+                            "referencedDeclaration": 1016,
+                            "src": "707:8:6",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_contract$_y3dToken_$1016",
+                              "typeString": "contract y3dToken"
+                            }
+                          }
+                        },
+                        "id": 980,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "703:65:6",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_y3dToken_$1016",
+                          "typeString": "contract y3dToken"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_y3dToken_$1016",
+                          "typeString": "contract y3dToken"
+                        }
+                      ],
+                      "id": 962,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "nodeType": "ElementaryTypeNameExpression",
+                      "src": "695:7:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_type$_t_address_$",
+                        "typeString": "type(address)"
+                      },
+                      "typeName": {
+                        "id": 961,
+                        "name": "address",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "695:7:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": null,
+                          "typeString": null
+                        }
+                      }
+                    },
+                    "id": 981,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "typeConversion",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "695:74:6",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "683:86:6"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 984,
+                        "name": "y",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 960,
+                        "src": "800:1:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 983,
+                      "name": "y3dTokenCreated",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 933,
+                      "src": "784:15:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 985,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "784:18:6",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 986,
+                  "nodeType": "EmitStatement",
+                  "src": "779:23:6"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "9ed93318",
+            "id": 988,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "create",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 957,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 956,
+                  "mutability": "mutable",
+                  "name": "u",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 988,
+                  "src": "653:9:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 955,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "653:7:6",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "652:11:6"
+            },
+            "returnParameters": {
+              "id": 958,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "673:0:6"
+            },
+            "scope": 989,
+            "src": "637:172:6",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 990,
+        "src": "415:396:6"
+      }
+    ],
+    "src": "0:811:6"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.12+commit.27d51765.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.2.0",
+  "updatedAt": "2020-09-02T22:22:35.228Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
