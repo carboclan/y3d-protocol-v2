@@ -66,7 +66,7 @@ import {
 } from 'lodash';
 import { mapState } from 'vuex';
 import { Contract } from 'ethers';
-import { IERC20DetailInfo, fetchERC20Detail as fetchERC20DetailInfo } from '@/utils/contract/fetchContractInfo';
+import { IERC20DetailInfo, fetchERC20Detail as fetchERC20DetailInfo } from '../utils/contract/fetchContractInfo';
 import Modal from './Modal.vue';
 import HelpTooltip from './HelpTooltip.vue';
 import SelectTokenListItem from './SelectTokenListItem.vue';
@@ -93,6 +93,7 @@ export interface ISelectTokenModalProps {
 
 export interface ISelectTokenModalData {
   dialogVisibleSelectToken: boolean
+  network: String
   tokenNameOrAddress: string
   searchTokenList: Array<ISearchTokenListItem>
   commonBases: Array<any>
@@ -100,6 +101,7 @@ export interface ISelectTokenModalData {
 }
 
 export interface ISelectTokenModalMethods {
+  initializationBaseTokenInfo: () => void
   searchToken: DebouncedFunc<(val: string) => Promise<void>>
   selectToken: (item: ITokenListItem) => void
   fetchBalanceOfDefaultList: () => Promise<void>
@@ -160,12 +162,13 @@ export default Vue.extend<
       searchTokenList: [],
       commonBases: [],
       originalList: [],
+      network: '',
     };
   },
   computed: {
     ...mapState('ethers', ['address', 'network']),
     processedOriginalList() {
-      return filter(this.originalList, (v) => {
+      return filter(this.originalList, (v: ITokenListItem) => {
         if (this.isUToken) {
           return v.tag === 'uToken';
         }
@@ -252,8 +255,9 @@ export default Vue.extend<
         address: val,
         symbol: '',
         tag: '',
+        dsymbol: '',
       });
-      const fined = find(self.originalList, (o) => o.address === res.address);
+      const fined = find(self.originalList, (o: ITokenListItem) => o.address === res.address);
       // @ts-ignore
       self.searchTokenList.push(fined || res);
     }, 300),
