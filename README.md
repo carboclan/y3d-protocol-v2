@@ -1,5 +1,7 @@
 #  ♨️ Y3D Protocol ♨️
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6b0be8c1-91c1-40b4-a7f0-dfe9208fae81/deploy-status)](https://app.netlify.com/sites/y3dv2-project-0916/deploys)
+
 ## TL;DR:
 
 Y3D = [YAM](https://yam.finance) + [P3D](https://powh.io)
