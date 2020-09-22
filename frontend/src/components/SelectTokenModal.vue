@@ -297,6 +297,9 @@ export default Vue.extend<
         tag: '',
         dsymbol: '',
       });
+      if (!res?.dsymbol) {
+        res.dsymbol = res.symbol;
+      }
       const fined = find(self.originalList, (o: ITokenListItem) => o.address === res.address);
       // @ts-ignore
       self.searchTokenList.push(fined || res);

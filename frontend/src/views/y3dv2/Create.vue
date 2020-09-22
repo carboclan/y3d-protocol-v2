@@ -48,7 +48,7 @@
           <input type="text" />
         </div>
         <div class="swap-button-content">
-          <MainButton :btnLoading="false" @click="create_y3dToken">
+          <MainButton :btnLoading="deploying" @click="create_y3dToken">
             Create
           </MainButton>
         </div>
@@ -84,10 +84,10 @@ export default {
         alert('This is not a ethereum address, please double check your input.');
         return;
       }
-      if (!utils.isAddress(this.yTokenContract)) {
-        alert('This is not a ethereum address, please double check your input.');
-        return;
-      }
+      // if (!utils.isAddress(this.yTokenContract)) {
+      //   alert('This is not a ethereum address, please double check your input.');
+      //   return;
+      // }
       if (this.fee < 0 || this.fee > 25.5) {
         alert('The fee is out of range');
         return;
@@ -115,8 +115,8 @@ export default {
     },
     goToY3dContract() {
       this.$router.push({
-        name: 'Y3DToken',
-        params: { contractAddress: this.deployedY3dToken },
+        name: 'Govern',
+        query: { token: this.deployedY3dToken },
       });
     },
   },

@@ -54,6 +54,10 @@ export default Vue.extend({
         name: '治理',
         path: '/y3dv2/govern',
       },
+      {
+        name: '创建',
+        path: '/y3dv2/create',
+      },
     ],
   }),
 });
