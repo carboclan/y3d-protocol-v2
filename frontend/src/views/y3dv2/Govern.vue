@@ -146,9 +146,13 @@ export default Vue.extend({
     },
     address() {
       this.fetchOptionsTokenInfo();
+      if (this.uTD === null && this.y3dTD === null && this.value !== '') {
+        this.fetchTokenInfo();
+      }
     },
   },
   mounted() {
+    this.value = this.$route.query.token as string;
     this.fetchOptionsTokenInfo();
   },
   methods: {
