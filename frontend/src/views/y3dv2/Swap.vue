@@ -63,9 +63,9 @@
               @click="clickActionButton">{{
               tipText
             }}</MainButton>
-            <!-- <router-link to="/create" v-if="tokenAInfo && tokenBInfo && !isPairExist">
+            <router-link to="/create" v-if="tokenAInfo && tokenBInfo && !isPairExist">
               <p>Go to create</p>
-            </router-link> -->
+            </router-link>
           </div>
         </div>
       </div>
