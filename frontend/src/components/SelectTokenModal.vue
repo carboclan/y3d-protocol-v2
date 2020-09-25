@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 <template>
   <Modal v-model="dialogVisibleSelectToken" :customClass="customClass" :width="width">
     <template v-slot:header>
@@ -32,12 +31,13 @@
       <div class="select-token-model-list">
         <template v-if="searchTokenList.length <= 0">
           <SelectTokenListItem
-            v-for="(item, idx) in originalList"
+            v-for="(item, idx) in processedOriginalList"
             :key="idx"
-            :symbol="item.symbol"
+            :symbol="item.dsymbol"
             :name="item.symbol"
             :logo="item.logo"
             :balance="item.dBalance"
+            :isYToken="item.tag === 'y3dToken'"
             @on-click="selectToken(item)"
           />
         </template>
@@ -45,10 +45,11 @@
           <SelectTokenListItem
             v-for="(item, idx) in searchTokenList"
             :key="idx"
-            :symbol="item.symbol"
+            :symbol="item.dsymbol"
             :name="item.name"
             :logo="item.logo"
             :balance="item.dBalance"
+            :isYToken="item.tag === 'y3dToken'"
             @on-click="selectToken(item)"
           />
         </template>
@@ -57,22 +58,95 @@
   </Modal>
 </template>
 
-<script>
-import { debounce, sortBy, find } from 'lodash';
+<script lang="ts">
+/* eslint-disable no-unused-vars */
+import Vue from 'vue';
+import {
+  debounce, sortBy, find, filter, DebouncedFunc,
+} from 'lodash';
 import { mapState } from 'vuex';
+import { Contract } from 'ethers';
+import { IERC20DetailInfo, fetchERC20Detail as fetchERC20DetailInfo } from '../utils/contract/fetchContractInfo';
 import Modal from './Modal.vue';
 import HelpTooltip from './HelpTooltip.vue';
 import SelectTokenListItem from './SelectTokenListItem.vue';
 import { CommonERC20 } from '../contract';
 import { getProvider, utils } from '../store/ethers/ethersConnect';
 
-export default {
+export interface ITokenListItem {
+  symbol: string
+  dsymbol: string
+  address: string
+  tag: string
+}
+
+export type ISearchTokenListItem = ITokenListItem & IERC20DetailInfo
+
+export interface PairListModel {
+  name: string
+  uToken: string
+  y3dToken: string
+  yaddress: string
+}
+
+export interface ISelectTokenModalProps {
+  isUToken: boolean
+  value: boolean
+  customClass: string
+  width: string
+  symbol: string
+  commonBasesShow: boolean
+  otherTokenInfo: ITokenListItem
+  pairList: Array<PairListModel>
+}
+
+export interface ISelectTokenModalData {
+  dialogVisibleSelectToken: boolean
+  tokenNameOrAddress: string
+  searchTokenList: Array<ISearchTokenListItem>
+  commonBases: Array<any>
+  originalList: Array<ITokenListItem>
+}
+
+export interface ISelectTokenModalMethods {
+  initializationBaseTokenInfo: () => void
+  searchToken: DebouncedFunc<(val: string) => Promise<void>>
+  selectToken: (item: ITokenListItem) => void
+  fetchBalanceOfDefaultList: () => Promise<void>
+  getERC20: (_address: string) => Contract
+  fetchERC20Detail: (item: ITokenListItem) => Promise<ISearchTokenListItem>
+}
+
+export interface ISelectTokenModalComputed {
+  address: string
+  network: string
+  processedOriginalList: Array<ITokenListItem>
+}
+
+export default Vue.extend<
+  ISelectTokenModalData,
+  ISelectTokenModalMethods,
+  ISelectTokenModalComputed,
+  ISelectTokenModalProps
+>({
   components: {
     Modal,
     HelpTooltip,
     SelectTokenListItem,
   },
   props: {
+    otherTokenInfo: {
+      type: Object,
+      default: null,
+    },
+    pairList: {
+      type: Array,
+      default: () => [],
+    },
+    isUToken: {
+      type: Boolean,
+      default: false,
+    },
     value: {
       type: Boolean,
       default: false,
@@ -95,57 +169,57 @@ export default {
       default: false,
     },
   },
-  computed: {
-    ...mapState('ethers', ['address']),
+  mounted() {
+    this.initializationBaseTokenInfo();
   },
-  data() {
+  data(): ISelectTokenModalData {
     return {
-      // TronLink,
       dialogVisibleSelectToken: this.value,
       tokenNameOrAddress: '',
       searchTokenList: [],
       commonBases: [],
-      originalList: [
-        {
-          symbol: 'FUSDT',
-          address: '0x7f76315337E63482043F92A1bD4784290159AD6f',
-          tag: 'uToken',
-          yToken: 'yFUSDT3d',
-        },
-        {
-          symbol: 'fy3d',
-          address: '0x7a672B200f906D56E8B528413d02D12abABcc231',
-          tag: 'uToken',
-          yToken: 'yfy3d3d',
-        },
-        {
-          symbol: 'SHUIHU',
-          address: '0xA56d8FD390D6dAc025070100b49010720Db5A685',
-          tag: 'uToken',
-          yToken: 'ySHUIHU3d',
-        },
-        {
-          symbol: 'yFUSDT3d',
-          address: '0x14Ac98d0B38ACce572c76c76501ABD648Eefea6f',
-          tag: 'y_3dToken',
-          uToken: 'FUSDT',
-        },
-        {
-          symbol: 'yfy3d3d',
-          address: '0x2e34f61ffa1605da4ee88a6d10e5d75ba8ce246b',
-          tag: 'y_3dToken',
-          uToken: 'fy3d',
-        },
-        {
-          symbol: 'ySHUIHU3d',
-          address: '0x1d8c0ef5639445faca65951423dec250bd0e68fc',
-          tag: 'y_3dToken',
-          uToken: 'SHUIHU',
-        },
-      ],
+      originalList: [],
     };
   },
+  computed: {
+    ...mapState('ethers', ['address', 'network']),
+    processedOriginalList() {
+      const filterTagToken = filter(this.originalList, (v: ITokenListItem) => {
+        if (this.isUToken) {
+          return v.tag === 'uToken';
+        }
+        return v.tag !== 'uToken';
+      });
+      if (this.isUToken) {
+        return filterTagToken;
+      }
+      if (this.otherTokenInfo) {
+        const usablePairList = filter(
+          this.pairList,
+          (v: PairListModel) => v.uToken === this.otherTokenInfo.dsymbol,
+        ).flatMap((v: PairListModel) => v.y3dToken);
+        const filterPairToken = filter(
+          filterTagToken,
+          (v: ITokenListItem) => usablePairList.indexOf(v.dsymbol) !== -1,
+        );
+        return filterPairToken;
+      }
+      return filterTagToken;
+    },
+  },
   watch: {
+    otherTokenInfo() {
+      if (!this.isUToken) {
+        this.$emit('select-token', {
+          data: this.processedOriginalList[0],
+          symbol: this.symbol,
+        });
+        this.dialogVisibleSelectToken = false;
+      }
+    },
+    network() {
+      this.initializationBaseTokenInfo();
+    },
     value(newVal) {
       this.dialogVisibleSelectToken = newVal;
       if (newVal) this.fetchBalanceOfDefaultList();
@@ -166,13 +240,69 @@ export default {
     },
   },
   methods: {
+    initializationBaseTokenInfo() {
+      if (this.network === 'Rinkeby Test Network') {
+        this.originalList = [
+          {
+            // display symobl
+            dsymbol: 'FUSDT',
+            symbol: 'FUSDT',
+            address: '0x7f76315337E63482043F92A1bD4784290159AD6f',
+            tag: 'uToken',
+          },
+          {
+            dsymbol: 'yFUSDT3d',
+            symbol: 'yFUSDT3d',
+            address: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
+            tag: 'y3dToken',
+          },
+        ];
+        return;
+      }
+      this.originalList = [
+        {
+          // display symobl
+          dsymbol: 'yCrv',
+          symbol: 'yCrv',
+          address: '0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8',
+          tag: 'uToken',
+        },
+        {
+          dsymbol: 'yyCrv',
+          symbol: 'yyCrv',
+          address: '0x199ddb4bdf09f699d2cf9ca10212bd5e3b570ac2',
+          tag: 'y3dToken',
+        },
+        {
+          dsymbol: 'swUSD',
+          symbol: 'swUSD',
+          address: '0x77C6E4a580c0dCE4E5c7a17d0bc077188a83A059',
+          tag: 'uToken',
+        },
+        {
+          dsymbol: 'yswUSD',
+          symbol: 'yswUSD',
+          address: '0x2b1120F0C8238C098C767282092D49d9ac527e8C',
+          tag: 'y3dToken',
+        },
+      ];
+    },
     // eslint-disable-next-line func-names
-    searchToken: debounce(async function (val) {
-      const res = await this.fetchERC20Detail({
+    searchToken: debounce(async function (val: string) {
+      // @ts-ignore
+      const self = this as ISelectTokenModalData & ISelectTokenModalMethods;
+      const res = await self.fetchERC20Detail({
         address: val,
+        symbol: '',
+        tag: '',
+        dsymbol: '',
       });
-      const fined = find(this.originalList, (o) => o.address === res.address);
-      this.searchTokenList.push(fined || res);
+      if (!res?.dsymbol) {
+        res.dsymbol = res.symbol;
+      }
+      const fined = find(self.originalList, (o: ITokenListItem) => o.address === res.address);
+      // @ts-ignore
+      self.searchTokenList.push(fined || res);
     }, 300),
     selectToken(item) {
       this.$emit('select-token', {
@@ -186,26 +316,18 @@ export default {
       const result = (
         await Promise.all(rest.map((item) => this.fetchERC20Detail(item)))
       ).map(({ balance, ...res }) => ({ ...res, balance: balance.toString() }));
-      console.log('fetchBalanceOfDefaultList result', result);
       this.originalList = [...result];
       this.originalList = sortBy(this.originalList, 'balance').reverse();
     },
     getERC20(_address) {
-      return CommonERC20.attach(_address).connect(getProvider().getSigner());
+      return CommonERC20.attach(_address).connect(getProvider()!.getSigner());
     },
     async fetchERC20Detail(item) {
       // eslint-disable-next-line no-underscore-dangle
       const _address = item.address;
-      const contract = this.getERC20(_address);
-      const [name, symbol, totalSupply, decimals, balance] = await Promise.all([
-        contract.name(),
-        contract.symbol(),
-        contract.totalSupply(),
-        contract.decimals(),
-        contract.balanceOf(this.address),
-      ]);
-      // balance that for display
-      const dBalance = utils.formatUnits(balance, decimals);
+      const {
+        name, symbol, totalSupply, decimals, balance, dBalance,
+      } = await fetchERC20DetailInfo(_address, this.address);
       return {
         ...item,
         name,
@@ -217,7 +339,7 @@ export default {
       };
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

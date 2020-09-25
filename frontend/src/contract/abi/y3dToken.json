@@ -394,5 +394,39 @@
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
-    }
+    },
+    {
+      "constant":true,
+      "inputs":[
+
+      ],
+      "name":"swUSD",
+      "outputs":[
+          {
+              "internalType":"contract IERC20",
+              "name":"",
+              "type":"address"
+          }
+      ],
+      "payable":false,
+      "stateMutability":"view",
+      "type":"function"
+    },
+    {
+      "constant":true,
+      "inputs":[
+
+      ],
+      "name":"yCrv",
+      "outputs":[
+          {
+              "internalType":"contract IERC20",
+              "name":"",
+              "type":"address"
+          }
+      ],
+      "payable":false,
+      "stateMutability":"view",
+      "type":"function"
+  }
 ]

@@ -2,7 +2,7 @@
   <div class="about-menu" @click.stop="">
     <a target="_blank" href="https://y3d.finance/" class="text-link">
       <img src="@/assets/menu/switch.png" class="icon-link" />
-      <p>Old Version</p>
+      <p>Safe mode</p>
     </a>
     <a target="_blank" href="https://shimo.im/docs/PcWhYR9gqHH6dxGX/read" class="text-link">
       <img src="@/assets/menu/doc.png" class="icon-link" />

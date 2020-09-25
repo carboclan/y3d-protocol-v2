@@ -29,12 +29,18 @@
             :isTokenSelected="isTokenSelected"
             :tokenLogo="tokenLogo"
             @click="showTokenMenu"
-            >{{ tokenInfo && tokenInfo.symbol }}</SelectdTokenButton
+            >{{ tokenInfo && tokenInfo.dsymbol }}</SelectdTokenButton
           >
         </div>
       </div>
     </div>
-    <SelectTokenModal v-model="isModalShowing" @select-token="selectToken"></SelectTokenModal>
+    <SelectTokenModal
+      :isUToken="isUToken"
+      v-model="isModalShowing"
+      @select-token="selectToken"
+      :pairList="pairList"
+      :otherTokenInfo="otherTokenInfo"
+    ></SelectTokenModal>
   </div>
 </template>
 
@@ -55,6 +61,14 @@ export default Vue.extend({
     SelectTokenModal,
   },
   props: {
+    otherTokenInfo: {
+      type: Object,
+      default: null,
+    },
+    pairList: {
+      type: Array,
+      default: () => [],
+    },
     tokenInfo: {
       type: Object,
       default: null,
@@ -76,6 +90,10 @@ export default Vue.extend({
       default: () => {},
     },
     isToToken: {
+      type: Boolean,
+      default: false,
+    },
+    isUToken: {
       type: Boolean,
       default: false,
     },
@@ -124,7 +142,6 @@ export default Vue.extend({
       this.setAmount(utils.formatUnits(this.tokenInfo.balance, this.tokenInfo.decimals).toString());
     },
     selectToken(payload: any) {
-      console.log('payload', payload);
       this.$emit('select-token', payload.data);
     },
   },

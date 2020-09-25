@@ -6,9 +6,8 @@ wrangler.toml
 .secret1
 .secret2
 .secret3
-/build
-/flatten
 /clean_build
 **/package-lock.json
 package-lock.json
 .DS_Store
+*.log

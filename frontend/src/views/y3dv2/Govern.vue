@@ -1,62 +1,213 @@
 <template>
-<LayoutY3DV2>
-  <div class="govern">
-    <div class="govern-container">
-      <div>
-        <span class="title-text">Select A y3dToken Address</span>
-      </div>
-      <div class="selection">
-        <el-select v-model="value" placeholder="Token..." class="selection-container">
-          <el-option
-            class="option-select"
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="blank-container">
+  <LayoutY3DV2>
+    <div class="govern">
+      <div class="govern-container">
+        <div>
+          <span class="title-text">Select A y3dToken Address</span>
+        </div>
+        <div class="selection" @click="shownSelectTokenModal = true">
+          <p v-if="!value || value === ''">Select a token</p>
+          <div class="token-info" v-else>
+            <img src="@/assets/base/y3d.png" />
+            <p>{{ y3dTD && y3dTD.symbol }}</p>
+          </div>
+          <IconTokenSelectArrow />
+        </div>
+        <div class="blank-container">
+          <div class="blank-container-wrap" v-if="uTD && y3dTD">
+            <div class="blank-container-info-wrap">
+              <div class="blank-container-info">
+                <p class="blank-container-info-name">{{ uTD.symbol }} stacked</p>
+                <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.staked) }}</p>
+              </div>
+              <div class="contract-info">
+                <img src="@/assets/base/copy.png" />
+                <a :href="'https://rinkeby.etherscan.io/address/' + uTD.address" target="__blank"><p>{{ uTD.address }}</p></a>
+              </div>
+            </div>
+            <div class="blank-container-info-wrap">
+              <div class="blank-container-info">
+                <p class="blank-container-info-name">{{ y3dTD.symbol }} supply</p>
+                <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.supply) }}</p>
+              </div>
+              <div class="contract-info">
+                <img src="@/assets/base/copy.png" />
+                <a :href="'https://rinkeby.etherscan.io/address/' + value" target="__blank"><p>{{ value }}</p></a>
+              </div>
+            </div>
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">{{ y3dTD.symbol }} price</p>
+              <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.price) }}$</p>
+            </div>
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">Mining {{ uTD.symbol }}</p>
+              <p class="blank-container-info-value">{{
+                formatGrovernInfo(y3dTD.miningAmount)
+              }}({{ formatGrovernInfo(y3dTD.miningRatio) }}%)</p>
+            </div>
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">P3D ratio</p>
+              <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.p3DRatio) }}</p>
+            </div>
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">Timelock</p>
+              <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.timelock) }}</p>
+            </div>
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">Created time</p>
+              <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.createdTime) }}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+    <SelectTokenModal
+      :isUToken="false"
+      v-model="shownSelectTokenModal" @select-token="selectToken"></SelectTokenModal>
   </LayoutY3DV2>
 </template>
 <script lang="ts">
+/* eslint-disable no-unused-vars */
+/* eslint no-underscore-dangle: ["error", { "allow": ["_u", "_y"] }] */
+/* eslint-disable no-alert */
 import Vue from 'vue';
 import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
+import { mapState } from 'vuex';
+import {
+  fetchERC20Detail, IERC20DetailInfo, IUTokenDetailInfo, IYTokenDetailInfo,
+} from '@/utils/contract/fetchContractInfo';
+import { formatGrovernInfo } from '@/utils/formatter/formatGrovernInfo';
+import { getY3DContract } from '@/utils/contract/getContract';
+import SelectTokenModal, { ITokenListItem } from '@/components/SelectTokenModal.vue';
+import IconTokenSelectArrow from '@/components/Icons/IconTokenSelectArrow.vue';
+import { formatUnits } from 'ethers/lib/utils';
+
+export interface IGovernData {
+  shownSelectTokenModal: boolean
+  loadingTokenInfo: boolean
+  y3dTD: IYTokenDetail | null
+  uTD: IUTokenDetail | null
+  value: string
+  options: Array<IOptionListItem>
+  optionsY3dTokenInfo: Array<IOptionY3dTokenInfoListItem>
+}
+
+export interface IYTokenDetail extends IYTokenDetailInfo {
+  staked?: string
+  supply?: string
+  price?: number
+  miningAmount?: string
+  miningRatio?: number
+  p3DRatio?: number
+  timelock?: string
+  createdTime?: string
+}
+
+export interface IUTokenDetail extends IUTokenDetailInfo {}
+
+export interface IOptionListItem {
+  token: {
+    y3dToken: string
+  }
+}
+
+export type IOptionY3dTokenInfoListItem = IOptionListItem & IERC20DetailInfo
+
+export interface ISelectTokenParam {
+  data: ITokenListItem
+  symbol: string
+}
 
 export default Vue.extend({
   components: {
     LayoutY3DV2,
+    SelectTokenModal,
+    IconTokenSelectArrow,
   },
-  data() {
+  data(): IGovernData {
     return {
+      shownSelectTokenModal: false,
+      loadingTokenInfo: false,
+      y3dTD: null,
+      uTD: null,
       value: '',
-      options: [
-        {
-          value: '1',
-          label: 'yUNI-ETH-LPd',
-        }, {
-          value: '2',
-          label: 'yUSD3d',
-        }, {
-          value: '3',
-          label: 'yUSDTd',
-        }, {
-          value: '4',
-          label: 'yDAI3d',
-        }, {
-          value: '5',
-          label: 'yWBTC3d',
-        },
-      ],
+      options: [],
+      optionsY3dTokenInfo: [],
     };
+  },
+  computed: {
+    ...mapState('ethers', ['address']),
+  },
+  watch: {
+    value() {
+      this.uTD = null;
+      this.y3dTD = null;
+      this.fetchTokenInfo();
+    },
+    address() {
+      this.fetchOptionsTokenInfo();
+      if (this.uTD === null && this.y3dTD === null && this.value !== '') {
+        this.fetchTokenInfo();
+      }
+    },
+  },
+  mounted() {
+    this.value = this.$route.query.token as string;
+    this.fetchOptionsTokenInfo();
+  },
+  methods: {
+    async fetchOptionsTokenInfo() {
+      const result = await Promise.all(
+        this.options.map(async (item) => {
+          const r = await fetchERC20Detail(item.token.y3dToken, this.address);
+          return {
+            ...item,
+            ...r,
+          };
+        }),
+      );
+      this.optionsY3dTokenInfo = result;
+    },
+    async fetchTokenInfo() {
+      this.loadingTokenInfo = true;
+      const contract = getY3DContract(this.value);
+      let underlying: string = '';
+      try {
+        underlying = await contract._u();
+      } catch (err) {
+        const cname = await contract.name();
+        const uname = cname.substr(1, cname.length - 1);
+        underlying = await contract[uname]();
+      }
+      const [uTokenDetail, y3dTD] = await Promise.all([
+        fetchERC20Detail(underlying, this.address),
+        fetchERC20Detail(this.value, this.address),
+      ]);
+      // eslint-disable-next-line no-underscore-dangle
+      const yTStaked = formatUnits(await contract.pool(), 18);
+      const yTSupply = formatUnits(y3dTD.totalSupply, 18);
+      const yTPrice = Math.round((Number(yTStaked) / Number(yTSupply)) * 1.05 * 1000) / 1000;
+      this.y3dTD = {
+        ...this.y3dTD,
+        underlying,
+        ...y3dTD,
+        staked: yTStaked,
+        supply: yTSupply,
+        price: yTPrice,
+      };
+      this.uTD = { ...this.uTD, address: underlying, ...uTokenDetail };
+      this.loadingTokenInfo = false;
+    },
+    selectToken(token: ISelectTokenParam) {
+      this.value = token.data.address;
+    },
+    formatGrovernInfo,
   },
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/styles/color';
 .govern-container {
   margin-top: 10px;
 }
@@ -67,26 +218,110 @@ export default Vue.extend({
 }
 
 .selection {
+  display: flex;
+  align-items: center;
   margin-top: 16px;
+  border: 1px solid #555555;
+  height: 60px;
+  border-radius: 16px;
+  padding: 0 24px;
+  p {
+    color: #B2B2B2;
+    font-size: 16px;
+    flex-grow: 1;
+    margin: 0;
+  }
+  .token-info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    img {
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
+    }
+    p {
+      font-size: 16px;
+      color: white;
+    }
+  }
+}
+.selection:hover {
+  opacity: 0.7;
 }
 
 .blank-container {
-  height: 200px;
+  min-height: 200px;
   width: 100%;
   border: 2px solid #777;
   border-radius: 15px;
   margin-top: 16px;
+  padding: 16px 20px;
+  &-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    p {
+      font-size: 14px;
+      margin: 0;
+    }
+    &-name {
+      color: #b2b2b2;
+      width: 35%;
+      margin-right: 32px;
+    }
+    &-value {
+      flex: 1;
+      color: #FFFFFF;
+      text-align: right;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    &-wrap {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 16px;
+      .blank-container-info {
+        margin-bottom: 0px;
+      }
+    }
+  }
+  .contract-info {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+    img {
+      width: 12px;
+      height: 12px;
+      margin-right: 8px;
+    }
+    a,
+    p {
+      font-size: 12px;
+      // max-width: 80px;
+      // text-overflow: ellipsis;
+      // overflow: hidden;
+      margin: 0;
+      color: $y3d-blue;
+      text-decoration: underline;
+      white-space: nowrap;
+    }
+  }
 }
 
 .el-select {
-  width: 100%
+  width: 100%;
 }
 
-/deep/ .el-select > .el-input > input {
+::v-deep .el-select > .el-input > input {
   background-color: #333;
-  border: 1px solid #111;
+  border: 1px solid #555555;
   outline: none;
   color: white;
+  height: 60px;
+  border-radius: 16px;
 }
 </style>
 
@@ -94,10 +329,18 @@ export default Vue.extend({
 .el-popper {
   background-color: #333 !important;
   border: 1px solid #111;
+  margin-top: 0 !important;
+  width: 0px;
 }
-
-.el-select-dropdown__item:hover {
+.el-select-dropdown__item.hover {
   background-color: #333;
   color: white;
+}
+.el-select-dropdown__item {
+  padding: 0;
+  height: 50px;
+}
+.popper__arrow {
+  display: none !important;
 }
 </style>

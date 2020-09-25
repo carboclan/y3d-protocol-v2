@@ -15,6 +15,7 @@
   border-radius: 3rem;
   justify-content: space-evenly;
   .styled-navLink {
+    flex: 1;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -52,6 +53,10 @@ export default Vue.extend({
       {
         name: '治理',
         path: '/y3dv2/govern',
+      },
+      {
+        name: '创建',
+        path: '/y3dv2/create',
       },
     ],
   }),

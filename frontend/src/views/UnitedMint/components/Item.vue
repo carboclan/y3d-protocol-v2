@@ -158,7 +158,6 @@ export default Vue.extend({
   },
   watch: {
     address(val) {
-      console.log('address changed', val);
       if (val) this.fetchUserData();
     },
   },
