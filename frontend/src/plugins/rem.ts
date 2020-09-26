@@ -1,6 +1,6 @@
 const baseSize = 16;
 // 设置 rem 函数
-function setRem() {
+function setRem(): void {
   const width = document.documentElement.clientWidth || document.body.clientWidth;
   const scale = width <= 375 ? width / 375 : 1;
   document.documentElement.style.fontSize = `${baseSize * Math.min(scale, 2)}px`;
