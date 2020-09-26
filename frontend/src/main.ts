@@ -11,6 +11,7 @@ import './plugins/rem';
 import './assets/styles/reset.scss';
 
 Vue.config.productionTip = false;
+Vue.config.devtools = process.env.NODE_ENV !== 'production';
 
 new Vue({
   router,
