@@ -25,6 +25,9 @@
             placeholder="Enter Token Contract address..."
             v-model="tokenContract"
           />
+          <MainButton @click="clickOnSelectToken" class="token-select-button">
+            Select
+          </MainButton>
         </div>
         <div :class="['field', 'create-field',
           { 'validate-faild': !inputValidateStatus.yTokenContract }
@@ -63,6 +66,9 @@
         </div>
       </form>
     </div>
+    <SelectTokenModal
+      :isUToken="true"
+      v-model="shownSelectTokenModal" @select-token="selectToken"></SelectTokenModal>
   </LayoutY3DV2>
 </template>
 
@@ -71,11 +77,13 @@ import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
 import MainButton from '@/components/MainButton.vue';
 import { getProvider, utils } from '@/store/ethers/ethersConnect';
 import { y3dFactory } from '@/contract';
+import SelectTokenModal from '@/components/SelectTokenModal.vue';
 
 export default {
   name: 'CreateToken',
   mounted() {
     this.getPairs();
+    this.tokenContract = this.$route.query.token ? this.$route.query.token : '';
   },
   data: () => ({
     tokenContract: '',
@@ -83,10 +91,12 @@ export default {
     fee: 0,
     deploying: false,
     deployedY3dToken: '',
+    shownSelectTokenModal: false,
   }),
   components: {
     LayoutY3DV2,
     MainButton,
+    SelectTokenModal,
   },
   computed: {
     inputValidateStatus() {
@@ -129,6 +139,8 @@ export default {
         /* eslint-disable-next-line */
         alert('!');
         console.log('[Create Page] [createY3dToken] y3dToken address:', y3dToken);
+        this.$store.dispatch('swap/fetchTokensInfo');
+        this.$store.dispatch('swap/fetchPairList');
       } catch (error) {
         const message = `Create error: ${error.message}.`;
         this.$message({
@@ -184,6 +196,12 @@ export default {
       this.yTokenContract = '';
       this.fee = 0;
     },
+    clickOnSelectToken() {
+      this.shownSelectTokenModal = true;
+    },
+    selectToken(token) {
+      this.tokenContract = token.data.address;
+    },
   },
 };
 </script>
@@ -206,13 +224,21 @@ export default {
       color: $y3d-sub-title;
       margin-bottom: 10px;
     }
+    .token-select-button {
+      font-size: 14px;
+      margin-top: 10px;
+      width: 100px;
+      height: 30px;
+      padding: 0;
+      line-height: 30px;
+    }
     input {
       background-color: transparent;
       padding-left: 0;
       padding-right: 0;
       caret-color: white;
       outline: none;
-      height: 30px;
+      // height: 44px;
       color: white;
       border: 0;
       font-size: 20px;

@@ -21,3 +21,5 @@ new Vue({
 
 // Initialize ethers store
 store.dispatch('ethers/init');
+store.dispatch('swap/fetchTokensInfo');
+store.dispatch('swap/fetchPairList');
