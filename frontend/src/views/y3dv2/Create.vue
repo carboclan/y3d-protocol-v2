@@ -74,6 +74,9 @@ import { y3dFactory } from '@/contract';
 
 export default {
   name: 'CreateToken',
+  mounted() {
+    this.getPairs();
+  },
   data: () => ({
     tokenContract: '',
     yTokenContract: '',
@@ -91,6 +94,12 @@ export default {
     },
   },
   methods: {
+    async getPairs() {
+      const contract = y3dFactory.connect(getProvider().getSigner());
+      const events = await contract.queryFilter('y_3dTokenCreated');
+      const pairs = events.map(({ args }) => args);
+      window.console.log(pairs);
+    },
     async createY3dToken() {
       const checkStatus = this.showCreateY3dTokenErrorMessage();
       if (!checkStatus) return;
