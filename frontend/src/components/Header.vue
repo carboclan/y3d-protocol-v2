@@ -200,7 +200,6 @@
       svg {
         height: 20px;
         width: 20px;
-        margin-top: 2px;
         stroke: rgb(255, 255, 255);
       }
     }
