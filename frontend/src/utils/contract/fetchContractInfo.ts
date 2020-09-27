@@ -23,23 +23,27 @@ const fetchERC20Detail = async (
   erc20ContractAddress: string,
   userAddress: string,
 ): Promise<IERC20DetailInfo> => {
-  const contract = getERC20Contract(erc20ContractAddress);
-  const [name, symbol, totalSupply, decimals, balance] = await Promise.all([
-    contract.name(),
-    contract.symbol(),
-    contract.totalSupply(),
-    contract.decimals(),
-    contract.balanceOf(userAddress),
-  ]);
-  const dBalance = utils.formatUnits(balance, decimals);
-  return {
-    name,
-    symbol,
-    totalSupply,
-    decimals,
-    balance,
-    dBalance,
-  };
+  try {
+    const contract = getERC20Contract(erc20ContractAddress);
+    const [name, symbol, totalSupply, decimals, balance] = await Promise.all([
+      contract.name(),
+      contract.symbol(),
+      contract.totalSupply(),
+      contract.decimals(),
+      userAddress && userAddress !== '' ? contract.balanceOf(userAddress) : 0,
+    ]);
+    const dBalance = utils.formatUnits(balance, decimals);
+    return {
+      name,
+      symbol,
+      totalSupply,
+      decimals,
+      balance,
+      dBalance,
+    };
+  } catch (err) {
+    return null;
+  }
 };
 
 export default fetchERC20Detail;

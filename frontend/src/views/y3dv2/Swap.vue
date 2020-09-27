@@ -63,7 +63,7 @@
               @click="clickActionButton">{{
               tipText
             }}</MainButton>
-            <router-link to="/create" v-if="tokenAInfo && tokenBInfo && !isPairExist">
+            <router-link :to="createUrl" v-if="tokenAInfo && !isPairExist">
               <p>Go to create</p>
             </router-link>
           </div>
@@ -81,6 +81,7 @@ import MainButton from '@/components/MainButton.vue';
 import SplitLine from '@/components/SplitLine.vue';
 import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
 import { CommonERC20, y3DToken } from '@/contract';
+import { fetchERC20Detail } from '@/utils/contract/fetchContractInfo';
 
 export default {
   components: {
@@ -107,13 +108,19 @@ export default {
       tokenBAmount: '',
       exactIn: 'A',
       tokenAIsBadInput: false,
-      pairList: [],
       isSendingTx: false,
     };
   },
   computed: {
     ...mapState('ethers', ['address', 'network']),
+    ...mapState('swap', ['tokensInfo', 'pairList', 'uTokenList', 'y3dTokenList']),
+    createUrl() {
+      return `/y3dv2/create?token=${this.tokenAInfo.tag === 'uToken' ? this.tokenAInfo.address : this.tokenBInfo.address}`;
+    },
     tipText() {
+      if (this.tokenAInfo && !this.isPairExist) {
+        return 'Need Create A y3d Token';
+      }
       if (!this.tokenAInfo || !this.tokenBInfo) {
         return 'Enter an amount';
       }
@@ -129,8 +136,11 @@ export default {
       return `${this.workMode.toUpperCase()} ${this.tokenAInfo.dsymbol}`;
     },
     isPairExist() {
-      if (!this.tokenAInfo || !this.tokenBInfo) {
+      if (!this.tokenAInfo) {
         return true;
+      }
+      if (this.tokenAInfo && !this.tokenBInfo) {
+        return false;
       }
       // eslint-disable-next-line no-nested-ternary
       const uT = this.tokenAInfo.tag === 'uToken'
@@ -147,7 +157,10 @@ export default {
       if (uT && yT) {
         let r = false;
         this.pairList.forEach((e) => {
-          if (e.uToken === uT.dsymbol && e.y3dToken === yT.dsymbol && e.yaddress === yT.address) {
+          if (
+            e.uToken === uT.dsymbol
+            && e.y3dToken === yT.dsymbol && e.yaddress === yT.address && e.uaddress === uT.address
+          ) {
             r = true;
           }
         });
@@ -172,6 +185,9 @@ export default {
     },
   },
   watch: {
+    uTokenList() {
+      this.initializationBaseTokenInfo();
+    },
     network() {
       this.initializationBaseTokenInfo();
     },
@@ -191,55 +207,11 @@ export default {
   },
   methods: {
     initializationBaseTokenInfo() {
-      if (this.network === 'Rinkeby Test Network') {
-        this.tokenAInfo = {
-          // display symbol
-          dsymbol: 'FUSDT',
-          symbol: 'FUSDT',
-          address: '0x7f76315337E63482043F92A1bD4784290159AD6f',
-          tag: 'uToken',
-          balance: '0',
-          dBalance: '0.0',
-          decimals: 6,
-        };
+      if (this.uTokenList && this.uTokenList.length > 0) {
+        this.tokenAInfo = JSON.parse(JSON.stringify(this.uTokenList[0]));
         this.payloadTokenA = this.tokenAInfo;
-        this.pairList = [
-          {
-            name: 'FUSDT/yFUSDT3d',
-            uToken: 'FUSDT',
-            y3dToken: 'yFUSDT3d',
-            yaddress: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
-          },
-        ];
-        this.tokenA = '0x7f76315337E63482043F92A1bD4784290159AD6f';
-        return;
+        this.tokenA = this.uTokenList[0].address;
       }
-      this.tokenAInfo = {
-        // display symbol
-        dsymbol: 'yCrv',
-        symbol: 'yCrv',
-        address: '0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8',
-        tag: 'uToken',
-        balance: '0',
-        dBalance: '0.0',
-        decimals: 18,
-      };
-      this.payloadTokenA = this.tokenAInfo;
-      this.pairList = [
-        {
-          name: 'yCrv/yyCrv',
-          uToken: 'yCrv',
-          y3dToken: 'yyCrv',
-          yaddress: '0x199ddb4bdf09f699d2cf9ca10212bd5e3b570ac2',
-        },
-        {
-          name: 'swUSD/yswUSD',
-          uToken: 'swUSD',
-          y3dToken: 'yswUSD',
-          yaddress: '0x2b1120F0C8238C098C767282092D49d9ac527e8C',
-        },
-      ];
-      this.tokenA = '0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8';
     },
     clickOnSwitch() {
       this.uTokenIndexTag = this.uTokenIndexTag === 'A' ? 'B' : 'A';
@@ -249,24 +221,21 @@ export default {
       [this.tokenBInfo, this.tokenAInfo] = [this.tokenAInfo, this.tokenBInfo];
     },
     updateTokenInfo() {
-      this.fetchERC20Detail('A');
-      this.fetchERC20Detail('B');
+      this.handleFetchERC20Detail('A');
+      this.handleFetchERC20Detail('B');
     },
     getERC20(_address) {
       return CommonERC20.attach(_address).connect(getProvider().getSigner());
     },
-    async fetchERC20Detail(whichToken) {
+    async handleFetchERC20Detail(whichToken) {
       if (!this.address) {
         return;
       }
-      const contract = this.getERC20(whichToken === 'A' ? this.tokenA : this.tokenB);
-      const [name, symbol, totalSupply, decimals, balance] = await Promise.all([
-        contract.name(),
-        contract.symbol(),
-        contract.totalSupply(),
-        contract.decimals(),
-        contract.balanceOf(this.address),
-      ]);
+
+      const {
+        name, symbol, totalSupply, decimals, balance,
+      } = await fetchERC20Detail(whichToken === 'A' ? this.tokenA : this.tokenB, this.address);
+
       // balance that for display
       const dBalance = utils.formatUnits(balance, decimals);
       const r = {
@@ -303,6 +272,7 @@ export default {
         return;
       }
       this.payloadTokenA = payload;
+      this.tokenAInfo = payload;
       this.tokenA = payload.address;
       if (this.tokenB && this.tokenB === this.tokenA) {
         this.tokenB = '';
@@ -315,6 +285,7 @@ export default {
         return;
       }
       this.payloadTokenB = payload;
+      this.tokenBInfo = payload;
       this.tokenB = payload.address;
       if (this.tokenA && this.tokenB === this.tokenA) {
         this.tokenA = '';
@@ -462,7 +433,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchERC20Detail('A');
+    this.handleFetchERC20Detail('A');
     this.initializationBaseTokenInfo();
   },
 };

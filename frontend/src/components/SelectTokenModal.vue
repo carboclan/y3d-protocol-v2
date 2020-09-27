@@ -36,7 +36,7 @@
             :symbol="item.dsymbol"
             :name="item.symbol"
             :logo="item.logo"
-            :balance="item.dBalance"
+            :tokenAddress="item.address"
             :isYToken="item.tag === 'y3dToken'"
             @on-click="selectToken(item)"
           />
@@ -48,7 +48,7 @@
             :symbol="item.dsymbol"
             :name="item.name"
             :logo="item.logo"
-            :balance="item.dBalance"
+            :tokenAddress="item.address"
             :isYToken="item.tag === 'y3dToken'"
             @on-click="selectToken(item)"
           />
@@ -78,6 +78,7 @@ export interface ITokenListItem {
   dsymbol: string
   address: string
   tag: string
+  chainId: number
 }
 
 export type ISearchTokenListItem = ITokenListItem & IERC20DetailInfo
@@ -87,6 +88,7 @@ export interface PairListModel {
   uToken: string
   y3dToken: string
   yaddress: string
+  uaddress: string
 }
 
 export interface ISelectTokenModalProps {
@@ -97,6 +99,7 @@ export interface ISelectTokenModalProps {
   symbol: string
   commonBasesShow: boolean
   otherTokenInfo: ITokenListItem
+  tokenInfo: ITokenListItem
   pairList: Array<PairListModel>
 }
 
@@ -109,7 +112,7 @@ export interface ISelectTokenModalData {
 }
 
 export interface ISelectTokenModalMethods {
-  initializationBaseTokenInfo: () => void
+  reloadOriginalList: () => void
   searchToken: DebouncedFunc<(val: string) => Promise<void>>
   selectToken: (item: ITokenListItem) => void
   fetchBalanceOfDefaultList: () => Promise<void>
@@ -118,8 +121,12 @@ export interface ISelectTokenModalMethods {
 }
 
 export interface ISelectTokenModalComputed {
+  tokensInfo: Array<ITokenListItem>
+  uTokenList: Array<ITokenListItem>
+  y3dTokenList: Array<ITokenListItem>
   address: string
   network: string
+  networkChainID: number
   processedOriginalList: Array<ITokenListItem>
 }
 
@@ -136,6 +143,10 @@ export default Vue.extend<
   },
   props: {
     otherTokenInfo: {
+      type: Object,
+      default: null,
+    },
+    tokenInfo: {
       type: Object,
       default: null,
     },
@@ -170,7 +181,9 @@ export default Vue.extend<
     },
   },
   mounted() {
-    this.initializationBaseTokenInfo();
+    if (this.originalList.length === 0) {
+      this.reloadOriginalList();
+    }
   },
   data(): ISelectTokenModalData {
     return {
@@ -183,6 +196,13 @@ export default Vue.extend<
   },
   computed: {
     ...mapState('ethers', ['address', 'network']),
+    ...mapState('swap', ['tokensInfo', 'uTokenList', 'y3dTokenList']),
+    networkChainID() {
+      if (this.network === 'Mainnet') {
+        return 1;
+      }
+      return 4;
+    },
     processedOriginalList() {
       const filterTagToken = filter(this.originalList, (v: ITokenListItem) => {
         if (this.isUToken) {
@@ -196,7 +216,8 @@ export default Vue.extend<
       if (this.otherTokenInfo) {
         const usablePairList = filter(
           this.pairList,
-          (v: PairListModel) => v.uToken === this.otherTokenInfo.dsymbol,
+          (v: PairListModel) => v.uToken === this.otherTokenInfo.dsymbol
+            && v.uaddress === this.otherTokenInfo.address,
         ).flatMap((v: PairListModel) => v.y3dToken);
         const filterPairToken = filter(
           filterTagToken,
@@ -208,8 +229,26 @@ export default Vue.extend<
     },
   },
   watch: {
+    tokensInfo() {
+      this.reloadOriginalList();
+    },
+    uTokenList() {
+      this.reloadOriginalList();
+    },
+    y3dTokenList() {
+      this.reloadOriginalList();
+    },
     otherTokenInfo() {
       if (!this.isUToken) {
+        if (this.tokenInfo) {
+          const fined = find(
+            this.processedOriginalList,
+            (v) => v.address === this.tokenInfo.address,
+          );
+          if (fined) {
+            return;
+          }
+        }
         this.$emit('select-token', {
           data: this.processedOriginalList[0],
           symbol: this.symbol,
@@ -218,7 +257,6 @@ export default Vue.extend<
       }
     },
     network() {
-      this.initializationBaseTokenInfo();
     },
     value(newVal) {
       this.dialogVisibleSelectToken = newVal;
@@ -230,6 +268,9 @@ export default Vue.extend<
         this.searchTokenList = [];
         this.tokenNameOrAddress = '';
       }
+      setTimeout(() => {
+        this.fetchBalanceOfDefaultList();
+      }, 1000);
     },
     tokenNameOrAddress(newVal) {
       if (newVal.trim()) {
@@ -240,57 +281,27 @@ export default Vue.extend<
     },
   },
   methods: {
-    initializationBaseTokenInfo() {
-      if (this.network === 'Rinkeby Test Network') {
-        this.originalList = [
-          {
-            // display symobl
-            dsymbol: 'FUSDT',
-            symbol: 'FUSDT',
-            address: '0x7f76315337E63482043F92A1bD4784290159AD6f',
-            tag: 'uToken',
-          },
-          {
-            dsymbol: 'yFUSDT3d',
-            symbol: 'yFUSDT3d',
-            address: '0xcb09e0b344ca6b6228574ad07ad606e99fcdc440',
-            tag: 'y3dToken',
-          },
-        ];
-        return;
-      }
-      this.originalList = [
-        {
-          // display symobl
-          dsymbol: 'yCrv',
-          symbol: 'yCrv',
-          address: '0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8',
-          tag: 'uToken',
-        },
-        {
-          dsymbol: 'yyCrv',
-          symbol: 'yyCrv',
-          address: '0x199ddb4bdf09f699d2cf9ca10212bd5e3b570ac2',
-          tag: 'y3dToken',
-        },
-        {
-          dsymbol: 'swUSD',
-          symbol: 'swUSD',
-          address: '0x77C6E4a580c0dCE4E5c7a17d0bc077188a83A059',
-          tag: 'uToken',
-        },
-        {
-          dsymbol: 'yswUSD',
-          symbol: 'yswUSD',
-          address: '0x2b1120F0C8238C098C767282092D49d9ac527e8C',
-          tag: 'y3dToken',
-        },
-      ];
+    reloadOriginalList() {
+      const filterTokensInfo = filter(this.tokensInfo, (v) => v.chainId === this.networkChainID);
+      this.originalList = this.uTokenList.concat(this.y3dTokenList).concat(filterTokensInfo);
+      this.fetchBalanceOfDefaultList();
     },
     // eslint-disable-next-line func-names
     searchToken: debounce(async function (val: string) {
+      const self = this as ISelectTokenModalData &
+      ISelectTokenModalMethods &
+      ISelectTokenModalComputed;
+      if (val.indexOf('0x') === -1) {
+        const filterResult = filter(
+          self.processedOriginalList,
+          (o: ITokenListItem) => o.symbol.indexOf(val) !== -1,
+        );
+        if (filterResult) {
+          self.searchTokenList = filterResult as Array<ISearchTokenListItem>;
+        }
+        return;
+      }
       // @ts-ignore
-      const self = this as ISelectTokenModalData & ISelectTokenModalMethods;
       const res = await self.fetchERC20Detail({
         address: val,
         symbol: '',
@@ -312,12 +323,12 @@ export default Vue.extend<
       this.dialogVisibleSelectToken = false;
     },
     async fetchBalanceOfDefaultList() {
-      const [...rest] = this.originalList;
-      const result = (
-        await Promise.all(rest.map((item) => this.fetchERC20Detail(item)))
-      ).map(({ balance, ...res }) => ({ ...res, balance: balance.toString() }));
-      this.originalList = [...result];
-      this.originalList = sortBy(this.originalList, 'balance').reverse();
+      // const [...rest] = this.originalList;
+      // const result = (
+      //   await Promise.all(rest.map((item) => this.fetchERC20Detail(item)))
+      // ).map(({ balance, ...res }) => ({ ...res, balance: balance.toString() }));
+      // this.originalList = [...result];
+      // this.originalList = sortBy(this.originalList, 'balance').reverse();
     },
     getERC20(_address) {
       return CommonERC20.attach(_address).connect(getProvider()!.getSigner());

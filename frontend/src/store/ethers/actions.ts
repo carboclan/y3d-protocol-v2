@@ -46,6 +46,8 @@ export default {
         ctx.commit('user', address);
         ctx.commit('network', network);
 
+        ctx.dispatch('swap/fetchTokensInfo', {}, { root: true });
+        ctx.dispatch('swap/fetchPairList', {}, { root: true });
         // const msg = oldAddress && oldAddress !== address
         //   ? `Your Ethereum address/user has changed.
         //   Address: ${address}

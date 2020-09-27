@@ -27,7 +27,7 @@
           <FillMaxButton @click="fillMax" />
           <SelectdTokenButton
             :isTokenSelected="isTokenSelected"
-            :tokenLogo="tokenLogo"
+            :tokenLogo="tokenInfo && tokenInfo.logo ? tokenInfo.logo : tokenLogo"
             @click="showTokenMenu"
             >{{ tokenInfo && tokenInfo.dsymbol }}</SelectdTokenButton
           >
@@ -40,6 +40,7 @@
       @select-token="selectToken"
       :pairList="pairList"
       :otherTokenInfo="otherTokenInfo"
+      :tokenInfo="tokenInfo"
     ></SelectTokenModal>
   </div>
 </template>
@@ -105,6 +106,9 @@ export default Vue.extend({
   }),
   computed: {
     formattedBalance(): string {
+      if (!this.tokenInfo.balance) {
+        return '0.0';
+      }
       return formatUnits(this.tokenInfo.balance, this.tokenInfo.decimals);
     },
   },
