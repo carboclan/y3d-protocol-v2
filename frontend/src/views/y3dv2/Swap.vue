@@ -231,7 +231,12 @@ export default {
       if (!this.address) {
         return;
       }
-
+      if (whichToken === 'A' && !this.tokenA) {
+        return;
+      }
+      if (whichToken === 'B' && !this.tokenB) {
+        return;
+      }
       const {
         name, symbol, totalSupply, decimals, balance,
       } = await fetchERC20Detail(whichToken === 'A' ? this.tokenA : this.tokenB, this.address);

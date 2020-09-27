@@ -42,7 +42,14 @@ const fetchERC20Detail = async (
       dBalance,
     };
   } catch (err) {
-    return null;
+    return {
+      name: '',
+      symbol: '',
+      totalSupply: '',
+      decimals: '',
+      balance: '',
+      dBalance: '',
+    };
   }
 };
 
