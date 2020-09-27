@@ -97,8 +97,13 @@ export default {
     async getPairs() {
       const contract = y3dFactory.connect(getProvider().getSigner());
       const events = await contract.queryFilter('y_3dTokenCreated');
-      const pairs = events.map(({ args }) => args);
-      window.console.log(pairs);
+      const allPairs = events.map(({ args }) => args);
+      window.console.log(allPairs);
+
+      const uTokenFilter = contract.filters.y_3dTokenCreated(null, '0xCB9543F6A3A1De19B4A2aFE7C30C54290E5e61F4');
+      const uTokenEvents = await contract.queryFilter(uTokenFilter);
+      const uTokenPairs = uTokenEvents.map(({ args }) => args);
+      window.console.log(uTokenPairs);
     },
     async createY3dToken() {
       const checkStatus = this.showCreateY3dTokenErrorMessage();
