@@ -111,9 +111,10 @@ export default {
         const y3dToken = hex64ToAddress(createY3dTokenEvent.data);
         this.deploying = false;
         this.deployedY3dToken = y3dToken;
+        const uData = this.tokenContract;
         this.resetFormInfo();
         /* eslint-disable-next-line */
-        alert('!');
+        alert(y3dToken + '\n' + uData);
         console.log('[Create Page] [createY3dToken] y3dToken address:', y3dToken);
       } catch (error) {
         const message = `Create error: ${error.message}.`;
