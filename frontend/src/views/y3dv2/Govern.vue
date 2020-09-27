@@ -158,7 +158,7 @@ export default Vue.extend({
   methods: {
     async fetchOptionsTokenInfo() {
       const result = await Promise.all(
-        this.options.map(async (item) => {
+        this.options.map(async (item: IOptionListItem) => {
           const r = await fetchERC20Detail(item.token.y3dToken, this.address);
           return {
             ...item,
