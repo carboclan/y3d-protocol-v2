@@ -2,15 +2,15 @@
   <div class="united-mint-header">
     <div class="united-mint-header-wrap">
       <div class="united-mint-header-deposit">
-        <p>Deposit <span>USDT</span></p>
+        <p>{{ $t('um.Deposit') }} <span>USDT</span></p>
         <img src="@/assets/united-mint/more.png" />
 
         <p>
-          Mint <span>{{ data.key }}</span>
+          {{ $t('um.Mint') }} <span>{{ data.key }}</span>
         </p>
       </div>
       <div class="united-mint-header-contract">
-        <p>Contract</p>
+        <p>{{ $t('um.Contract') }}</p>
         <img
           src="@/assets/united-mint/copy.png"
           :ID="'copy-button_' + data.unitedMintContractAddr"
@@ -19,7 +19,7 @@
         <img src="@/assets/united-mint/click.png" @click="clickOnLink" />
       </div>
       <div class="united-mint-header-apy">
-        <p>APY: <span>{{ data.apy }}%</span></p>
+        <p>{{ $t('um.APY') }}: <span>{{ data.apy }}%</span></p>
       </div>
     </div>
     <div class="united-mint-header-toggle" @click="clickOnToggle">
@@ -65,7 +65,7 @@ export default {
     const clipboard = new ClipboardJS(`#copy-button_${this.data.unitedMintContractAddr}`);
     clipboard.on('success', (e) => {
       // eslint-disable-next-line no-alert
-      alert('Copy succeeded');
+      alert(this.$t('um.copySucc'));
       e.clearSelection();
     });
   },

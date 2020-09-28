@@ -18,7 +18,7 @@
               :otherTokenInfo="tokenBInfo"
             >
               <template v-slot:title>
-                {{ uTokenIndexTag === 'A' ? 'Stake' : 'Unstake' }}
+                {{ uTokenIndexTag === 'A' ? $t('swap.stake') : $t('swap.unstake') }}
               </template>
             </TokenAmountInput>
             <SplitLine class="split-line">
@@ -27,7 +27,7 @@
                 size="1.5x"
                 class="sac-icon"
               ></arrow-down-icon>
-              <p @click="clickOnSwitch">Change path</p>
+              <p @click="clickOnSwitch">{{ $t('swap.changePath') }}</p>
             </SplitLine>
             <TokenAmountInput
               :isTokenSelected="!!tokenBInfo && tokenB !== ''"
@@ -43,7 +43,7 @@
               :otherTokenInfo="tokenAInfo"
             >
               <template v-slot:title>
-                {{ uTokenIndexTag === 'A' ? 'Mint' : 'Withdraw' }}
+                {{ uTokenIndexTag === 'A' ? $t('swap.mint') : $t('swap.withdraw') }}
               </template>
             </TokenAmountInput>
             <!-- <div class="swap-info">
@@ -62,7 +62,7 @@
               id="create-y3d-token-button"
               @click="goToCreateY3dToken"
             >
-              Go to create y3dToken
+              {{ $t('swap.toCreateToken') }}
             </MainButton>
             <MainButton
               v-else
@@ -70,7 +70,7 @@
               id="swap-button"
               :disabled="isBtnDisabled"
               @click="clickActionButton">{{
-              tipText
+              $t(tipText)
             }}</MainButton>
             <!-- <router-link :to="createUrl" v-if="tokenAInfo && !isPairExist">
               <p>Go to create y3dToken</p>
@@ -135,21 +135,24 @@ export default {
     },
     tipText() {
       if (this.tokenAInfo && !this.isPairExist) {
-        return 'Need Create A y3d Token';
+        return this.$t('swap.tipToCreateToken');
       }
       if (!this.tokenAInfo || !this.tokenBInfo) {
-        return 'Enter an amount';
+        return this.$t('swap.enterAmount');
       }
       if (!this.isPairExist) {
-        return 'Need Create A y3d Token';
+        return this.$t('swap.tipToCreateToken');
       }
       if (!this.tokenAAmount || !this.tokenBAmount) {
-        return 'Enter an amount';
+        return this.$t('swap.enterAmount');
       }
       if (this.tokenAIsBadInput) {
-        return `Insufficient ${this.tokenAInfo.dsymbol} balance`;
+        return this.$t(
+          'swap.insufficientBalance',
+          { symbol: this.tokenAInfo.dsymbol },
+        );
       }
-      return `${this.workMode.toUpperCase()} ${this.tokenAInfo.dsymbol}`;
+      return `${this.$t(this.workMode).toUpperCase()} ${this.tokenAInfo.dsymbol}`;
     },
     isPairExist() {
       if (!this.tokenAInfo) {
@@ -401,7 +404,7 @@ export default {
         const parsedInput = utils.parseUnits(this.tokenAAmount, uTokenUnit);
         if (parsedInput.gt(this.tokenAInfo.balance)) {
           // eslint-disable-next-line no-alert
-          alert("You don't have so much token, sorry.");
+          alert(this.$t('app.tipNoMuchToken'));
           this.isSendingTx = false;
           return;
         }
@@ -414,7 +417,7 @@ export default {
         const stakeReceipt = await stakeRes.wait(1);
         console.info('stake::receipt', stakeReceipt);
         // eslint-disable-next-line no-alert
-        alert('Stake successfully.');
+        alert(this.$t('swap.stakeSucc'));
         this.lastTxHash = stakeReceipt.transactionHash;
         this.isSendingTx = false;
       } catch (err) {
@@ -431,7 +434,7 @@ export default {
         const parsedInput = utils.parseUnits(this.tokenAAmount, yTokenUnit);
         if (parsedInput.gt(this.tokenAInfo.balance)) {
           // eslint-disable-next-line no-alert
-          alert("You don't have so much y3dToken, sorry.");
+          alert(this.$t('app.tipNoMuchy3dToken'));
           this.isSendingTx = false;
           return;
         }
@@ -441,7 +444,7 @@ export default {
         const unstakeReceipt = await stakeRes.wait(1);
         console.info('unstake::receipt', unstakeReceipt);
         // eslint-disable-next-line no-alert
-        alert('Unstake successfully.');
+        alert(this.$t('swap.unstakeSucc'));
         this.lastTxHash = unstakeReceipt.transactionHash;
         this.isSendingTx = false;
       } catch (err) {

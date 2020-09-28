@@ -1,7 +1,7 @@
 <template>
   <button v-if="!isTokenSelected" @click="$emit('click')" class="token-not-select-button">
     <span class="token-select-symbol">
-      <span class="token-not-select-button-text">Select a token</span>
+      <span class="token-not-select-button-text">{{ $t('swap.selectToken') }}</span>
       <ChevronDownIcon class="token-not-select-button-icon" />
     </span>
   </button>

@@ -1,13 +1,12 @@
 <template>
   <Modal v-model="dialogVisibleSelectToken" :customClass="customClass" :width="width">
     <template v-slot:header>
-      Select a token
+      {{ $t('swap.selectToken') }}
       <span style="margin-left: 4px">
         <div style="display: inline-block">
           <HelpTooltip
             placement="bottom"
-            content
-              ="Find a token by searching for its name or symbol or by pasting its address below."
+            :content="$t('swap.helpTip')"
           ></HelpTooltip>
         </div>
       </span>
@@ -17,13 +16,13 @@
         <input
           type="text"
           id="token-search-input"
-          placeholder="Search name or paste address"
+          :placeholder="$t('swap.searchTip')"
           class="select-token-model-input"
           v-model="tokenNameOrAddress"
         />
       </div>
       <div class="select-token-model-filter">
-        <div class="select-token-model-filter-text">Token Name</div>
+        <div class="select-token-model-filter-text">{{ $t('swap.tokenName') }}</div>
         <div class="select-token-model-filter-button">
           <div class="select-token-model-filter-text">↓</div>
         </div>

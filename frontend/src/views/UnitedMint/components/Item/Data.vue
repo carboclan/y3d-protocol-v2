@@ -2,18 +2,22 @@
   <div class="united-mint-data">
     <div class="united-mint-data-wrap">
       <div class="united-mint-data-wrap-info mr24">
-        <p>Contract Data</p>
+        <p>{{ $t('um.contractData') }}</p>
         <div class="united-mint-data-wrap-info-detail">
-          <p>Unminted USDT: <span>{{ contractData.unmintedUSDT }}</span></p>
-          <p>Minted USDT: <span>{{ contractData.mintedUSDT }}</span></p>
-          <p>Minted {{ data.key }}: <span>{{ contractData.mintedToken }}</span></p>
+          <p>{{ $t('um.unmintedUSDT') }}: <span>{{ contractData.unmintedUSDT }}</span></p>
+          <p>{{ $t('um.mintedUSDT') }}: <span>{{ contractData.mintedUSDT }}</span></p>
+          <p>
+            {{ $t('um.mintedSymbol', { symbol: data.key }) }}:
+            <span>{{ contractData.mintedToken }}</span></p>
         </div>
       </div>
       <div class="united-mint-data-wrap-info">
-        <p>Your Data</p>
+        <p>{{ $t('um.yourData') }}</p>
         <div class="united-mint-data-wrap-info-detail">
-          <p>Unminted USDT: <span>{{ yourData.unmintedUSDT }}</span></p>
-          <p>Unclaimed {{ data.key }}: <span>{{ yourData.unclaimedToken }}</span></p>
+          <p>{{ $t('um.unmintedUSDT') }}: <span>{{ yourData.unmintedUSDT }}</span></p>
+          <p>
+            {{ $t('um.unclaimedSymbol', { symbol: data.key }) }}:
+            <span>{{ yourData.unclaimedToken }}</span></p>
         </div>
       </div>
     </div>

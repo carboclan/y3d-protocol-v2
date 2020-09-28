@@ -5,7 +5,8 @@
         <div class="tai-info">
           <div class="tai-content">
             <div class="tai-title"><slot name="title"></slot></div>
-            <div class="tai-balance">Balance: {{ tokenInfo && formattedBalance }}</div>
+            <div class="tai-balance">
+              {{ $t('swap.Balance') }}: {{ tokenInfo && formattedBalance }}</div>
           </div>
         </div>
         <div class="tai-input-container">

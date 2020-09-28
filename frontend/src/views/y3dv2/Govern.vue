@@ -3,10 +3,10 @@
     <div class="govern">
       <div class="govern-container">
         <div>
-          <span class="title-text">Select A y3dToken Address</span>
+          <span class="title-text">{{ $t('govern.selectAddress') }}</span>
         </div>
         <div class="selection" @click="shownSelectTokenModal = true">
-          <p v-if="!value || value === ''">Select a token</p>
+          <p v-if="!value || value === ''">{{ $t('govern.selectToken') }}</p>
           <div class="token-info" v-else>
             <img src="@/assets/base/y3d.png" />
             <p>{{ y3dTD && y3dTD.symbol }}</p>
@@ -17,7 +17,9 @@
           <div class="blank-container-wrap" v-if="uTD && y3dTD">
             <div class="blank-container-info-wrap">
               <div class="blank-container-info">
-                <p class="blank-container-info-name">{{ uTD.symbol }} stacked</p>
+                <p class="blank-container-info-name">
+                  {{ $t('govern.symbolStacked', { symbol: uTD.symbol }) }}
+                </p>
                 <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.staked) }}</p>
               </div>
               <div class="contract-info">
@@ -27,7 +29,9 @@
             </div>
             <div class="blank-container-info-wrap">
               <div class="blank-container-info">
-                <p class="blank-container-info-name">{{ y3dTD.symbol }} supply</p>
+                <p class="blank-container-info-name">
+                  {{ $t('govern.symbolSupply', { symbol: y3dTD.symbol }) }}
+                </p>
                 <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.supply) }}</p>
               </div>
               <div class="contract-info">
@@ -36,25 +40,29 @@
               </div>
             </div>
             <div class="blank-container-info">
-              <p class="blank-container-info-name">{{ y3dTD.symbol }} price</p>
+              <p class="blank-container-info-name">
+                {{ $t('govern.symbolPrice', { symbol: y3dTD.symbol }) }}
+              </p>
               <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.price) }}$</p>
             </div>
             <div class="blank-container-info">
-              <p class="blank-container-info-name">Mining {{ uTD.symbol }}</p>
+              <p class="blank-container-info-name">
+                {{ $t('govern.symbolMining', { symbol: uTD.symbol }) }}
+              </p>
               <p class="blank-container-info-value">{{
                 formatGrovernInfo(y3dTD.miningAmount)
               }}({{ formatGrovernInfo(y3dTD.miningRatio) }}%)</p>
             </div>
             <div class="blank-container-info">
-              <p class="blank-container-info-name">P3D ratio</p>
+              <p class="blank-container-info-name">{{ $t('govern.p3dRatio') }}</p>
               <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.p3DRatio) }}</p>
             </div>
             <div class="blank-container-info">
-              <p class="blank-container-info-name">Timelock</p>
+              <p class="blank-container-info-name">{{ $t('govern.timelock') }}</p>
               <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.timelock) }}</p>
             </div>
             <div class="blank-container-info">
-              <p class="blank-container-info-name">Created time</p>
+              <p class="blank-container-info-name">{{ $t('govern.createdTime') }}</p>
               <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.createdTime) }}</p>
             </div>
           </div>

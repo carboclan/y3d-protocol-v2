@@ -3,7 +3,7 @@
     <div class="united-mint-operating-top">
       <div class="united-mint-operating-top-deposit">
         <p>
-          Blance:
+          {{ $t('swap.Balance') }}:
           <span>{{ displayBalance(userBalances.usdt, userBalances.usdtDecimals) }} USDT</span>
         </p>
         <div class="united-mint-operating-top-deposit-wrap">
@@ -13,7 +13,7 @@
           >
             <input type="text" placeholder="0.0" v-model="usdtInput" />
             <button class="max-button basic button" @click="clickOnMaxUSDT">
-              MAX
+              {{ $t('swap.max') }}
             </button>
           </div>
           <button
@@ -23,16 +23,16 @@
             :class="loadingDeposit && 'loading'"
           >
             <img src="@/assets/united-mint/deposit.png" />
-            <p>DEPOSIT</p>
+            <p>{{ $t('um.Deposit').toUpperCase() }}</p>
           </button>
         </div>
       </div>
       <div class="united-mint-operating-center">
         <p></p>
-        <div class="united-mint-operating-center-p">or</div>
+        <div class="united-mint-operating-center-p">{{ $t('um.or') }}</div>
       </div>
       <div class="united-mint-operating-top-panel">
-        <p>High Level Panel</p>
+        <p>{{ $t('um.highLevelPanel') }}</p>
         <div class="united-mint-operating-top-deposit-wrap">
           <button
             class="operating-button ui icon button"
@@ -41,7 +41,9 @@
             :class="loadingDepositMClaim && 'loading'"
           >
             <img src="@/assets/united-mint/lighting.png" />
-            <p>DEPOSIT + MINT + CLAIM</p>
+            <p>
+              {{ $t('um.Deposit').toUpperCase() }} + {{ $t('um.Mint').toUpperCase() }}
+               + {{ $t('um.Claim').toUpperCase() }}</p>
           </button>
         </div>
       </div>
@@ -49,7 +51,7 @@
     <div class="united-mint-operating-bottom">
       <div class="united-mint-operating-bottom-restore">
         <p>
-          Blance:
+          {{ $t('swap.Balance') }}:
           <span
             >{{ displayBalance(userBalances.tokenBalance, userBalances.tokenDecimals) }}
             {{ data.key }}</span
@@ -62,7 +64,7 @@
           >
             <input type="text" placeholder="0.0" v-model="tokenInput" />
             <button class="max-button basic button" @click="clickOnMaxToken">
-              MAX
+              {{ $t('swap.max') }}
             </button>
           </div>
           <button
@@ -72,7 +74,7 @@
             :class="loadingRestore && 'loading'"
           >
             <img src="@/assets/united-mint/restore.png" />
-            <p>RESTORE</p>
+            <p>{{ $t('um.Restore').toUpperCase() }}</p>
           </button>
         </div>
       </div>
@@ -90,7 +92,7 @@
             :class="loadingMint && 'loading'"
           >
             <img src="@/assets/united-mint/mint.png" />
-            <p>MINT</p>
+            <p>{{ $t('um.Mint').toUpperCase() }}</p>
           </button>
           <img
             class="united-mint-operating-bottom-other-wrap-arrow"
@@ -103,7 +105,7 @@
             :class="loadingClaim && 'loading'"
           >
             <img src="@/assets/united-mint/claim.png" />
-            <p>CLAIM</p>
+            <p>{{ $t('um.Claim').toUpperCase() }}</p>
           </button>
         </div>
       </div>
@@ -113,11 +115,11 @@
   <!-- easy mode -->
   <div class="united-mint-operating united-mint-operating-easy" v-else>
     <div class="united-mint-operating-deposit">
-      <p>Deposit <span>USDT</span></p>
+      <p>{{ $t('um.Deposit') }} <span>USDT</span></p>
       <div>
         <img src="@/assets/united-mint/more.png" />
         <p>
-          Mint <span>{{ data.key }}</span>
+          {{ $t('um.Mint') }} <span>{{ data.key }}</span>
         </p>
       </div>
     </div>
@@ -128,7 +130,7 @@
       <div class="united-mint-operating-wrap-input" :class="usdtInputError ? 'input-error' : ''">
         <input type="text" placeholder="0.0" v-model="usdtInput" />
         <button class="max-button basic button" @click="clickOnMaxUSDT">
-          MAX
+          {{ $t('swap.max') }}
         </button>
       </div>
       <button
@@ -138,13 +140,13 @@
         :class="loadingDeposit && 'loading'"
       >
         <img src="@/assets/united-mint/deposit.png" />
-        <p>DEPOSIT</p>
+        <p>{{ $t('um.Deposit').toUpperCase() }}</p>
       </button>
     </div>
     <div class="united-mint-operating-info">
-      <p>APY: <span>{{ data.apy }}%</span></p>
+      <p>{{ $t('um.APY') }}: <span>{{ data.apy }}%</span></p>
       <p>
-        Blance:
+        {{ $t('swap.Balance') }}:
         <span>{{ displayBalance(userBalances.usdt, userBalances.usdtDecimals) }} USDT</span>
       </p>
     </div>
@@ -155,7 +157,7 @@
       <div class="united-mint-operating-wrap-input" :class="usdtInputError ? 'input-error' : ''">
         <input type="text" placeholder="0.0" v-model="usdtInput" />
         <button class="max-button basic button" @click="clickOnMaxUSDT">
-          MAX
+          {{ $t('swap.max') }}
         </button>
       </div>
       <button
@@ -165,7 +167,7 @@
         :class="loadingDeposit && 'loading'"
       >
         <img src="@/assets/united-mint/deposit.png" />
-        <p>DEPOSIT</p>
+        <p>{{ $t('um.Deposit').toUpperCase() }}</p>
       </button>
     </div>
   </div>
@@ -233,7 +235,7 @@ export default {
     async deposit() {
       this.loadingDeposit = true;
       try {
-        await MintHelper.uniDepositContract_deposit_amount(`${this.usdtInput}`, this.data);
+        await MintHelper.uniDepositContract_deposit_amount(this.$i18n, `${this.usdtInput}`, this.data);
       } catch (err) {
         console.log(err);
       }
@@ -242,7 +244,7 @@ export default {
     async mint() {
       this.loadingMint = true;
       try {
-        await MintHelper.uniDepositContract_mint(this.data);
+        await MintHelper.uniDepositContract_mint(this.$i18n, this.data);
       } catch (err) {
         console.log(err);
       }
@@ -251,7 +253,7 @@ export default {
     async claim() {
       this.loadingClaim = true;
       try {
-        await MintHelper.uniDepositContract_claim(this.data);
+        await MintHelper.uniDepositContract_claim(this.$i18n, this.data);
       } catch (err) {
         console.log(err);
       }
@@ -260,7 +262,7 @@ export default {
     async depositMClaim() {
       this.loadingDepositMClaim = true;
       try {
-        await MintHelper.uniDepositContract_deposit_n_claim(`${this.usdtInput}`, this.data);
+        await MintHelper.uniDepositContract_deposit_n_claim(this.$i18n, `${this.usdtInput}`, this.data);
       } catch (err) {
         console.log(err);
       }
@@ -269,7 +271,7 @@ export default {
     async restore() {
       this.loadingRestore = true;
       try {
-        await MintHelper.uniDepositContract_restore_amount(`${this.tokenInput}`, this.data);
+        await MintHelper.uniDepositContract_restore_amount(this.$i18n, `${this.tokenInput}`, this.data);
       } catch (err) {
         console.log(err);
       }
@@ -533,6 +535,7 @@ export default {
             border: 1px solid $um-text;
             border-radius: 2px;
             word-break: normal;
+            white-space: nowrap;
           }
         }
       }
