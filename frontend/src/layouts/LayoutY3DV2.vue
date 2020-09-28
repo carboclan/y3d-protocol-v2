@@ -1,5 +1,10 @@
 <template>
-  <div class="layout-y3dv2">
+  <div>
+    <div class="layout-y3dv2">
+      <div class="grid-wrapper">
+        <div class="m-grid is-animating"></div>
+      </div>
+    </div>
     <div class="app-container">
       <Header />
       <Y3DV2Logo />
@@ -9,9 +14,6 @@
           <slot />
         </div>
       </div>
-    </div>
-    <div class="grid-wrapper">
-      <div class="m-grid is-animating"></div>
     </div>
   </div>
 </template>
@@ -75,6 +77,11 @@ export default Vue.extend({
 @import '@/assets/styles/color';
 
 .layout-y3dv2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -101,28 +108,6 @@ export default Vue.extend({
       top calc(50% - (100vh * 0.414814814814815 / 2)) right /* MountainRightImg */,
       top center /* Top background color */, top calc(50% + 4px) center /* Blue line */,
       bottom center /* Bottom background color */;
-  }
-
-  .app-container {
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    color: white;
-    &-wrap {
-      margin-top: 0;
-      max-width: 480px;
-      margin-left: auto;
-      margin-right: auto;
-      .ui.segment {
-        border-radius: 30px;
-        background-color: $y3d-black;
-        color: white;
-      }
-    }
   }
 
   .grid-wrapper {
@@ -190,4 +175,26 @@ export default Vue.extend({
     }
   }
 }
+
+.app-container {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    color: white;
+    &-wrap {
+      margin-top: 0;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      .ui.segment {
+        border-radius: 30px;
+        background-color: $y3d-black;
+        color: white;
+      }
+    }
+  }
 </style>
