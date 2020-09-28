@@ -64,6 +64,7 @@ export default Vue.extend({
 });
 </script>
 <style lang="scss" scoped>
+@import "@/assets/styles/color";
 .token-select {
   -webkit-box-align: center;
   align-items: center;
@@ -117,7 +118,7 @@ export default Vue.extend({
   height: 2.2rem;
   font-size: 20px;
   font-weight: 500;
-  background-color: rgb(33, 114, 229);
+  background-color: $y3d-blue;
   color: rgb(255, 255, 255);
   border-radius: 12px;
   box-shadow: rgba(0, 0, 0, 0.075) 0px 6px 10px;

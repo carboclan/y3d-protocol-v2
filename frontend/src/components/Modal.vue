@@ -64,6 +64,12 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 ::v-deep .c-model {
+  margin-left: auto;
+  margin-right: auto;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
   display: flex;
   align-self: center;
   outline: none;

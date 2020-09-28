@@ -36,7 +36,7 @@
 
   background-color: $y3d-blue;
   color: white;
-  cursor: auto;
+  cursor: pointer;
   box-shadow: none;
   border: 1px solid transparent;
   outline: none;
