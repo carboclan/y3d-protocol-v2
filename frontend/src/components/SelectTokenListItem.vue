@@ -53,7 +53,7 @@ export default Vue.extend({
         'Rinkeby Test Network': 'rinkeby.etherscan.io',
       };
       const smallAddress = `${this.tokenAddress.slice(0, 6)}...${this.tokenAddress.slice(-4)}`;
-      const addressLink = `https://${networkLink[this.$store.state.ethers.network] || 'etherscan.io'}/address/${this.tokenAddress}`;
+      const addressLink = `https://${networkLink[this.network] || 'etherscan.io'}/address/${this.tokenAddress}`;
       const tokenAddressInfo = {
         smallAddress,
         addressLink,
