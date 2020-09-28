@@ -20,6 +20,13 @@
     </div>
     <div class="c-select-token-name">
       <div class="c-select-token-name-text">{{ symbol }}</div>
+      <a
+        v-if="tokenAddressInfo"
+        :href="tokenAddressInfo.addressLink"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click.stop="() => {}"
+      >{{ tokenAddressInfo.smallAddress }}</a>
     </div>
     <div class="c-select-token-balance">
       <div class="c-select-token-balance-text">{{ balance }}</div>
@@ -39,6 +46,20 @@ export default Vue.extend({
   },
   computed: {
     ...mapState('ethers', ['address', 'network']),
+    tokenAddressInfo() {
+      const networkLink = {
+        Mainnet: 'etherscan.io',
+        'Rinkeby Test Network': 'rinkeby.etherscan.io',
+      };
+      const smallAddress = `${this.tokenAddress.slice(0, 6)}...${this.tokenAddress.slice(-4)}`;
+      const addressLink = `https://${networkLink[this.$store.state.ethers.network] || 'etherscan.io'}/address/${this.tokenAddress}`;
+      const tokenAddressInfo = {
+        smallAddress,
+        addressLink,
+      };
+      console.log('[SelectTokenListItem] tokenAddressInfo:', tokenAddressInfo);
+      return tokenAddressInfo;
+    },
   },
   data() {
     return {
@@ -105,7 +126,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .c-select-token-item {
   display: grid;
-  grid-template-columns: auto minmax(auto, 1fr) minmax(0px, 150px);
+  grid-template-columns: auto minmax(auto, 8rem) minmax(0px, 1fr);
   gap: 16px;
   box-sizing: border-box;
   -webkit-box-align: center;
