@@ -105,7 +105,7 @@ interface IERC20 {
 
 // Dependency file: contracts/libraries/Address.sol
 
-
+// SPDX-License-Identifier: MIT
 
 // pragma solidity ^0.6.2;
 
@@ -168,7 +168,7 @@ library Address {
 
 // Dependency file: contracts/libraries/Context.sol
 
-
+// SPDX-License-Identifier: MIT
 
 // pragma solidity ^0.6.0;
 
@@ -195,7 +195,7 @@ abstract contract Context {
 
 // Dependency file: contracts/libraries/SafeMath.sol
 
-
+// SPDX-License-Identifier: MIT
 
 // pragma solidity ^0.6.0;
 
@@ -357,7 +357,7 @@ library SafeMath {
 
 // Dependency file: contracts/libraries/ERC20.sol
 
-
+// SPDX-License-Identifier: MIT
 
 // pragma solidity ^0.6.0;
 
@@ -413,10 +413,10 @@ contract ERC20 is Context, IERC20 {
      * All three of these values are immutable: they can only be set once during
      * construction.
      */
-    constructor (string memory name, string memory symbol) public {
+    constructor (string memory name, string memory symbol, uint8 decimals) public {
         _name = name;
         _symbol = symbol;
-        _decimals = 18;
+        _decimals = decimals;
     }
 
     /**
@@ -808,7 +808,7 @@ contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
     uint public y3d_threhold = 1e16; // You want to be a Consul?
     mapping (address => uint8) fees; // use P3D to against front-running
   
-    constructor () ERC20("yUniswap-ETH/USDT-LP", "yUniswap-ETH/USDT-LP") public {
+    constructor () ERC20("yUniswap-ETH/USDT-LP", "yUniswap-ETH/USDT-LP", 18) public {
         pool = 1; _mint(msg.sender, 1); // avoid div by 1
         S.approve(miner, uint(-1));
     }
@@ -915,7 +915,7 @@ contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
         path[0] = UNISWAP_1;
         path[1] = UNISWAP_2;        
         IUniswap(uniswap).swapExactTokensForTokens(t, uint(0), path, address(this), now.add(1800));
-        IUnimint(unimint).depositAndClaim(path[1], USDT, WETH.balanceOf(address(this)), 0);
+        IUnimint(unimint).depositAndClaim(UNISWAP_2, USDT, WETH.balanceOf(address(this)), 0);
         recycle();
     }    
 

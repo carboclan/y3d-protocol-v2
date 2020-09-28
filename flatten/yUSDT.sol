@@ -527,10 +527,10 @@ contract ERC20 is Context, IERC20 {
      * All three of these values are immutable: they can only be set once during
      * construction.
      */
-    constructor (string memory name, string memory symbol) public {
+    constructor (string memory name, string memory symbol, uint8 decimals) public {
         _name = name;
         _symbol = symbol;
-        _decimals = 18;
+        _decimals = decimals;
     }
 
     /**
@@ -804,7 +804,7 @@ contract yUSDT is ERC20 {
     uint public invested_usdt;
     uint public pool;
 
-    constructor () ERC20('yTether USD', 'yUSDT') public {
+    constructor () ERC20('yTether USD', 'yUSDT', 18) public {
         pool = 1; _mint(msg.sender, 1); // trick: avoid div by 0
         // usdt approve to unimint
     }

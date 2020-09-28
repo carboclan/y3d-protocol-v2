@@ -530,10 +530,10 @@ contract ERC20 is Context, IERC20 {
      * All three of these values are immutable: they can only be set once during
      * construction.
      */
-    constructor (string memory name, string memory symbol) public {
+    constructor (string memory name, string memory symbol, uint8 decimals) public {
         _name = name;
         _symbol = symbol;
-        _decimals = 18;
+        _decimals = decimals;
     }
 
     /**
@@ -801,7 +801,7 @@ contract y_3dToken is ERC20, Iy_3dToken {
     uint8 public _fee; // P3D exit fee
     address public owner;
 
-    constructor (address underlying_token, address y_token, uint8 fee, string memory name, string memory symbol, address to) ERC20(name, symbol) public {
+    constructor (address underlying_token, address y_token, uint8 fee, string memory name, string memory symbol, uint8 decimals, address to) ERC20(name, symbol, decimals) public {
         _u = underlying_token;
         _y = y_token;
         pool = 1; _mint(to, 1); // trick: avoid div by 0
@@ -885,6 +885,7 @@ contract y_3dFactory {
             new y_3dToken(
                 u, yToken, fee,
                 y_3d(IERC20(u).name()), y_3d(IERC20(u).symbol()),
+                IERC20(u).decimals(),
                 msg.sender
             )
         );
