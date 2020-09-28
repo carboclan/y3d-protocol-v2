@@ -15,7 +15,7 @@
         class="cwb-connect-button"
         @click="onWalletButtonClick"
       >
-        Connect to a wallet
+        {{ $t('app.tipConnectWallet') }}
       </button>
     </div>
     <ConnectWalletModal v-model="showWallet" />

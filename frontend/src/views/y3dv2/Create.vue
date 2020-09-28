@@ -1,51 +1,52 @@
 <template>
   <LayoutY3DV2>
     <div class="create">
-      <p class="title">Create A y3d Token</p>
+      <p class="title">{{ $t('create.createy3dToken') }}</p>
       <div class="ui icon message" v-if="deploying">
         <i class="notched circle loading icon"></i>
         <div class="content">
-          <div class="header">Please wait in patience</div>
-          <p>Deploying your Y3D Token to the blockchain now.</p>
+          <div class="header">{{ $t('create.waitInPatience') }}</div>
+          <p>{{ $t('create.deploying') }}</p>
         </div>
       </div>
       <div class="ui positive message" v-if="deployedY3dToken">
         <i class="close icon"></i>
-        <div class="header">Your y3dToken is ready.</div>
-        <p>Contract Address: {{ deployedY3dToken }}</p>
-        <button class="ui primary button" @click="goToY3dContract">Go Y3D Token page</button>
+        <div class="header">{{ $t('create.isready') }}</div>
+        <p>{{ $t('create.contractAddress') }}: {{ deployedY3dToken }}</p>
+        <button class="ui primary button" @click="goToY3dContract">
+          {{ $t('create.gopage') }}</button>
       </div>
       <form class="ui form">
         <div :class="['field', 'create-field',
           { 'validate-faild': !inputValidateStatus.tokenContract }
         ]">
-          <label>Underlying Token (Required)</label>
+          <label>{{ $t('create.underlyingToken') }}</label>
           <input
             type="text"
-            placeholder="Enter Token Contract address..."
+            :placeholder="$t('create.enterTokenContractAddress')"
             v-model="tokenContract"
           />
           <MainButton @click="clickOnSelectToken" class="token-select-button">
-            Select
+            {{ $t('create.select') }}
           </MainButton>
         </div>
         <div :class="['field', 'create-field',
           { 'validate-faild': !inputValidateStatus.yTokenContract }
         ]">
-          <label>yToken</label>
+          <label>{{ $t('create.yToken') }}</label>
           <input
             type="text"
-            placeholder="Enter yToken Contract address..."
+            :placeholder="$t('create.enterYTokenContractAddress')"
             v-model="yTokenContract"
           />
         </div>
         <div :class="['field', 'create-field',
           { 'validate-faild': !inputValidateStatus.fee }
         ]">
-          <label>Fee % (Max 25.5%) (Required)</label>
+          <label>{{ $t('create.fee') }}</label>
           <input
             type="number"
-            placeholder="Enter fee..."
+            :placeholder="$t('create.enterFee')"
             step="0.1"
             min="0"
             max="25.5"
@@ -61,7 +62,7 @@
         <div class="swap-button-content">
           <MainButton :disabled="!inputValidateStatus.createButton" :btnLoading="deploying"
             @click="createY3dToken">
-            Create
+            {{ $t('create.title') }}
           </MainButton>
         </div>
       </form>
@@ -179,14 +180,14 @@ export default {
       if (!status.tokenContract || !status.yTokenContract) {
         this.$message({
           type: 'error',
-          message: 'This is not a ethereum address, please double check your input.',
+          message: this.$t('create.error1'),
         });
         return false;
       }
       if (!status.fee) {
         this.$message({
           type: 'error',
-          message: 'The fee is out of range.',
+          message: this.$t('create.error2'),
         });
         return false;
       }

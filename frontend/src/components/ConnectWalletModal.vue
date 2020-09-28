@@ -2,7 +2,7 @@
 <template>
   <Modal :shownHeader="false" v-model="dialogVisible" :customClass="customClass" :width="'420px'">
     <p class="c-wallet-modal-title">
-      {{ connected ? 'My Account' : 'Selected a waller provider' }}
+      {{ connected ? $t('app.myAccount') : $t('app.tipSelectedWaller') }}
     </p>
     <div class="c-wallet-modal-my-account" v-if="connected">
       <img src="@/assets/base/lightsword.png" />
@@ -16,16 +16,20 @@
     </div>
     <div class="c-wallet-modal-footer" v-if="connected">
       <main-button plain class="c-wallet-modal-cancel" @click="clickOnDisconnect"
-        >SIGN OUT</main-button
+        >
+        {{ $t('app.signout').toUpperCase() }}
+      </main-button
       >
       <main-button plain class="c-wallet-modal-cancel" @click="dialogVisible = false"
-        >CANCEL</main-button
+        >{{ $t('app.cancel').toUpperCase() }}</main-button
       >
     </div>
     <div class="c-wallet-modal-footer" v-else>
-      <main-button plain class="c-wallet-modal-cancel" @click="clickOnConnect">CONNECT</main-button>
+      <main-button plain class="c-wallet-modal-cancel" @click="clickOnConnect">
+        {{ $t('app.connect').toUpperCase() }}
+      </main-button>
       <main-button plain class="c-wallet-modal-cancel" @click="dialogVisible = false"
-        >CANCEL</main-button
+        >{{ $t('app.cancel').toUpperCase() }}</main-button
       >
     </div>
   </Modal>

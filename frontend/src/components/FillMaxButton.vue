@@ -1,5 +1,5 @@
 <template>
-  <button class="c-fill-max-button" @click="$emit('click')">MAX</button>
+  <button class="c-fill-max-button" @click="$emit('click')">{{ $t('swap.max') }}</button>
 </template>
 <style lang="scss" scoped>
 .c-fill-max-button {

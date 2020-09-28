@@ -1,7 +1,7 @@
 <template>
   <div class="switch-content">
-    <span>Expert Mode</span>
-    <span> ({{showExpert?'on':'off'}}) </span>
+    <span>{{ $t('um.mode') }}</span>
+    <span> ({{showExpert?$t('um.on'):$t('um.off')}}) </span>
     <button
       class="radio"
       v-on:click="btnClick"

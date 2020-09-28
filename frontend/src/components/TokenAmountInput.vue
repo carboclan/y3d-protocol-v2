@@ -5,7 +5,8 @@
         <div class="tai-info">
           <div class="tai-content">
             <div class="tai-title"><slot name="title"></slot></div>
-            <div class="tai-balance">Balance: {{ tokenInfo && formattedBalance }}</div>
+            <div class="tai-balance">
+              {{ $t('swap.Balance') }}: {{ tokenInfo && formattedBalance }}</div>
           </div>
         </div>
         <div class="tai-input-container">
@@ -38,6 +39,7 @@
       :isUToken="isUToken"
       v-model="isModalShowing"
       @select-token="selectToken"
+      @clear-select-token="clearSelectToken"
       :pairList="pairList"
       :otherTokenInfo="otherTokenInfo"
       :tokenInfo="tokenInfo"
@@ -147,6 +149,9 @@ export default Vue.extend({
     },
     selectToken(payload: any) {
       this.$emit('select-token', payload.data);
+    },
+    clearSelectToken() {
+      this.$emit('clear-select-token');
     },
   },
 });

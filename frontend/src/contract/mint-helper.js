@@ -6,7 +6,7 @@ import IERC20_ABI from './abi/IERC20.json';
 import { usdtContractAddr } from './index';
 
 // #region Mint Functions
-const uniDepositContract_deposit_n_claim = async function(amount, toeknData) {
+const uniDepositContract_deposit_n_claim = async function(i18n, amount, toeknData) {
   const signer = getProvider().getSigner();
   getWallet();
   const address = await getWalletAddress();
@@ -26,7 +26,7 @@ const uniDepositContract_deposit_n_claim = async function(amount, toeknData) {
     allow = USDT_TOKEN_SIGNED.approve(toeknData.unitedMintContractAddr, ethers.constants.MaxUint256)
       .then(t => getProvider().waitForTransaction(t.hash))
       .catch(() => {
-        alert('Try resetting your approval to 0 first');
+        alert(i18n.t('um.error1'));
       });
   }
 
@@ -43,11 +43,12 @@ const uniDepositContract_deposit_n_claim = async function(amount, toeknData) {
       })
       .catch(() => {});
   } else {
-    alert('You have no tokens to deposit!!');
+    alert(i18n.t('um.error2'));
   }
 };
 
-const uniDepositContract_deposit_amount = async function(amount, toeknData) {
+const uniDepositContract_deposit_amount = async function(i18n, amount, toeknData) {
+  alert(i18n.t('um.error1'));
   const signer = getProvider().getSigner();
   getWallet();
   const address = await getWalletAddress();
@@ -65,7 +66,7 @@ const uniDepositContract_deposit_amount = async function(amount, toeknData) {
     allow = USDT_TOKEN_SIGNED.approve(toeknData.unitedMintContractAddr, ethers.constants.MaxUint256)
       .then(t => getProvider().waitForTransaction(t.hash))
       .catch(() => {
-        alert('Try resetting your approval to 0 first');
+        alert(i18n.t('um.error1'));
       });
   }
   if (currentUSDT.gt(0)) {
@@ -81,11 +82,11 @@ const uniDepositContract_deposit_amount = async function(amount, toeknData) {
       })
       .catch(() => {});
   } else {
-    alert('You have no tokens to deposit!!');
+    alert(i18n.t('um.error2'));
   }
 };
 
-const uniDepositContract_mint = async function(toeknData) {
+const uniDepositContract_mint = async function(i18n, toeknData) {
   const signer = getProvider().getSigner();
   const UNI_DEPOSIT_SIGNED = new ethers.Contract(
     toeknData.unitedMintContractAddr,
@@ -99,11 +100,11 @@ const uniDepositContract_mint = async function(toeknData) {
       .then(t => getProvider().waitForTransaction(t.hash))
       .catch(() => {});
   } else {
-    alert(`Current have no USDT for ${toeknData.key} to mint!!`);
+    alert(i18n.t('um.error3', { key: toeknData.key }));
   }
 };
 
-const uniDepositContract_claim = async function(toeknData) {
+const uniDepositContract_claim = async function(i18n, toeknData) {
   const signer = getProvider().getSigner();
   const UNI_DEPOSIT_SIGNED = new ethers.Contract(
     toeknData.unitedMintContractAddr,
@@ -119,11 +120,11 @@ const uniDepositContract_claim = async function(toeknData) {
       .then(t => getProvider().waitForTransaction(t.hash))
       .catch(() => {});
   } else {
-    alert(`Current there are no ${toeknData.key} to claim!!`);
+    alert(i18n.t('um.error4', { key: toeknData.key }));
   }
 };
 
-const uniDepositContract_restore_amount = async function(amount, toeknData) {
+const uniDepositContract_restore_amount = async function(i18n, amount, toeknData) {
   const signer = getProvider().getSigner();
   getWallet();
   const address = await getWalletAddress();
@@ -153,7 +154,7 @@ const uniDepositContract_restore_amount = async function(amount, toeknData) {
       .approve(toeknData.unitedMintContractAddr, ethers.constants.MaxUint256)
       .then(t => getProvider().waitForTransaction(t.hash))
       .catch(() => {
-        alert('Try resetting your approval to 0 first');
+        alert(i18n.t('um.error1'));
       });
   }
 
@@ -170,7 +171,7 @@ const uniDepositContract_restore_amount = async function(amount, toeknData) {
       })
       .catch(() => {});
   } else {
-    alert('You have no tokens to restore!!');
+    alert(i18n.t('um.error5'));
   }
 };
 // #endregion Mint Functions

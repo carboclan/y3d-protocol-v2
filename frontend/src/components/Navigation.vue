@@ -1,7 +1,7 @@
 <template>
   <div class="nav tabs">
     <router-link class="styled-navLink" v-for="route in routes" :key="route.name" :to="route.path">
-      {{ route.name }}
+      {{ $t(route.name) }}
     </router-link>
   </div>
 </template>
@@ -39,26 +39,28 @@
 }
 </style>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
 
 export default Vue.extend({
   name: 'Navigation',
-  data: () => ({
-    routes: [
-      {
-        name: '兑换',
-        path: '/y3dv2/swap',
-      },
-      {
-        name: '治理',
-        path: '/y3dv2/govern',
-      },
-      {
-        name: '创建',
-        path: '/y3dv2/create',
-      },
-    ],
-  }),
+  data() {
+    return {
+      routes: [
+        {
+          name: 'swap.title',
+          path: '/y3dv2/swap',
+        },
+        {
+          name: 'govern.title',
+          path: '/y3dv2/govern',
+        },
+        {
+          name: 'create.title',
+          path: '/y3dv2/create',
+        },
+      ],
+    };
+  },
 });
 </script>
