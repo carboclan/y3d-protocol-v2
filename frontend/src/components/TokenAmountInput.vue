@@ -38,6 +38,7 @@
       :isUToken="isUToken"
       v-model="isModalShowing"
       @select-token="selectToken"
+      @clear-select-token="clearSelectToken"
       :pairList="pairList"
       :otherTokenInfo="otherTokenInfo"
       :tokenInfo="tokenInfo"
@@ -147,6 +148,9 @@ export default Vue.extend({
     },
     selectToken(payload: any) {
       this.$emit('select-token', payload.data);
+    },
+    clearSelectToken() {
+      this.$emit('clear-select-token');
     },
   },
 });

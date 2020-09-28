@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="select-token-model-list">
-        <template v-if="searchTokenList.length <= 0">
+        <template v-if="searchTokenList.length <= 0 && tokenNameOrAddress === ''">
           <SelectTokenListItem
             v-for="(item, idx) in processedOriginalList"
             :key="idx"
@@ -249,10 +249,14 @@ export default Vue.extend<
             return;
           }
         }
-        this.$emit('select-token', {
-          data: this.processedOriginalList[0],
-          symbol: this.symbol,
-        });
+        if (this.processedOriginalList && this.processedOriginalList.length > 0) {
+          this.$emit('select-token', {
+            data: this.processedOriginalList[0],
+            symbol: this.symbol,
+          });
+        } else {
+          this.$emit('clear-select-token');
+        }
         this.dialogVisibleSelectToken = false;
       }
     },
@@ -311,6 +315,7 @@ export default Vue.extend<
       if (!res?.dsymbol) {
         res.dsymbol = res.symbol;
       }
+      res.tag = 'uToken';
       const fined = find(self.originalList, (o: ITokenListItem) => o.address === res.address);
       // @ts-ignore
       self.searchTokenList.push(fined || res);
