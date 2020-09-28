@@ -27,6 +27,7 @@ contract y_3dFactory {
             new y_3dToken(
                 u, yToken, fee,
                 y_3d(IERC20(u).name()), y_3d(IERC20(u).symbol()),
+                IERC20(u).decimals(),
                 msg.sender
             )
         );

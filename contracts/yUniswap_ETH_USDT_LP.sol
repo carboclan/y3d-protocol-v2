@@ -139,7 +139,7 @@ contract yUniswap_ETH_USDT_LP is ERC20, ReentrancyGuard, Ownable {
     uint public y3d_threhold = 1e16; // You want to be a Consul?
     mapping (address => uint8) fees; // use P3D to against front-running
   
-    constructor () ERC20("yUniswap-ETH/USDT-LP", "yUniswap-ETH/USDT-LP") public {
+    constructor () ERC20("yUniswap-ETH/USDT-LP", "yUniswap-ETH/USDT-LP", 18) public {
         pool = 1; _mint(msg.sender, 1); // avoid div by 1
         S.approve(miner, uint(-1));
     }

@@ -21,7 +21,7 @@ contract yUSDT is ERC20 {
     uint public invested_usdt;
     uint public pool;
 
-    constructor () ERC20('yTether USD', 'yUSDT') public {
+    constructor () ERC20('yTether USD', 'yUSDT', 18) public {
         pool = 1; _mint(msg.sender, 1); // trick: avoid div by 0
         // usdt approve to unimint
     }

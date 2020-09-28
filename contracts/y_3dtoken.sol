@@ -15,7 +15,7 @@ contract y_3dToken is ERC20, Iy_3dToken {
     uint8 public _fee; // P3D exit fee
     address public owner;
 
-    constructor (address underlying_token, address y_token, uint8 fee, string memory name, string memory symbol, address to) ERC20(name, symbol) public {
+    constructor (address underlying_token, address y_token, uint8 fee, string memory name, string memory symbol, uint8 decimals, address to) ERC20(name, symbol, decimals) public {
         _u = underlying_token;
         _y = y_token;
         pool = 1; _mint(to, 1); // trick: avoid div by 0
