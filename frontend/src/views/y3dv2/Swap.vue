@@ -56,16 +56,23 @@
           </div> -->
           </div>
           <div class="swap-button-content">
+            <MainButton v-if="tokenAInfo && !isPairExist"
+              id="create-y3d-token-button"
+              @click="goToCreateY3dToken"
+            >
+              Go to create y3dToken
+            </MainButton>
             <MainButton
+              v-else
               :btnLoading="isSendingTx"
               id="swap-button"
               :disabled="isBtnDisabled"
               @click="clickActionButton">{{
               tipText
             }}</MainButton>
-            <router-link :to="createUrl" v-if="tokenAInfo && !isPairExist">
-              <p>Go to create</p>
-            </router-link>
+            <!-- <router-link :to="createUrl" v-if="tokenAInfo && !isPairExist">
+              <p>Go to create y3dToken</p>
+            </router-link> -->
           </div>
         </div>
       </div>
@@ -279,11 +286,12 @@ export default {
       this.payloadTokenA = payload;
       this.tokenAInfo = payload;
       this.tokenA = payload.address;
-      if (this.tokenB && this.tokenB === this.tokenA) {
+      if ((this.tokenB && this.tokenB === this.tokenA) || !this.isPairExist) {
         this.tokenB = '';
         this.payloadTokenB = null;
         this.tokenBInfo = null;
       }
+      console.log('if:', this.tokenB && this.tokenB === this.tokenA, 'tokenB:', this.tokenB, 'tokenA:', this.tokenA);
     },
     selectTokenB(payload) {
       if (!payload || !payload.address) {
@@ -435,6 +443,9 @@ export default {
       } else {
         this.unstake();
       }
+    },
+    goToCreateY3dToken() {
+      this.$router.push(this.createUrl);
     },
   },
   mounted() {
