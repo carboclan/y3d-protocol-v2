@@ -122,8 +122,8 @@ export default {
       this.deploying = true;
       const contract = y3dFactory.connect(getProvider().getSigner());
       try {
-        const response = await contract.create(this.tokenContract);
-        // const response = await contract.create(this.tokenContract, this.yTokenContract, this.fee)
+        // const response = await contract.create(this.tokenContract);
+        const response = await contract.create(this.tokenContract, this.yTokenContract, this.fee);
         console.log('[Create Page] [createY3dToken] tx response:', response);
 
         // Wait for 1 confirmation
