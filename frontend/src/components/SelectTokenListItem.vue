@@ -23,6 +23,7 @@
       <a
         v-if="tokenAddressInfo"
         :href="tokenAddressInfo.addressLink"
+        class="c-select-token-name-link"
         target="_blank"
         rel="noopener noreferrer"
         @click.stop="() => {}"
@@ -167,6 +168,9 @@ export default Vue.extend({
     min-width: 0px;
     font-weight: 500;
     font-size: 16px;
+  }
+  &-link {
+    font-size: 14px;
   }
 }
 .c-select-token-balance {
