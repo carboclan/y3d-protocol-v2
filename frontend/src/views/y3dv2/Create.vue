@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import { BigNumber } from 'ethers';
 import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
 import MainButton from '@/components/MainButton.vue';
 import { getProvider, utils } from '@/store/ethers/ethersConnect';
@@ -117,14 +118,18 @@ export default {
       window.console.log(uTokenPairs);
     },
     async createY3dToken() {
+      const zeroAddress = '0x0000000000000000000000000000000000000000';
       const checkStatus = this.showCreateY3dTokenErrorMessage();
       if (!checkStatus) return;
 
       this.deploying = true;
       const contract = y3dFactory.connect(getProvider().getSigner());
       try {
+        const yTokenContract = this.yTokenContract ? this.yTokenContract : zeroAddress;
+        const fee = BigNumber.from(this.fee);
+        console.log('[Create Page] [createY3dToken] tokenContract:', this.tokenContract, 'ytokenContract:', yTokenContract, 'fee:', fee);
         // const response = await contract.create(this.tokenContract);
-        const response = await contract.create(this.tokenContract, this.yTokenContract, this.fee);
+        const response = await contract.create(this.tokenContract, yTokenContract, fee);
         console.log('[Create Page] [createY3dToken] tx response:', response);
 
         // Wait for 1 confirmation
