@@ -1,10 +1,11 @@
 /* eslint-disable arrow-body-style */
 
-import { getProvider } from '@/store/ethers/ethersConnect';
+import { getProvider, getChainId } from '@/store/ethers/ethersConnect';
 import {
   y3DToken,
   CommonERC20,
   multiCallAddr,
+  multiCallRinkeybyAddr,
   multiCall,
 } from '@/contract';
 import { Contract } from 'ethers';
@@ -18,7 +19,8 @@ const getY3DContract = (_y3DAddress: string): Contract => {
 };
 
 const getMultiCallContract = (): Contract => {
-  return multiCall.attach(multiCallAddr).connect(getProvider()!.getSigner());
+  const addr = getChainId() === '0x4' ? multiCallRinkeybyAddr : multiCallAddr;
+  return multiCall.attach(addr).connect(getProvider()!.getSigner());
 };
 
 export default getERC20Contract;
