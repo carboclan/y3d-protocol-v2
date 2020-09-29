@@ -70,7 +70,7 @@
               id="swap-button"
               :disabled="isBtnDisabled"
               @click="clickActionButton">{{
-              $t(tipText)
+              tipText
             }}</MainButton>
             <!-- <router-link :to="createUrl" v-if="tokenAInfo && !isPairExist">
               <p>Go to create y3dToken</p>
