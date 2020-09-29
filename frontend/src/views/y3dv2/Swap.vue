@@ -152,7 +152,7 @@ export default {
           { symbol: this.tokenAInfo.dsymbol },
         );
       }
-      return `${this.$t(this.workMode).toUpperCase()} ${this.tokenAInfo.dsymbol}`;
+      return `${this.$t(`swap.${this.workMode}`).toUpperCase()} ${this.tokenAInfo.dsymbol}`;
     },
     isPairExist() {
       if (!this.tokenAInfo) {
