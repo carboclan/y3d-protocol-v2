@@ -38,11 +38,11 @@ const routes: Array<RouteConfig> = [
     name: 'About',
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
-  {
-    path: '/unimint',
-    name: 'UnitedMint',
-    component: () => import(/* webpackChunkName: "mint" */ '../views/UnitedMint/Index.vue'),
-  },
+  // {
+  //   path: '/unimint',
+  //   name: 'UnitedMint',
+  //   component: () => import(/* webpackChunkName: "mint" */ '../views/UnitedMint/Index.vue'),
+  // },
 ];
 
 const router = new VueRouter({
@@ -67,11 +67,11 @@ const rootRoutes: IRootRoutes = [
   //   match: '/yvaults/',
   //   isExternal: false,
   // },
-  {
-    name: 'United Mint',
-    match: '/unimint/',
-    isExternal: false,
-  },
+  // {
+  //   name: 'United Mint',
+  //   match: '/unimint/',
+  //   isExternal: false,
+  // },
   // {
   //   name: 'Uniscam',
   //   match: '/uniscam/',
