@@ -61,10 +61,10 @@
               <p class="blank-container-info-name">{{ $t('govern.timelock') }}</p>
               <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.timelock) }}</p>
             </div>
-            <div class="blank-container-info">
+            <!-- <div class="blank-container-info">
               <p class="blank-container-info-name">{{ $t('govern.createdTime') }}</p>
               <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.createdTime) }}</p>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -150,11 +150,13 @@ export default Vue.extend({
     value() {
       this.uTD = null;
       this.y3dTD = null;
-      this.fetchTokenInfo();
+      if (this.value) {
+        this.fetchTokenInfo();
+      }
     },
     address() {
       this.fetchOptionsTokenInfo();
-      if (this.uTD === null && this.y3dTD === null && this.value !== '') {
+      if (this.uTD === null && this.y3dTD === null && this.value) {
         this.fetchTokenInfo();
       }
     },
@@ -192,8 +194,8 @@ export default Vue.extend({
         fetchERC20Detail(this.value, this.address),
       ]);
       // eslint-disable-next-line no-underscore-dangle
-      const yTStaked = formatUnits(await contract.pool(), 18);
-      const yTSupply = formatUnits(y3dTD.totalSupply, 18);
+      const yTStaked = formatUnits(await contract.pool(), y3dTD.decimals);
+      const yTSupply = formatUnits(y3dTD.totalSupply, y3dTD.decimals);
       const yTPrice = Math.round((Number(yTStaked) / Number(yTSupply)) * 1.05 * 1000) / 1000;
       this.y3dTD = {
         ...this.y3dTD,
