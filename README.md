@@ -6,8 +6,9 @@
 
 Y3D = [YAM](https://yam.finance) + [P3D](https://powh.io)
 
-## <del>Demo</del> Live
-[https://y3d.netlify.app/](https://y3d.netlify.app/)
+- V1 Live [https://y3d.netlify.app/](https://y3d.netlify.app/)
+- V2 Demo [https://y3dv2-project-0916.netlify.app/](https://y3dv2-project-0916.netlify.app/)
+
 
 ## Prequel 
 
