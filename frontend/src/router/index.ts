@@ -79,7 +79,7 @@ const rootRoutes: IRootRoutes = [
   // },
   {
     name: 'DAO',
-    match: 'https://y3d.vercel.app/#/y3d',
+    match: 'https://snapshot.page/#/y3d',
     isExternal: true,
   },
 ];
