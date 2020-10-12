@@ -200,6 +200,9 @@ export default Vue.extend<
       if (this.network === 'Mainnet') {
         return 1;
       }
+      if (this.network === 'BSC Main Network') {
+        return 56;
+      }
       return 4;
     },
     processedOriginalList() {

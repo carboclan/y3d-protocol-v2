@@ -78,7 +78,7 @@ import { BigNumber } from 'ethers';
 import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
 import MainButton from '@/components/MainButton.vue';
 import { getProvider, utils } from '@/store/ethers/ethersConnect';
-import { y3dFactory } from '@/contract';
+import { y3dFactory, yFactory } from '@/contract';
 import SelectTokenModal from '@/components/SelectTokenModal.vue';
 
 export default {
@@ -123,7 +123,7 @@ export default {
       if (!checkStatus) return;
 
       this.deploying = true;
-      const contract = y3dFactory.connect(getProvider().getSigner());
+      const contract = yFactory.connect(getProvider().getSigner());
       try {
         const yTokenContract = this.yTokenContract ? this.yTokenContract : zeroAddress;
         const fee = BigNumber.from(this.fee);

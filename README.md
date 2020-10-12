@@ -78,3 +78,9 @@ python -m http.server --cgi 8000
 truffle deploy --network rinkeby
 npx waffle flatten
 ```
+
+#### bsc main network:
+- y3d-factory: 0x475e211983Df967c56740e20312C12F6bf3c695e
+- yUSDT3d: 0x4365e130d518aaa5d0c818309babbe2c039e12b5
+- yfii Tether USD (iUSDT): 0x1F19D041FDCE1B70901008229d77A8B02E315618
+- yfii BUSD Token (iBUSD): 0xeB3C085FBc1030bb127114CB1A3B9A02A24eF62d

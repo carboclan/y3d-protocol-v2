@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { map, uniqBy, find } from 'lodash';
 import { y3dFactory } from '@/contract';
-import { getProvider } from '@/store/ethers/ethersConnect';
+import { getChainId, getProvider } from '@/store/ethers/ethersConnect';
 import { fetchERC20Detail } from '@/utils/contract/fetchContractInfo';
 
 const swap = {
@@ -29,7 +29,10 @@ const swap = {
   },
   actions: {
     async fetchTokensInfo({ commit }) {
-      let result = await axios.get('https://cloudflare-ipfs.com/ipns/tokens.uniswap.org');
+      const chainId = parseInt(getChainId(), 0);
+      let url = 'https://cloudflare-ipfs.com/ipns/tokens.uniswap.org';
+      if (chainId === 56) url = 'https://tokens.bscswap.com/tokens.json';
+      let result = await axios.get(url);
       result = result.data.tokens;
       result = map(result, (v) => {
         const r = v;

@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import y3dFactoryABI from './abi/y3dFactory.json';
+import yFactoryABI from './abi/yFactory.json';
 import y3dTokenABI from './abi/y3dToken.json';
 import IERC20_ABI from './abi/IERC20.json';
 import yyCrvUnitedMintABI from './abi/yyCrvUnitedMint.json';
@@ -56,3 +57,8 @@ export const yswUSDUnitedMint = new ethers.Contract(
 
 export const cYyCrvUnitedMintABI = yyCrvUnitedMintABI;
 export const cYswUSDUnitedMintABI = yswUSDUnitedMintABI;
+
+export const yFactory = new ethers.Contract(
+  '0x475e211983Df967c56740e20312C12F6bf3c695e',
+  yFactoryABI,
+);

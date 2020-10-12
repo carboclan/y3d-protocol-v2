@@ -70,6 +70,8 @@ export async function getNetName() {
       return 'Goerli Test Network';
     case '0x2a':
       return 'Kovan Test Network';
+    case '0x38':
+      return 'BSC Main Network';
     case undefined:
     case null:
       return 'No Chain!';
