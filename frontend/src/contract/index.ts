@@ -59,6 +59,6 @@ export const cYyCrvUnitedMintABI = yyCrvUnitedMintABI;
 export const cYswUSDUnitedMintABI = yswUSDUnitedMintABI;
 
 export const yFactory = new ethers.Contract(
-  '0x475e211983Df967c56740e20312C12F6bf3c695e',
+  '0x0cf668c0c9b6e32221f029167c3702dc456b6c40',
   yFactoryABI,
 );
