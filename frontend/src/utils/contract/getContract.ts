@@ -6,6 +6,7 @@ import {
   CommonERC20,
   multiCallAddr,
   multiCallRinkeybyAddr,
+  multiCallBSCAddr,
   multiCall,
 } from '@/contract';
 import { Contract } from 'ethers';
@@ -19,7 +20,18 @@ const getY3DContract = (_y3DAddress: string): Contract => {
 };
 
 const getMultiCallContract = (): Contract => {
-  const addr = getChainId() === '0x4' ? multiCallRinkeybyAddr : multiCallAddr;
+  let addr = '';
+  switch (getChainId()) {
+    case '0x4':
+      addr = multiCallRinkeybyAddr;
+      break;
+    case '0x38':
+      addr = multiCallBSCAddr;
+      break;
+    default:
+      addr = multiCallAddr;
+      break;
+  }
   return multiCall.attach(addr).connect(getProvider()!.getSigner());
 };
 
