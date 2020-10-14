@@ -56,12 +56,23 @@
                   target="__blank"><p>{{ y3dTD.y }}</p></a>
               </div>
             </div>
-
+            <div class="blank-container-info-wrap">
+              <div class="blank-container-info">
+                <p class="blank-container-info-name">
+                  {{ $t('govern.ownerAddress') }}
+                </p>
+              </div>
+              <div class="contract-info">
+                <img src="@/assets/base/copy.png" />
+                <a
+                  :href="networkBrowseMainUrl + 'address/' + y3dTD.ownerAddress"
+                  target="__blank"><p>{{ y3dTD.ownerAddress }}</p></a>
+              </div>
+            </div>
             <div class="blank-container-info">
               <p class="blank-container-info-name">{{ $t('govern.p3dRatio') }}</p>
-              <p class="blank-container-info-value">{{ y3dTD.fee }}%</p>      
+              <p class="blank-container-info-value">{{ y3dTD.fee }}%</p>
             </div>
-
             <!--
             <div class="blank-container-info">
               <p class="blank-container-info-name">
@@ -77,7 +88,6 @@
                 formatGrovernInfo(y3dTD.miningAmount)
               }}({{ formatGrovernInfo(y3dTD.miningRatio) }}%)</p>
             </div>
-            
             <div class="blank-container-info">
               <p class="blank-container-info-name">{{ $t('govern.p3dRatio') }}</p>
               <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.p3DRatio) }}</p>
