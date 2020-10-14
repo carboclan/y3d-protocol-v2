@@ -47,6 +47,7 @@ const swap = {
       const contract = y3dFactory.connect(getProvider().getSigner());
       const events = await contract.queryFilter('y_3dTokenCreated');
       let allPairs = events.map(({ args }) => args);
+      console.log('fetchPairList:', allPairs);
       if (allPairs.length === 0 && rootState.ethers.network === 'Mainnet') {
         allPairs = [
           [
