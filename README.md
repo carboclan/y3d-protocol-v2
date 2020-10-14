@@ -49,28 +49,6 @@ No you won't since you will get 95% of your LP token(and many else) back after e
 
 ## Develop
 
-### Installation
-
-**ATTENTION**: If you are using macOS Catalina or above, plase install [node-gyp](https://github.com/nodejs/node-gyp) v7+ and set environment variable, read [Installation notes for macOS Catalina (v10.15)](https://github.com/nodejs/node-gyp/blob/master/macOS_Catalina.md) for more details.
-
-1. Install [ganache-cli](https://github.com/trufflesuite/ganache-cli):
-
-```shell
-npm install -g ganache-cli
-```
-
-1. Install dependencies:
-
-```shell
-npm install
-```
-
-### FE
-```shell
-cd www
-python -m http.server --cgi 8000
-```
-
 ### Contract
 - [y3dPool Contract Diff](https://gist.github.com/lychees/8cf40410871e98438080963913302a83/revisions)
 
