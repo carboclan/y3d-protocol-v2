@@ -63,6 +63,8 @@ export async function getNetworkBrowserMainUrl() {
       return 'https://rinkeby.etherscan.io/';
     case '0x38':
       return 'https://bscscan.com/';
+    case '0x61':
+      return 'https://testnet.bscscan.com/';
     case undefined:
     case null:
       return '';

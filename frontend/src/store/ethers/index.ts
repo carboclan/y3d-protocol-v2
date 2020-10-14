@@ -11,6 +11,7 @@ const state = (): Y3DEthersState => ({
   initialized: false,
   connected: false,
   error: null,
+  networkBrowseMainUrl: '',
   // user is ens or address
   user: '',
   address: '',
