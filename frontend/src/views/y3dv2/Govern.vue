@@ -24,7 +24,9 @@
               </div>
               <div class="contract-info">
                 <img src="@/assets/base/copy.png" />
-                <a :href="'https://rinkeby.etherscan.io/address/' + uTD.address" target="__blank"><p>{{ uTD.address }}</p></a>
+                <a
+                  :href="networkBrowseMainUrl + 'address/' + uTD.address"
+                  target="__blank"><p>{{ uTD.address }}</p></a>
               </div>
             </div>
             <div class="blank-container-info-wrap">
@@ -36,8 +38,29 @@
               </div>
               <div class="contract-info">
                 <img src="@/assets/base/copy.png" />
-                <a :href="'https://rinkeby.etherscan.io/address/' + value" target="__blank"><p>{{ value }}</p></a>
+                <a
+                  :href="networkBrowseMainUrl + 'address/' + value"
+                  target="__blank"><p>{{ value }}</p></a>
               </div>
+            </div>
+            <div class="blank-container-info-wrap">
+              <div class="blank-container-info">
+                <p class="blank-container-info-name">
+                  {{ $t('govern.yTokenAddress') }}
+                </p>
+              </div>
+              <div class="contract-info">
+                <img src="@/assets/base/copy.png" />
+                <a
+                  :href="networkBrowseMainUrl + 'address/' + y3dTD.y"
+                  target="__blank"><p>{{ y3dTD.y }}</p></a>
+              </div>
+            </div>
+             <div class="blank-container-info">
+              <p class="blank-container-info-name">
+                {{ $t('govern.fee') }}
+              </p>
+              <p class="blank-container-info-value">{{ y3dTD.fee }}%</p>
             </div>
             <div class="blank-container-info">
               <p class="blank-container-info-name">
@@ -76,7 +99,7 @@
 </template>
 <script lang="ts">
 /* eslint-disable no-unused-vars */
-/* eslint no-underscore-dangle: ["error", { "allow": ["_u", "_y"] }] */
+/* eslint no-underscore-dangle: ["error", { "allow": ["_u", "_y", "_fee"] }] */
 /* eslint-disable no-alert */
 import Vue from 'vue';
 import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
@@ -104,11 +127,13 @@ export interface IYTokenDetail extends IYTokenDetailInfo {
   staked?: string
   supply?: string
   price?: number
+  fee?: number
   miningAmount?: string
   miningRatio?: number
   p3DRatio?: number
   timelock?: string
   createdTime?: string
+  y?: string
 }
 
 export interface IUTokenDetail extends IUTokenDetailInfo {}
@@ -144,7 +169,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('ethers', ['address']),
+    ...mapState('ethers', ['address', 'networkBrowseMainUrl']),
   },
   watch: {
     value() {
@@ -182,6 +207,9 @@ export default Vue.extend({
       this.loadingTokenInfo = true;
       const contract = getY3DContract(this.value);
       let underlying: string = '';
+
+      const fee = await contract._fee();
+      const y = await contract._y();
       try {
         underlying = await contract._u();
       } catch (err) {
@@ -204,6 +232,8 @@ export default Vue.extend({
         staked: yTStaked,
         supply: yTSupply,
         price: yTPrice,
+        fee,
+        y,
       };
       this.uTD = { ...this.uTD, address: underlying, ...uTokenDetail };
       this.loadingTokenInfo = false;

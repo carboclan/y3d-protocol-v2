@@ -55,6 +55,22 @@ function ethereumOk() {
   return em && em.isConnected();
 }
 
+export async function getNetworkBrowserMainUrl() {
+  switch (chainId) {
+    case '0x1':
+      return 'https://etherscan.io/';
+    case '0x4':
+      return 'https://rinkeby.etherscan.io/';
+    case '0x38':
+      return 'https://bscscan.com/';
+    case undefined:
+    case null:
+      return '';
+    default:
+      return '';
+  }
+}
+
 // get the name of this network
 export async function getNetName() {
   switch (chainId) {

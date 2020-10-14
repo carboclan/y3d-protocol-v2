@@ -8,4 +8,5 @@ export interface Y3DEthersState {
   coinName: string
   network: string
   ens: string | null
+  networkBrowseMainUrl: string
 }
