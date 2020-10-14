@@ -56,12 +56,13 @@
                   target="__blank"><p>{{ y3dTD.y }}</p></a>
               </div>
             </div>
-             <div class="blank-container-info">
-              <p class="blank-container-info-name">
-                {{ $t('govern.fee') }}
-              </p>
-              <p class="blank-container-info-value">{{ y3dTD.fee }}%</p>
+
+            <div class="blank-container-info">
+              <p class="blank-container-info-name">{{ $t('govern.p3dRatio') }}</p>
+              <p class="blank-container-info-value">{{ y3dTD.fee }}%</p>      
             </div>
+
+            <!--
             <div class="blank-container-info">
               <p class="blank-container-info-name">
                 {{ $t('govern.symbolPrice', { symbol: y3dTD.symbol }) }}
@@ -76,6 +77,7 @@
                 formatGrovernInfo(y3dTD.miningAmount)
               }}({{ formatGrovernInfo(y3dTD.miningRatio) }}%)</p>
             </div>
+            
             <div class="blank-container-info">
               <p class="blank-container-info-name">{{ $t('govern.p3dRatio') }}</p>
               <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.p3DRatio) }}</p>
@@ -84,7 +86,7 @@
               <p class="blank-container-info-name">{{ $t('govern.timelock') }}</p>
               <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.timelock) }}</p>
             </div>
-            <!-- <div class="blank-container-info">
+            <div class="blank-container-info">
               <p class="blank-container-info-name">{{ $t('govern.createdTime') }}</p>
               <p class="blank-container-info-value">{{ formatGrovernInfo(y3dTD.createdTime) }}</p>
             </div> -->
