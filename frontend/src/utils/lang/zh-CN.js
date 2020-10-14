@@ -30,6 +30,8 @@ export default {
     p3dRatio: 'P3D 比例',
     timelock: '时间锁',
     createdTime: '创建时间',
+    fee: '手续费',
+    yTokenAddress: 'yToken 地址',
   },
   create: {
     title: '创建',

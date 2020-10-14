@@ -33,4 +33,7 @@ export default {
   ens(state: Y3DEthersState, value: string) {
     state.ens = value;
   },
+  networkBrowseMainUrl(state: Y3DEthersState, value: string) {
+    state.networkBrowseMainUrl = value;
+  },
 };

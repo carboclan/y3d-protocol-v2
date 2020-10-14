@@ -14,6 +14,7 @@ import {
   getNetName,
   hasEns,
   getBlance,
+  getNetworkBrowserMainUrl,
 } from './ethersConnect';
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
@@ -36,6 +37,7 @@ export default {
       const blance = await getBlance(address!);
       const network = await getNetName();
       const formatedBlance = Number.parseFloat(formatUnits(blance, 18)).toFixed(4);
+      const networkBrowseMainUrl = await getNetworkBrowserMainUrl();
 
       if (network !== oldNetwork || address !== oldAddress) {
         ctx.commit('connected', true);
@@ -45,6 +47,7 @@ export default {
         ctx.commit('coinName', 'ETH');
         ctx.commit('user', address);
         ctx.commit('network', network);
+        ctx.commit('networkBrowseMainUrl', networkBrowseMainUrl);
 
         ctx.dispatch('swap/fetchTokensInfo', {}, { root: true });
         ctx.dispatch('swap/fetchPairList', {}, { root: true });
@@ -88,6 +91,7 @@ export default {
     ctx.commit('user', '');
     ctx.commit('network', '');
     ctx.commit('ens', null);
+    ctx.commit('networkBrowseMainUrl', '');
 
     // eslint-disable-next-line no-nested-ternary
     const msg = err ? `There was an error: ${err.message}` : (oldAddress
