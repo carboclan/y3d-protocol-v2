@@ -7,6 +7,7 @@ import {
   multiCallAddr,
   multiCallRinkeybyAddr,
   multiCallBSCAddr,
+  multiCallBSCTestAddr,
   multiCall,
 } from '@/contract';
 import { Contract } from 'ethers';
@@ -27,6 +28,9 @@ const getMultiCallContract = (): Contract => {
       break;
     case '0x38':
       addr = multiCallBSCAddr;
+      break;
+    case '0x61':
+      addr = multiCallBSCTestAddr;
       break;
     default:
       addr = multiCallAddr;

@@ -49,15 +49,15 @@ export default Vue.extend({
       routes: [
         {
           name: 'swap.title',
-          path: '/y3dv2/swap',
+          path: '/swap',
         },
         {
           name: 'govern.title',
-          path: '/y3dv2/govern',
+          path: '/govern',
         },
         {
           name: 'create.title',
-          path: '/y3dv2/create',
+          path: '/create',
         },
       ],
     };
