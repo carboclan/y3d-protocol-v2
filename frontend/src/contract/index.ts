@@ -45,6 +45,7 @@ export const yswUSDUMContractAddr = '0x38d1D1d6F136c4D3D696E4d72748853Be2D5751B'
 export const multiCallAddr = '0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441';
 export const multiCallRinkeybyAddr = '0x42Ad527de7d4e9d9d011aC45B31D8551f8Fe9821';
 export const multiCallBSCAddr = '0xEaFfBF8Dd3a664921481477C860D509966F49880';
+export const multiCallBSCTestAddr = '0x71482d798be8938d0f3ACe66f225c4CCE4132D03';
 
 export const yyCrvUnitedMint = new ethers.Contract(
   yyCrvUMContractAddr,

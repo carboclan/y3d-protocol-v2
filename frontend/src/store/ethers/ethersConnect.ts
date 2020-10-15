@@ -90,6 +90,8 @@ export async function getNetName() {
       return 'Kovan Test Network';
     case '0x38':
       return 'BSC Main Network';
+    case '0x61':
+      return 'BSC Test Network';
     case undefined:
     case null:
       return 'No Chain!';

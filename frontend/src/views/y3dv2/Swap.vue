@@ -125,11 +125,11 @@ export default {
     createUrl() {
       if (this.tokenAInfo.tag === 'uToken') {
         if (this.tokenAInfo && this.tokenAInfo.address) {
-          return `/y3dv2/create?token=${this.tokenAInfo.address}`;
+          return `/create?token=${this.tokenAInfo.address}`;
         }
       }
       if (this.tokenBInfo && this.tokenBInfo.address) {
-        return `/y3dv2/create?token=${this.tokenBInfo.address}`;
+        return `/create?token=${this.tokenBInfo.address}`;
       }
       return '';
     },

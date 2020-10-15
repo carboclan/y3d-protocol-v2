@@ -6,24 +6,20 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    redirect: '/y3dv2/swap',
+    redirect: '/swap',
   },
   {
-    path: '/y3dv2',
-    redirect: '/y3dv2/swap',
-  },
-  {
-    path: '/y3dv2/swap',
+    path: '/swap',
     name: 'Swap',
     component: () => import(/* webpackChunkName: "swap" */ '../views/y3dv2/Swap.vue'),
   },
   {
-    path: '/y3dv2/govern',
+    path: '/govern',
     name: 'Govern',
     component: () => import(/* webpackChunkName: "empty" */ '../views/y3dv2/Govern.vue'),
   },
   {
-    path: '/y3dv2/create',
+    path: '/create',
     name: 'Create',
     component: () => import(/* webpackChunkName: "create" */ '../views/y3dv2/Create.vue'),
   },
@@ -54,7 +50,7 @@ const router = new VueRouter({
 const rootRoutes: IRootRoutes = [
   {
     name: 'Y3D v2',
-    match: '/y3dv2/',
+    match: '/',
     isExternal: false,
   },
   // {
