@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { map, uniqBy, find } from 'lodash';
+import {
+  map, uniqBy, find, filter,
+} from 'lodash';
 import { y3dFactory } from '@/contract';
 import { getChainId, getProvider } from '@/store/ethers/ethersConnect';
 import { fetchERC20Detail } from '@/utils/contract/fetchContractInfo';
@@ -41,6 +43,7 @@ const swap = {
         r.logo = r.logoURI;
         return r;
       });
+      result = filter(result, (v) => v.chainId === chainId);
       commit('SET_TOKENSINFO', result);
     },
     async fetchPairList({ commit, rootState, state }) {

@@ -47,19 +47,15 @@ export default Vue.extend({
     HelpCircleIcon,
   },
   computed: {
-    ...mapState('ethers', ['address', 'network']),
+    ...mapState('ethers', ['address', 'network', 'networkBrowseMainUrl']),
     ...mapState({
       swapLogo(state) {
         return state.swap.logo;
       },
     }),
     tokenAddressInfo() {
-      const networkLink = {
-        Mainnet: 'etherscan.io',
-        'Rinkeby Test Network': 'rinkeby.etherscan.io',
-      };
       const smallAddress = `${this.tokenAddress.slice(0, 6)}...${this.tokenAddress.slice(-4)}`;
-      const addressLink = `https://${networkLink[this.network] || 'etherscan.io'}/address/${this.tokenAddress}`;
+      const addressLink = `${this.networkBrowseMainUrl}/address/${this.tokenAddress}`;
       const tokenAddressInfo = {
         smallAddress,
         addressLink,
