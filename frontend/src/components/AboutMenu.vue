@@ -1,6 +1,6 @@
 <template>
   <div class="about-menu" @click.stop="">
-    <a target="_blank" href="https://y3d.finance/" class="text-link">
+    <a target="_blank" href="https://safemode.y3d.finance/" class="text-link">
       <img src="@/assets/menu/switch.png" class="icon-link" />
       <p>Safe mode</p>
     </a>
