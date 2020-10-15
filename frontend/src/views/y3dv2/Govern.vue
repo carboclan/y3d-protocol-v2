@@ -219,7 +219,8 @@ export default Vue.extend({
       this.loadingTokenInfo = true;
       const contract = getY3DContract(this.value);
       let underlying: string = '';
-
+      /* eslint no-underscore-dangle: 0 */
+      const ownerAddress = await contract._owner();
       const fee = await contract._fee();
       const y = await contract._y();
       try {
@@ -246,6 +247,7 @@ export default Vue.extend({
         price: yTPrice,
         fee,
         y,
+        ownerAddress,
       };
       this.uTD = { ...this.uTD, address: underlying, ...uTokenDetail };
       this.loadingTokenInfo = false;

@@ -32,8 +32,8 @@ export default {
     p3dRatio: 'P3D ratio',
     timelock: 'Timelock',
     createdTime: 'Created time',
-    fee: 'Fee',
     yTokenAddress: 'yToken Address',
+    ownerAddress: 'Owner Address',
   },
   create: {
     title: 'Create',
