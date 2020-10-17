@@ -88,4 +88,11 @@ export default {
     tipNoMuchy3dToken: '对不起，你没有那么多 y3d 代币',
     tipConnectWallet: '连接钱包',
   },
+  menu: {
+    safeMode: '安全模式',
+    docs: '文档',
+    github: 'Github',
+    telegram: 'Telegram',
+    discord: 'Discord',
+  },
 };

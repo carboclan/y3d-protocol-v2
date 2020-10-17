@@ -88,4 +88,11 @@ export default {
     tipNoMuchy3dToken: 'You don\'t have so much y3dToken, sorry.',
     tipConnectWallet: 'Connect to a wallet',
   },
+  menu: {
+    safeMode: 'Safe mode',
+    docs: 'Docs',
+    github: 'Github',
+    telegram: 'Telegram',
+    discord: 'Discord',
+  },
 };
