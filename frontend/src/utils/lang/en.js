@@ -10,8 +10,6 @@ export default {
     tipToCreateToken: 'Need Create A y3d Token',
     enterAmount: 'Enter an amount',
     insufficientBalance: 'Insufficient {symbol} balance',
-    ustake: 'STAKE',
-    uunstake: 'UNSTAKE',
     stakeSucc: 'Stake successfully.',
     unstakeSucc: 'Unstake successfully.',
     Balance: 'Balance',
