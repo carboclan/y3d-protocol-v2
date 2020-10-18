@@ -91,6 +91,7 @@ import SplitLine from '@/components/SplitLine.vue';
 import LayoutY3DV2 from '@/layouts/LayoutY3DV2.vue';
 import { CommonERC20, y3DToken } from '@/contract';
 import { fetchERC20Detail } from '@/utils/contract/fetchContractInfo';
+import swaputil from '@/utils/swap/index';
 
 export default {
   components: {
@@ -263,7 +264,7 @@ export default {
         return;
       }
       const {
-        name, symbol, totalSupply, decimals, balance,
+        address, name, symbol, totalSupply, decimals, balance, pool, fee,
       } = await fetchERC20Detail(whichToken === 'A' ? this.tokenA : this.tokenB, this.address);
 
       // balance that for display
@@ -275,6 +276,9 @@ export default {
             ? this.payloadTokenA
             : this.tokenAInfo
           : this.payloadTokenB),
+        fee,
+        pool,
+        address,
         name,
         symbol,
         totalSupply,
@@ -283,6 +287,9 @@ export default {
         dBalance,
       };
       if (whichToken === 'A') {
+        if (r.address !== this.tokenA) {
+          return;
+        }
         this.tokenAInfo = r;
         if (this.tokenAAmount) {
           this.updateBAmount();
@@ -290,6 +297,9 @@ export default {
           this.updateAAmount();
         }
       } else {
+        if (r.address !== this.tokenB) {
+          return;
+        }
         this.tokenBInfo = r;
         this.updateBAmount();
       }
@@ -338,24 +348,27 @@ export default {
       if (!this.tokenAAmount || !this.tokenAInfo || !this.tokenBInfo) {
         return;
       }
-      try {
-        if (this.tokenBInfo.decimals > this.tokenAInfo.decimals) {
-          this.tokenBAmount = utils
-            .formatUnits(this.tokenAAmount, this.tokenBInfo.decimals - this.tokenAInfo.decimals)
-            .toString();
+      const y3dTokenInfo = this.uTokenIndexTag === 'A' ? this.tokenBInfo : this.tokenAInfo;
+      const { totalSupply, pool } = y3dTokenInfo;
+      if (totalSupply && pool) {
+        if (this.uTokenIndexTag === 'A') {
+          // stake
+          const result = swaputil.dealstakey3d(totalSupply, pool, this.tokenAAmount);
+          if (result) {
+            this.tokenBAmount = result;
+            return;
+          }
+        } else {
+          // unstake
+          const { fee } = y3dTokenInfo;
+          const result = swaputil.dealunstakey3d(totalSupply, pool, this.tokenAAmount, fee);
+          if (result) {
+            this.tokenBAmount = result;
+            return;
+          }
         }
-        if (this.tokenBInfo.decimals < this.tokenAInfo.decimals) {
-          this.tokenBAmount = utils
-            .parseUnits(this.tokenAAmount, this.tokenAInfo.decimals - this.tokenBInfo.decimals)
-            .toString();
-        }
-        if (this.tokenBInfo.decimals === this.tokenAInfo.decimals) {
-          this.tokenBAmount = this.tokenAAmount;
-        }
-      } catch (err) {
-        console.log(err);
-        this.tokenBAmount = '';
       }
+      this.tokenBAmount = '';
     },
     tokenBAmountChanged(val, rawAmount) {
       console.log(rawAmount);
@@ -372,24 +385,27 @@ export default {
       if (!this.tokenBAmount || !this.tokenAInfo || !this.tokenBInfo) {
         return;
       }
-      try {
-        if (this.tokenBInfo.decimals > this.tokenAInfo.decimals) {
-          this.tokenAAmount = utils
-            .parseUnits(this.tokenBAmount, this.tokenBInfo.decimals - this.tokenAInfo.decimals)
-            .toString();
+      const y3dTokenInfo = this.uTokenIndexTag === 'A' ? this.tokenBInfo : this.tokenAInfo;
+      const { totalSupply, pool } = y3dTokenInfo;
+      if (totalSupply && pool) {
+        if (this.uTokenIndexTag === 'A') {
+          // stake
+          const result = swaputil.dealstakeu(totalSupply, pool, this.tokenBAmount);
+          if (result) {
+            this.tokenAAmount = result;
+            return;
+          }
+        } else {
+          // unstake
+          const { fee } = y3dTokenInfo;
+          const result = swaputil.dealunstakeu(totalSupply, pool, this.tokenBAmount, fee);
+          if (result) {
+            this.tokenAAmount = result;
+            return;
+          }
         }
-        if (this.tokenBInfo.decimals < this.tokenAInfo.decimals) {
-          this.tokenAAmount = utils
-            .formatUnits(this.tokenBAmount, this.tokenAInfo.decimals - this.tokenBInfo.decimals)
-            .toString();
-        }
-        if (this.tokenBInfo.decimals === this.tokenAInfo.decimals) {
-          this.tokenAAmount = this.tokenBAmount;
-        }
-      } catch (err) {
-        console.log(err);
-        this.tokenAAmount = '';
       }
+      this.tokenAAmount = '';
     },
     tokenAIsBadInputChange(isBadInput) {
       this.tokenAIsBadInput = isBadInput;
