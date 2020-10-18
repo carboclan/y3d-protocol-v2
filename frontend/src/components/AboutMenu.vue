@@ -2,23 +2,23 @@
   <div class="about-menu" @click.stop="">
     <a target="_blank" href="https://safemode.y3d.finance/" class="text-link">
       <img src="@/assets/menu/switch.png" class="icon-link" />
-      <p>Safe mode</p>
+      <p>{{ $t('menu.safeMode') }}</p>
     </a>
     <a target="_blank" href="https://shimo.im/docs/PcWhYR9gqHH6dxGX/read" class="text-link">
       <img src="@/assets/menu/doc.png" class="icon-link" />
-      <p>Docs</p>
+      <p>{{ $t('menu.docs') }}</p>
     </a>
     <a target="_blank" href="https://github.com/carboclan/y3d-protocol-v2" class="text-link">
       <img src="@/assets/menu/github.png" class="icon-link" />
-      <p>Github</p>
+      <p>{{ $t('menu.github') }}</p>
     </a>
     <a target="_blank" href="https://t.me/y3dScam" class="text-link">
       <img src="@/assets/menu/telegram.png" class="icon-link" />
-      <p>Telegram</p>
+      <p>{{ $t('menu.telegram') }}</p>
     </a>
     <a target="_blank" href="https://discord.gg/PEBhUf" class="text-link">
       <img src="@/assets/menu/discord.png" class="icon-link" />
-      <p>Discord</p>
+      <p>{{ $t('menu.discord') }}</p>
     </a>
   </div>
 </template>

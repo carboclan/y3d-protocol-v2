@@ -10,8 +10,6 @@ export default {
     tipToCreateToken: 'Need Create A y3d Token',
     enterAmount: 'Enter an amount',
     insufficientBalance: 'Insufficient {symbol} balance',
-    ustake: 'STAKE',
-    uunstake: 'UNSTAKE',
     stakeSucc: 'Stake successfully.',
     unstakeSucc: 'Unstake successfully.',
     Balance: 'Balance',
@@ -89,5 +87,12 @@ export default {
     tipNoMuchToken: 'You don\'t have so much token, sorry.',
     tipNoMuchy3dToken: 'You don\'t have so much y3dToken, sorry.',
     tipConnectWallet: 'Connect to a wallet',
+  },
+  menu: {
+    safeMode: 'Safe mode',
+    docs: 'Docs',
+    github: 'Github',
+    telegram: 'Telegram',
+    discord: 'Discord',
   },
 };
