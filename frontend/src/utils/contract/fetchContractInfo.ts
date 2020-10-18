@@ -11,8 +11,8 @@ export interface IERC20DetailInfo {
   decimals: string | number | BigNumber | Bytes
   balance: BigNumberish
   dBalance: string
-  pool: BigNumberish
-  fee: BigNumberish
+  pool?: BigNumberish
+  fee?: number
 }
 
 export interface IYTokenDetailInfo extends IERC20DetailInfo {
@@ -20,7 +20,6 @@ export interface IYTokenDetailInfo extends IERC20DetailInfo {
 }
 
 export interface IUTokenDetailInfo extends IERC20DetailInfo {
-  address: string
 }
 
 const fetchERC20Detail = async (
@@ -36,7 +35,7 @@ const fetchERC20Detail = async (
     balance: BigNumber.from('0'),
     dBalance: '',
     pool: BigNumber.from('0'),
-    fee: BigNumber.from('0'),
+    fee: 0,
   };
   const contract = getERC20Contract(erc20ContractAddress);
 

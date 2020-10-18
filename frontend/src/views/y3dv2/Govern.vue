@@ -148,7 +148,8 @@ export interface IYTokenDetail extends IYTokenDetailInfo {
   y?: string
 }
 
-export interface IUTokenDetail extends IUTokenDetailInfo {}
+export interface IUTokenDetail extends IUTokenDetailInfo {
+}
 
 export interface IOptionListItem {
   token: {
@@ -249,7 +250,8 @@ export default Vue.extend({
         y,
         ownerAddress,
       };
-      this.uTD = { ...this.uTD, address: underlying, ...uTokenDetail };
+      this.uTD = { ...this.uTD, ...uTokenDetail };
+      this.uTD!.address = underlying;
       this.loadingTokenInfo = false;
     },
     selectToken(token: ISelectTokenParam) {
