@@ -71,7 +71,7 @@
             </div>
             <div class="blank-container-info">
               <p class="blank-container-info-name">{{ $t('govern.p3dRatio') }}</p>
-              <p class="blank-container-info-value">{{ y3dTD.fee }}%</p>
+              <p class="blank-container-info-value">{{ y3dTD.fee/10 }}%</p>
             </div>
             <!--
             <div class="blank-container-info">
