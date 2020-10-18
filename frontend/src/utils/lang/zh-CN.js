@@ -47,7 +47,7 @@ export default {
     enterFee: '输入手续费',
     select: '选择',
     yToken: 'yToken',
-    fee: '手续费 % (最大 25.5%) (必须)',
+    fee: '手续费 ‰ (最大 25.5%) (必须)',
     error1: '这不是有效的以太坊地址，请仔细检查您的输入',
     error2: '手续费超出范围',
   },

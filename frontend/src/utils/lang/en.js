@@ -49,7 +49,7 @@ export default {
     enterFee: 'Enter fee...',
     select: 'Select',
     yToken: 'yToken',
-    fee: 'Fee % (Max 25.5%) (Required)',
+    fee: 'Fee ‰ (Max 25.5%) (Required)',
     error1: 'This is not a ethereum address, please double check your input.',
     error2: 'The fee is out of range.',
   },

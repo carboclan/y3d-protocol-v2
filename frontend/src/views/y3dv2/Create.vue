@@ -168,7 +168,7 @@ export default {
     createY3dTokenValidator() {
       const tokenContract = utils.isAddress(this.tokenContract);
       const yTokenContract = this.yTokenContract ? utils.isAddress(this.yTokenContract) : true;
-      const fee = typeof this.fee === 'number' && !(Number(this.fee) < 0 || Number(this.fee) > 25.5);
+      const fee = typeof this.fee === 'number' && !(Number(this.fee) < 0 || Number(this.fee) > 255);
       const createButton = tokenContract && fee;
       const status = {
         tokenContract,
