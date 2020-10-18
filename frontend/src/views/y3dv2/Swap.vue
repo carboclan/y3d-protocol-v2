@@ -455,7 +455,8 @@ export default {
           return;
         }
         const y3dT = y3DToken.attach(this.tokenAInfo.address).connect(getProvider().getSigner());
-        const stakeRes = await y3dT.unstake(parsedInput);
+        const gas = await y3dT.estimateGas.unstake(parsedInput);
+        const stakeRes = await y3dT.unstake(parsedInput, { gasLimit: gas.add(500) });
         console.info('unstake::stakeRes', stakeRes);
         const unstakeReceipt = await stakeRes.wait(1);
         console.info('unstake::receipt', unstakeReceipt);
