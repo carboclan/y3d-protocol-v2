@@ -74,6 +74,11 @@ const rootRoutes: IRootRoutes = [
   //   isExternal: false,
   // },
   {
+    name: 'Mining',
+    match: 'https://mining.y3d.finance/',
+    isExternal: true,
+  },    
+  {
     name: 'DAO',
     match: 'https://snapshot.page/#/y3d',
     isExternal: true,
