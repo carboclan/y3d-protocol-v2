@@ -19,7 +19,7 @@
         <img src="@/assets/united-mint/click.png" @click="clickOnLink" />
       </div>
       <div class="united-mint-header-apy">
-        <p>{{ $t('um.APY') }}: <span>{{ data.apy }}%</span></p>
+        <p>{{ $t('um.APY') }}: <span>{{ data.apy + 10 }}%</span></p>
       </div>
     </div>
     <div class="united-mint-header-toggle" @click="clickOnToggle">
