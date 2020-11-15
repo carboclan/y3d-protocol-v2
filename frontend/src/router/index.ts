@@ -83,6 +83,11 @@ const rootRoutes: IRootRoutes = [
     match: 'https://snapshot.page/#/y3d',
     isExternal: true,
   },
+  {
+    name: 'Unisave',
+    match: 'https://swap.y3d.finance/#/swap',
+    isExternal: true,
+  },
 ];
 
 type IRootRoutes = Array<IRootRoute>;
